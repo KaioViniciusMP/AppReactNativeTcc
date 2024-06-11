@@ -1,9 +1,10 @@
 import React from 'react';
-import { StyleSheet, Text, View, TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View, TouchableOpacity, ScrollView } from 'react-native';
+import { TotalContainerHome } from '../../components/totalContainerHome';
 
 export default function Home() {
     return (
-        <View style={styles.container}>
+        <ScrollView style={styles.container}>
             <View style={styles.header}>
                 <View style={styles.greetingContainer}>
                     <View style={styles.greetingRadios} />
@@ -31,8 +32,10 @@ export default function Home() {
                         <Text style={styles.menuText}>Sair</Text>
                     </TouchableOpacity>
                 </View>
+
+                <TotalContainerHome/>
             </View>
-        </View>
+        </ScrollView>
     );
 }
 
@@ -41,15 +44,18 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: '#4A4981',
     },
+
+
     header: {
         padding: 20,
-        height: '25%'
+        height: '20%'
     },
     greetingContainer: {
         display: 'flex',
         width: '100%',
         flexDirection: 'row',
-        alignItems: 'center'
+        alignItems: 'center',
+        marginTop: 20
     },
     greetingRadios: {
         borderRadius: 30,
@@ -62,16 +68,22 @@ const styles = StyleSheet.create({
         color: '#fff',
         fontSize: 20,
     },
+
+
+
+
     body: {
         flex: 1,
-        borderTopLeftRadius: 20,
-        borderTopRightRadius: 20,
+        borderTopLeftRadius: 40,
+        borderTopRightRadius: 40,
         backgroundColor: '#7F79AB',
     },
+
+
+
     balanceContainer: {
         borderRadius: 10,
         padding: 20,
-        marginBottom: 20,
         borderBottomColor: '#fff',
         borderBottomWidth: 1,
         margin: 20,
@@ -85,6 +97,9 @@ const styles = StyleSheet.create({
         fontSize: 24,
         fontWeight: 'bold',
     },
+
+
+    
     menu: {
         flexDirection: 'row',
         justifyContent: 'space-between',
