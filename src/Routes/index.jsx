@@ -22,7 +22,7 @@ function Routes() {
     }
 
     return (
-        isAutenticated ? <AuthRoutes /> : <AppRoutes />
+        isAutenticated ? <AppRoutes /> : <AuthRoutes />
     )
 }
 
