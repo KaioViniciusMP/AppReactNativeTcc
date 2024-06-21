@@ -9,7 +9,7 @@ export default function AuthRoutes() {
     return (
         <Stack.Navigator>
             <Stack.Screen name='Entrada' component={PageEntrada} options={{headerShown: false}}/>
-            <Stack.Screen name="Login" component={Login} options={{headerShown: true}}/>
+            <Stack.Screen name="Login" component={Login} options={{headerShown: false}}/>
         </Stack.Navigator>
     )
 }
