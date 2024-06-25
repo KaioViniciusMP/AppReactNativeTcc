@@ -1,5 +1,6 @@
 import { useNavigation } from "@react-navigation/native";
 import { View, Text, TouchableOpacity, StyleSheet, ScrollView, FlatList } from "react-native";
+import PageEntradaFinanceiraExtra from "../AdicionamentoRendaExtra";
 
 export default function Home() {
     const navigation = useNavigation();
@@ -12,6 +13,9 @@ export default function Home() {
     };
     const Ajuda = () => {
         navigation.navigate('Ajuda');
+    };
+    const EntradaFinanceiraExtra = () => {
+        navigation.navigate('EntradaFinanceiraExtra');
     };
 
     const data = [
@@ -55,10 +59,10 @@ export default function Home() {
                             </View>
 
                             <View style={{ display: 'flex', justifyContent: "center" }}>
-                                <View style={{ backgroundColor: '#D9D9D9', height: 70, width: 70, borderRadius: 20, display: "flex", alignItems: "center", justifyContent: "center" }}>
-                                    <Text>icon</Text>
+                                <View onPress={EntradaFinanceiraExtra} style={{ backgroundColor: '#D9D9D9', height: 70, width: 70, borderRadius: 20, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                                    <Text onPress={EntradaFinanceiraExtra}>icon</Text>
                                 </View>
-                                <Text style={{ color: 'white', textAlign: "center", fontSize: 12 }}>Entrada</Text>
+                                <Text onPress={EntradaFinanceiraExtra} style={{ color: 'white', textAlign: "center", fontSize: 12 }}>Entrada</Text>
                             </View>
 
                             <View style={{ display: 'flex', justifyContent: "center" }}>
@@ -110,7 +114,6 @@ export default function Home() {
                                         )}
                                     />
                                 </View>
-
                             </View>
                         </View>
                     </View>
