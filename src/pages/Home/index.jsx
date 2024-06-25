@@ -7,6 +7,12 @@ export default function Home() {
     const escolherModalidade = () => {
         navigation.navigate('EscolherModalidade');
     };
+    const configuracoes = () => {
+        navigation.navigate('Configuracoes');
+    };
+    const Ajuda = () => {
+        navigation.navigate('Ajuda');
+    };
 
     const data = [
         { icon: '1', title: 'Item 1', subtitle: 'subtitulo', porcentagem: '12%', seta: '>' },
@@ -34,18 +40,18 @@ export default function Home() {
                         </View>
 
                         <View style={{ width: '100%', marginBottom: 40, display: 'flex', flexDirection: "row", justifyContent: "center", gap: 10 }}>
-                            <View style={{ display: 'flex', justifyContent: "center" }}>
+                            <View onPress={configuracoes} style={{ display: 'flex', justifyContent: "center" }}>
                                 <View style={{ backgroundColor: '#D9D9D9', height: 70, width: 70, borderRadius: 20, display: "flex", alignItems: "center", justifyContent: "center" }}>
-                                    <Text>icon</Text>
+                                    <Text onPress={configuracoes} >icon</Text>
                                 </View>
-                                <Text style={{ color: 'white', textAlign: "center", fontSize: 12 }}>Configurações</Text>
+                                <Text onPress={configuracoes} style={{ color: 'white', textAlign: "center", fontSize: 12 }}>Configurações</Text>
                             </View>
 
                             <View style={{ display: 'flex', justifyContent: "center" }}>
-                                <View style={{ backgroundColor: '#D9D9D9', height: 70, width: 70, borderRadius: 20, display: "flex", alignItems: "center", justifyContent: "center" }}>
-                                    <Text>icon</Text>
+                                <View onPress={Ajuda} style={{ backgroundColor: '#D9D9D9', height: 70, width: 70, borderRadius: 20, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                                    <Text onPress={Ajuda}>icon</Text>
                                 </View>
-                                <Text style={{ color: 'white', textAlign: "center", fontSize: 12 }}>Ajude</Text>
+                                <Text onPress={Ajuda} style={{ color: 'white', textAlign: "center", fontSize: 12 }}>Ajude</Text>
                             </View>
 
                             <View style={{ display: 'flex', justifyContent: "center" }}>
@@ -102,7 +108,6 @@ export default function Home() {
 
                                             </View>
                                         )}
-                                        keyExtractor={item => item.key}
                                     />
                                 </View>
 

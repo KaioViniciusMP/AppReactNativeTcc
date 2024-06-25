@@ -14,27 +14,27 @@ export default function PageEscolherModalidade() {
                 <Text style={{ fontWeight: "bold", marginBottom: 30, marginTop: 40, marginLeft: 25 }}>Utilizar R$ em qual modalidade?</Text>
                 <View style={{ display: 'flex', alignItems: 'center', gap: 20 }}>
                     <TouchableOpacity style={{ display: "flex", alignItems: "center", justifyContent: "center", backgroundColor: '#D9D9D9', width: '90%', borderRadius: 5, height: 50, }}>
-                        <Text style={{ fontWeight: "bold" }}>Utilizar</Text>
+                        <Text style={{ fontWeight: "bold" }}>Lazer</Text>
                     </TouchableOpacity>
 
                     <TouchableOpacity style={{ display: "flex", alignItems: "center", justifyContent: "center", backgroundColor: '#D9D9D9', width: '90%', borderRadius: 5, height: 50, }}>
-                        <Text style={{ fontWeight: "bold" }}>Utilizar</Text>
+                        <Text style={{ fontWeight: "bold" }}>Compras</Text>
                     </TouchableOpacity>
 
                     <TouchableOpacity style={{ display: "flex", alignItems: "center", justifyContent: "center", backgroundColor: '#D9D9D9', width: '90%', borderRadius: 5, height: 50, }}>
-                        <Text style={{ fontWeight: "bold" }}>Utilizar</Text>
+                        <Text style={{ fontWeight: "bold" }}>Saúde</Text>
                     </TouchableOpacity>
 
                     <TouchableOpacity style={{ display: "flex", alignItems: "center", justifyContent: "center", backgroundColor: '#D9D9D9', width: '90%', borderRadius: 5, height: 50, }}>
-                        <Text style={{ fontWeight: "bold" }}>Utilizar</Text>
+                        <Text style={{ fontWeight: "bold" }}>Transporte</Text>
                     </TouchableOpacity>
 
                     <TouchableOpacity style={{ display: "flex", alignItems: "center", justifyContent: "center", backgroundColor: '#D9D9D9', width: '90%', borderRadius: 5, height: 50, }}>
-                        <Text style={{ fontWeight: "bold" }}>Utilizar</Text>
+                        <Text style={{ fontWeight: "bold" }}>Alimentação</Text>
                     </TouchableOpacity>
 
                     <TouchableOpacity style={{ display: "flex", alignItems: "center", justifyContent: "center", backgroundColor: '#D9D9D9', width: '90%', borderRadius: 5, height: 50, }}>
-                        <Text style={{ fontWeight: "bold" }}>Utilizar</Text>
+                        <Text style={{ fontWeight: "bold" }}>Investimentos</Text>
                     </TouchableOpacity>
                 </View>
             </View>
