@@ -4,8 +4,8 @@ import { View, Text, TouchableOpacity, StyleSheet, ScrollView, FlatList } from "
 export default function Home() {
     const navigation = useNavigation();
 
-    const historicoTransacoes = () => {
-        navigation.navigate('HistoricoTransacoes');
+    const escolherModalidade = () => {
+        navigation.navigate('EscolherModalidade');
     };
 
     const data = [
@@ -68,13 +68,13 @@ export default function Home() {
                                 <Text style={{ fontWeight: "bold", marginBottom: 10 }}>Saldo disponivel</Text>
                                 <View style={{ display: 'flex', flexDirection: "row", alignItems: "center", justifyContent: "space-between", borderBottomWidth: 3, borderBottomColor: 'white', }}>
                                     <Text style={{ color: '#000', fontWeight: "bold", fontSize: 35 }}>R$0,00</Text>
-                                    <TouchableOpacity style={{ display: "flex", alignItems: "center", justifyContent: "center", width: '30%', borderRadius: 5, height: 30, borderWidth: 2, borderColor: '#7F79AB' }}>
+                                    <TouchableOpacity onPress={escolherModalidade} style={{ display: "flex", alignItems: "center", justifyContent: "center", width: '30%', borderRadius: 5, height: 30, borderWidth: 2, borderColor: '#7F79AB' }}>
                                         <Text style={{ color: '#7F79AB', fontWeight: "semibold" }}>Utilizar</Text>
                                     </TouchableOpacity>
                                 </View>
                                 <View style={{ display: 'flex', flexDirection: "row", justifyContent: "space-between", borderBottomWidth: 3, borderBottomColor: 'white', }}>
                                     <Text style={{ fontWeight: "bold" }}>Disponivel para utilizar</Text>
-                                    <Text style={{ fontWeight: "bold" }}>0,00</Text>
+                                    <Text style={{ fontWeight: "bold" }}>R$ 0,00</Text>
                                 </View>
                                 <View style={{ display: 'flex', flexDirection: "column", justifyContent: "space-between", borderBottomWidth: 3, borderBottomColor: 'white', marginTop: 30 }}>
                                     <Text style={{ fontWeight: "bold" }}>Seus rendimentos de 2024</Text>
