@@ -1,6 +1,5 @@
 import { useNavigation } from "@react-navigation/native";
 import { View, Text, TouchableOpacity, StyleSheet, ScrollView, FlatList } from "react-native";
-import PageEntradaFinanceiraExtra from "../AdicionamentoRendaExtra";
 
 export default function Home() {
     const navigation = useNavigation();

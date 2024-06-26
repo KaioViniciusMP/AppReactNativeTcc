@@ -1,8 +1,18 @@
-import { StyleSheet, Text, View, ScrollView, TouchableOpacity, FlatList } from 'react-native'
 import { useNavigation } from "@react-navigation/native";
+import { StyleSheet, Text, View, ScrollView, TouchableOpacity, FlatList } from 'react-native'
 import React from 'react'
+import { AppStackParamList } from '../../Routes/app.routes';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+
+type NavigationProp = NativeStackNavigationProp<AppStackParamList>;
 
 export default function PageContasCorrentes() {
+    const navigation = useNavigation<NavigationProp>();
+
+    const adicionarContaCorrente = () => {
+        navigation.navigate('AdicionarContaCorrente');
+    };
+
     const data = [
         { Agencia: 'AGENCIA', Valor: 'R$ 200,00' },
         { Agencia: 'AGENCIA', Valor: 'R$ 500,00' },
@@ -20,7 +30,7 @@ export default function PageContasCorrentes() {
 
             <View style={styles.containerTwo}>
 
-                <TouchableOpacity style={{ marginTop: 30, borderRadius: 10, alignSelf: 'center', alignItems: 'center', height: 45, backgroundColor: '#EDEDED', justifyContent: 'center', display: 'flex', flexDirection: 'row', width: '80%', }}>
+                <TouchableOpacity onPress={adicionarContaCorrente} style={{ marginTop: 30, borderRadius: 10, alignSelf: 'center', alignItems: 'center', height: 45, backgroundColor: '#EDEDED', justifyContent: 'center', display: 'flex', flexDirection: 'row', width: '80%', }}>
                     <Text>Adicionar conta corrente</Text>
                     <Text style={{ marginLeft: 10, fontSize: 17, textAlign: 'center', backgroundColor: '#000', width: 25, height: 25, borderRadius: 20, color: '#fff' }}>+</Text>
                 </TouchableOpacity>

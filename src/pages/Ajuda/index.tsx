@@ -1,17 +1,36 @@
 import { StyleSheet, Text, View, ScrollView, TouchableOpacity, FlatList } from 'react-native'
 import { useNavigation } from "@react-navigation/native";
 import React from 'react'
+import { AppStackParamList } from '../../Routes/app.routes';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+
+type NavigationProp = NativeStackNavigationProp<AppStackParamList>;
+
+enum AppScreens {
+    RelatarProblema = 'RelatarProblema',
+    PrivacidadeSeguranca = 'PrivacidadeSeguranca',
+}
 
 export default function PageAjuda() {
+    const navigation = useNavigation<NavigationProp>();
+
+    const navigateToScreen = (screenName: keyof AppStackParamList) => {
+        navigation.navigate(screenName);
+    };
+
+    const voltar = () => {
+        navigation.pop();
+    }
+
     const data = [
-        { icon: '1', title: 'Reportar Problema', seta: '>' },
-        { icon: '2', title: 'Privacidade e segurança', seta: '>' }
+        { icon: '1', title: 'Reportar Problema', screen: AppScreens.RelatarProblema, seta: '>' },
+        { icon: '2', title: 'Privacidade e segurança', screen: AppScreens.PrivacidadeSeguranca, seta: '>' },
     ];
 
     return (
         <ScrollView contentContainerStyle={styles.scrollViewContainer}>
             <View style={{ display: 'flex', flexDirection: 'row', marginLeft: 20, marginTop: 40 }}>
-                <Text style={{ color: '#fff' }}>Voltar</Text>
+                <Text style={{ color: '#fff' }} onPress={voltar}>Voltar</Text>
                 <Text style={{ color: '#fff', marginLeft: 10, fontWeight: "bold", marginBottom: 60 }}>Ola Kaio</Text>
             </View>
 
@@ -25,15 +44,16 @@ export default function PageAjuda() {
                 <FlatList
                     data={data}
                     renderItem={({ item }) => (
-                        <View style={{ display: 'flex', justifyContent: "space-between", flexDirection: "row", padding: 10, borderBottomWidth: 1, borderBottomColor: '#ccc' }}>
-                            <View style={{ display: 'flex', flexDirection: "row", alignItems:'center' }}>
-                                <Text style={{ display: 'flex', flexDirection: "column" , marginLeft: 15}}>{item.title}</Text>
+                        <TouchableOpacity onPress={() => navigateToScreen(item.screen)}>
+                            <View style={{ display: 'flex', justifyContent: "space-between", flexDirection: "row", padding: 10, borderBottomWidth: 1, borderBottomColor: 'gray' }}>
+                                <View style={{ display: 'flex', flexDirection: "row", alignItems:'center' }}>
+                                    <Text style={{ display: 'flex', flexDirection: "column" , marginLeft: 15}}>{item.title}</Text>
+                                </View>
+                                <Text style={{ fontSize: 40, alignSelf: "flex-end" }}>{item.seta}</Text>
                             </View>
-
-                            <Text style={{ fontSize: 40, alignSelf: "flex-end" }}>{item.seta}</Text>
-                        </View>
+                        </TouchableOpacity>
                     )}
-                />
+                    keyExtractor={(item) => item.icon}/>
             </View>
         </ScrollView>
     )
