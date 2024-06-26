@@ -16,7 +16,7 @@ export default function PrivacidadeSeguranca() {
     return (
         <ScrollView contentContainerStyle={styles.scrollViewContainer}>
             <View style={{ display: 'flex', position:'absolute',top:0,left: 0, flexDirection: 'row', marginLeft: 20, marginTop: 40 }}>
-                <Text style={{ color: '#fff'}}>Voltar</Text>
+                <Text onPress={voltar} style={{ color: '#fff'}}>Voltar</Text>
                 <Text style={{ color: '#fff', marginLeft: 10, fontWeight: "bold", marginBottom: 60 }}>Ola Kaio</Text>
             </View>
 

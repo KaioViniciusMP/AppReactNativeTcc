@@ -1,12 +1,23 @@
 import { StyleSheet, Text, View, ScrollView, TouchableOpacity } from 'react-native'
 import { useNavigation } from "@react-navigation/native";
 import React from 'react'
+import { AuthStackParamList } from '../../Routes/auth.routes';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+
+type NavigationProp = NativeStackNavigationProp<AuthStackParamList>;
+
 
 export default function PageEscolherModalidade() {
+    const navigation = useNavigation<NavigationProp>();
+
+    const voltar = () => {
+        navigation.pop();
+    }
+
     return (
         <ScrollView contentContainerStyle={styles.scrollViewContainer}>
             <View style={{display:'flex', flexDirection:'row', marginLeft: 20, marginTop: 40}}>
-            <Text style={{ color: '#fff' }}>Voltar</Text>
+            <Text onPress={voltar} style={{ color: '#fff' }}>Voltar</Text>
             <Text style={{ color: '#fff', marginLeft: 10, fontWeight: "bold", marginBottom: 60 }}>Ola Kaio</Text>
             </View>
             

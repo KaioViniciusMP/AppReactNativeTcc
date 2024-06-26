@@ -1,13 +1,22 @@
 import { StyleSheet, Text, View, ScrollView, TouchableOpacity, FlatList, TextInput } from 'react-native'
 import { useNavigation } from "@react-navigation/native";
 import React, { useState } from 'react'
-import { Picker } from '@react-native-picker/picker';
+import { AuthStackParamList } from '../../Routes/auth.routes';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+
+type NavigationProp = NativeStackNavigationProp<AuthStackParamList>;
 
 export default function PageAdicionarContaCorrente() {
+    const navigation = useNavigation<NavigationProp>();
+
+    const voltar = () => {
+        navigation.pop();
+    }
+
     return (
         <ScrollView contentContainerStyle={styles.scrollViewContainer}>
             <View style={{ display: 'flex', flexDirection: 'row', marginLeft: 20, marginTop: 40 }}>
-                <Text style={{ color: '#fff' }}>Voltar</Text>
+                <Text onPress={voltar} style={{ color: '#fff' }}>Voltar</Text>
                 <Text style={{ color: '#fff', marginLeft: 10, fontWeight: "bold", marginBottom: 60 }}>Ola Kaio</Text>
             </View>
 
@@ -32,7 +41,7 @@ export default function PageAdicionarContaCorrente() {
                         <TouchableOpacity style={{ display: "flex", alignItems: "center", justifyContent: "center", width: '50%', borderRadius: 8, height: 50, backgroundColor: '#7F79AB' }}>
                             <Text style={{ color: '#FFF', fontWeight: "bold" }}>Criar</Text>
                         </TouchableOpacity>
-                        <Text style={{ color: '#7F79AB', fontWeight: "bold" }}>Cancelar operação</Text>
+                        <Text style={{ color: '#7F79AB', fontWeight: "bold", marginTop: 10 }}>Cancelar operação</Text>
                     </View>
                 </View>
             </View>
