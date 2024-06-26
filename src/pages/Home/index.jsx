@@ -17,6 +17,9 @@ export default function Home() {
     const EntradaFinanceiraExtra = () => {
         navigation.navigate('EntradaFinanceiraExtra');
     };
+    const ContasCorrentes = () => {
+        navigation.navigate('ContasCorrentes');
+    };
 
     const data = [
         { icon: '1', title: 'Item 1', subtitle: 'subtitulo', porcentagem: '12%', seta: '>' },
@@ -35,11 +38,11 @@ export default function Home() {
                 </View>
                 <View style={styles.containerTwo}>
                     <View>
-                        <View style={{ padding: 30 }}>
-                            <Text style={{ color: 'white' }}>Saldo disponivel</Text>
-                            <View style={{ display: 'flex', flexDirection: "row", justifyContent: "space-between", borderBottomWidth: 1, borderBottomColor: 'white', }}>
-                                <Text style={{ color: 'white', marginBottom: 10 }}>R$0,00</Text>
-                                <Text style={{ color: 'white', marginBottom: 10 }}>seta</Text>
+                        <View onPress={ContasCorrentes} style={{ padding: 30 }}>
+                            <Text onPress={ContasCorrentes} style={{ color: 'white' }}>Saldo disponivel</Text>
+                            <View onPress={ContasCorrentes} style={{ display: 'flex', flexDirection: "row", justifyContent: "space-between", borderBottomWidth: 1, borderBottomColor: 'white', }}>
+                                <Text onPress={ContasCorrentes} style={{ color: 'white', marginBottom: 10 }}>R$0,00</Text>
+                                <Text onPress={ContasCorrentes} style={{ color: 'white', marginBottom: 10 }}>seta</Text>
                             </View>
                         </View>
 
