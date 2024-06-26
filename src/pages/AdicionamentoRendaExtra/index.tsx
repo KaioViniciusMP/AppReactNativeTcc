@@ -2,19 +2,34 @@ import { StyleSheet, Text, View, ScrollView, TouchableOpacity, FlatList, TextInp
 import { useNavigation } from "@react-navigation/native";
 import React, { useState } from 'react'
 import { Picker } from '@react-native-picker/picker';
+import { AuthStackParamList } from '../../Routes/auth.routes';
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+
+type NavigationProp = NativeStackNavigationProp<AuthStackParamList>;
 
 export default function PageEntradaFinanceiraExtra() {
-    const [selectedValue, setSelectedValue] = useState("java");
+    const [selectedValue, setSelectedValue] = useState("Escolha o remetente");
 
-    const data = [
-        { icon: '1', title: 'Editar dados do perfil', seta: '>' },
-        { icon: '2', title: 'Editar entrada de dinheiro mensal', seta: '>' }
+    const navigation = useNavigation<NavigationProp>();
+
+    const voltar = () => {
+        navigation.pop();
+    }
+
+    const pickerItems = [
+        { label: "Escolha o remetente", value: "Escolha o remetente" },
+        { label: "Lazer", value: "Lazer" },
+        { label: "Compras", value: "Compras" },
+        { label: "Saúde", value: "Saúde" },
+        { label: "Transporte", value: "Transporte" },
+        { label: "Alimentação", value: "Alimentação" },
+        { label: "Investimentos", value: "Investimentos" },
     ];
 
     return (
         <ScrollView contentContainerStyle={styles.scrollViewContainer}>
             <View style={{ display: 'flex', flexDirection: 'row', marginLeft: 20, marginTop: 40 }}>
-                <Text style={{ color: '#fff' }}>Voltar</Text>
+                <Text onPress={voltar} style={{ color: '#fff' }}>Voltar</Text>
                 <Text style={{ color: '#fff', marginLeft: 10, fontWeight: "bold", marginBottom: 60 }}>Ola Kaio</Text>
             </View>
 
@@ -34,10 +49,9 @@ export default function PageEntradaFinanceiraExtra() {
                                 selectedValue={selectedValue}
                                 onValueChange={(itemValue, itemIndex) => setSelectedValue(itemValue)}>
 
-                                <Picker.Item label="Java" value="java" />
-                                <Picker.Item label="JavaScript" value="javascript" />
-                                <Picker.Item label="Python" value="python" />
-                                <Picker.Item label="C++" value="cpp" />
+                                {pickerItems.map((item, index) => (
+                                    <Picker.Item key={index} label={item.label} value={item.value} />
+                                ))}
                             </Picker>
                         </View>
                     </View>
@@ -52,11 +66,11 @@ export default function PageEntradaFinanceiraExtra() {
                         <TextInput style={{ marginBottom: 15, width: '80%', alignSelf: 'center', borderRadius: 5, height: 40, paddingLeft: 10, borderWidth: 2, borderColor: '#7F79AB' }} placeholder='Digite a descrição...' />
                     </View>
 
-                    <View style={{ marginTop: 40,justifyContent: 'center', display: 'flex', width: '100%', alignItems: 'center' }}>
+                    <View style={{ marginTop: 40, justifyContent: 'center', display: 'flex', width: '100%', alignItems: 'center' }}>
                         <TouchableOpacity style={{ display: "flex", alignItems: "center", justifyContent: "center", width: '50%', borderRadius: 8, height: 50, backgroundColor: '#7F79AB' }}>
                             <Text style={{ color: '#FFF', fontWeight: "bold" }}>Definir</Text>
                         </TouchableOpacity>
-                        <Text style={{ color: '#7F79AB', fontWeight: "bold" }}>Cancelar operação</Text>
+                        <Text onPress={voltar} style={{ color: '#7F79AB', fontWeight: "bold", marginTop: 10 }}>Cancelar operação</Text>
                     </View>
                 </View>
             </View>
