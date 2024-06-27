@@ -1,6 +1,8 @@
 import { useNavigation } from "@react-navigation/native";
 import { View, Text, TouchableOpacity, StyleSheet, ScrollView, FlatList } from "react-native";
 import AntDesign from '@expo/vector-icons/AntDesign';
+import { Octicons } from '@expo/vector-icons';
+import { Feather } from '@expo/vector-icons';
 
 export default function Home() {
     const navigation = useNavigation();
@@ -32,31 +34,31 @@ export default function Home() {
     return (
         <ScrollView contentContainerStyle={styles.scrollViewContainer}>
             <View style={styles.container}>
-                <View style={{ display: 'flex', height: 170, flexDirection: "row", alignItems: "center", paddingLeft: 20,  marginBottom: 20 }}>
+                <View style={{ display: 'flex', height: 170, flexDirection: "row", alignItems: "center", paddingLeft: 20, marginBottom: 20 }}>
                     <View style={{ width: 50, height: 50, backgroundColor: '#7F79AB', borderRadius: 50 }}></View>
                     <Text style={{ marginLeft: 10, fontWeight: "bold", color: "white" }}>Ola Kaio</Text>
                 </View>
                 <View style={styles.containerTwo}>
                     <View>
                         <View onPress={ContasCorrentes} style={{ padding: 30 }}>
-                            <Text onPress={ContasCorrentes} style={{ fontSize: 15, color: 'white', fontWeight: "500"}}>Saldo disponivel</Text>
-                            <View onPress={ContasCorrentes} style={{ alignItems: "center",display: 'flex', flexDirection: "row", justifyContent: "space-between", borderBottomWidth: 1, borderBottomColor: 'white', }}>
-                                <Text onPress={ContasCorrentes} style={{ color: 'white', marginBottom: 10, fontSize:30, marginTop:5 }}>R$0,00</Text>
-                                <AntDesign onPress={ContasCorrentes} name="right" size={25} color="white" marginTop='10'/>
+                            <Text onPress={ContasCorrentes} style={{ fontSize: 15, color: 'white', fontWeight: "500" }}>Saldo disponivel</Text>
+                            <View onPress={ContasCorrentes} style={{ alignItems: "center", display: 'flex', flexDirection: "row", justifyContent: "space-between", borderBottomWidth: 1, borderBottomColor: 'white', }}>
+                                <Text onPress={ContasCorrentes} style={{ color: 'white', marginBottom: 10, fontSize: 30, marginTop: 5 }}>R$0,00</Text>
+                                <AntDesign onPress={ContasCorrentes} name="right" size={25} color="white" marginTop='10' />
                             </View>
                         </View>
 
                         <View style={{ width: '100%', marginBottom: 40, display: 'flex', flexDirection: "row", justifyContent: "center", gap: 10 }}>
                             <View onPress={configuracoes} style={{ display: 'flex', justifyContent: "center" }}>
                                 <View style={{ backgroundColor: '#D9D9D9', height: 70, width: 70, borderRadius: 20, display: "flex", alignItems: "center", justifyContent: "center" }}>
-                                    <Text onPress={configuracoes} >icon</Text>
+                                    <Octicons name="gear" size={30} color="black" />
                                 </View>
                                 <Text onPress={configuracoes} style={{ color: 'white', textAlign: "center", fontSize: 12 }}>Configurações</Text>
                             </View>
 
                             <View style={{ display: 'flex', justifyContent: "center" }}>
                                 <View onPress={Ajuda} style={{ backgroundColor: '#D9D9D9', height: 70, width: 70, borderRadius: 20, display: "flex", alignItems: "center", justifyContent: "center" }}>
-                                    <Text onPress={Ajuda}>icon</Text>
+                                    <Feather onPress={Ajuda} name="help-circle" size={32} color="black" />
                                 </View>
                                 <Text onPress={Ajuda} style={{ color: 'white', textAlign: "center", fontSize: 12 }}>Ajude</Text>
                             </View>
@@ -102,7 +104,7 @@ export default function Home() {
                                         data={data}
                                         renderItem={({ item }) => (
                                             <View style={{ display: 'flex', justifyContent: "space-between", flexDirection: "row", padding: 10, borderBottomWidth: 1, borderBottomColor: '#ccc' }}>
-                                                <View style={{ display: 'flex', flexDirection: "row"}}>
+                                                <View style={{ display: 'flex', flexDirection: "row" }}>
                                                     <Text style={{ fontSize: 40, marginRight: 30 }}>{item.icon}</Text>
                                                     <View style={{ display: 'flex', flexDirection: "column" }}>
                                                         <Text style={{ fontWeight: "bold" }}>{item.title}</Text>
