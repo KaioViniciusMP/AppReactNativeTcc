@@ -1,5 +1,6 @@
 import { useNavigation } from "@react-navigation/native";
 import { View, Text, TouchableOpacity, StyleSheet, ScrollView, FlatList } from "react-native";
+import AntDesign from '@expo/vector-icons/AntDesign';
 
 export default function Home() {
     const navigation = useNavigation();
@@ -33,15 +34,15 @@ export default function Home() {
             <View style={styles.container}>
                 <View style={{ display: 'flex', height: 170, flexDirection: "row", alignItems: "center", paddingLeft: 20,  marginBottom: 20 }}>
                     <View style={{ width: 50, height: 50, backgroundColor: '#7F79AB', borderRadius: 50 }}></View>
-                    <Text style={{ marginLeft: 10, fontWeight: "bold" }}>Ola Kaio</Text>
+                    <Text style={{ marginLeft: 10, fontWeight: "bold", color: "white" }}>Ola Kaio</Text>
                 </View>
                 <View style={styles.containerTwo}>
                     <View>
                         <View onPress={ContasCorrentes} style={{ padding: 30 }}>
-                            <Text onPress={ContasCorrentes} style={{ color: 'white' }}>Saldo disponivel</Text>
-                            <View onPress={ContasCorrentes} style={{ display: 'flex', flexDirection: "row", justifyContent: "space-between", borderBottomWidth: 1, borderBottomColor: 'white', }}>
-                                <Text onPress={ContasCorrentes} style={{ color: 'white', marginBottom: 10 }}>R$0,00</Text>
-                                <Text onPress={ContasCorrentes} style={{ color: 'white', marginBottom: 10 }}>seta</Text>
+                            <Text onPress={ContasCorrentes} style={{ fontSize: 15, color: 'white', fontWeight: "500"}}>Saldo disponivel</Text>
+                            <View onPress={ContasCorrentes} style={{ alignItems: "center",display: 'flex', flexDirection: "row", justifyContent: "space-between", borderBottomWidth: 1, borderBottomColor: 'white', }}>
+                                <Text onPress={ContasCorrentes} style={{ color: 'white', marginBottom: 10, fontSize:30, marginTop:5 }}>R$0,00</Text>
+                                <AntDesign onPress={ContasCorrentes} name="right" size={25} color="white" marginTop='10'/>
                             </View>
                         </View>
 

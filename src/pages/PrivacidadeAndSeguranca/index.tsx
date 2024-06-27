@@ -3,6 +3,7 @@ import { useNavigation } from "@react-navigation/native";
 import React from 'react'
 import { AppStackParamList } from '../../Routes/app.routes';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import AntDesign from '@expo/vector-icons/AntDesign';
 
 type NavigationProp = NativeStackNavigationProp<AppStackParamList>;
 
@@ -15,9 +16,9 @@ export default function PrivacidadeSeguranca() {
 
     return (
         <ScrollView contentContainerStyle={styles.scrollViewContainer}>
-            <View style={{ display: 'flex', position:'absolute',top:0,left: 0, flexDirection: 'row', marginLeft: 20, marginTop: 40 }}>
-                <Text onPress={voltar} style={{ color: '#fff'}}>Voltar</Text>
-                <Text style={{ color: '#fff', marginLeft: 10, fontWeight: "bold", marginBottom: 60 }}>Ola Kaio</Text>
+            <View style={{ display: 'flex', position: 'absolute', top: 0, left: 0, flexDirection: 'row', marginLeft: 20, marginTop: 40 }}>
+                <AntDesign name="left" size={20} color="#fff" />
+                <Text onPress={voltar} style={{ color: '#fff', fontSize: 15, marginLeft: 5 }}>Voltar</Text>
             </View>
 
             <View style={styles.containerTwo}>
@@ -66,7 +67,7 @@ const styles = StyleSheet.create({
     scrollViewContainer: {
         flexGrow: 1,
         backgroundColor: '#4D4D4D',
-        position:'relative',
+        position: 'relative',
         paddingTop: 100
     },
     containerTwo: {

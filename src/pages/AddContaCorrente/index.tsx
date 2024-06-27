@@ -3,6 +3,7 @@ import { useNavigation } from "@react-navigation/native";
 import React, { useState } from 'react'
 import { AuthStackParamList } from '../../Routes/auth.routes';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import AntDesign from '@expo/vector-icons/AntDesign';
 
 type NavigationProp = NativeStackNavigationProp<AuthStackParamList>;
 
@@ -10,14 +11,14 @@ export default function PageAdicionarContaCorrente() {
     const navigation = useNavigation<NavigationProp>();
 
     const voltar = () => {
-        navigation.pop();
+        navigation.canGoBack();
     }
 
     return (
         <ScrollView contentContainerStyle={styles.scrollViewContainer}>
-            <View style={{ display: 'flex', flexDirection: 'row', marginLeft: 20, marginTop: 40 }}>
-                <Text onPress={voltar} style={{ color: '#fff' }}>Voltar</Text>
-                <Text style={{ color: '#fff', marginLeft: 10, fontWeight: "bold", marginBottom: 60 }}>Ola Kaio</Text>
+            <View style={{ display: 'flex', flexDirection: 'row', marginLeft: 20, marginTop: 40, marginBottom: 20 }}>
+                <AntDesign name="left" size={20} color="#fff" />
+                <Text onPress={voltar} style={{ color: '#fff', fontSize: 15, marginLeft:5 }}>Voltar</Text>
             </View>
 
             <View style={styles.containerTwo}>
@@ -37,7 +38,7 @@ export default function PageAdicionarContaCorrente() {
                         <TextInput style={{ marginBottom: 15, width: '80%', alignSelf: 'center', borderRadius: 5, height: 40, paddingLeft: 10, borderWidth: 2, borderColor: '#7F79AB' }} placeholder='Digite a descrição...' />
                     </View>
 
-                    <View style={{ marginTop: 40,justifyContent: 'center', display: 'flex', width: '100%', alignItems: 'center' }}>
+                    <View style={{ marginTop: 40, justifyContent: 'center', display: 'flex', width: '100%', alignItems: 'center' }}>
                         <TouchableOpacity style={{ display: "flex", alignItems: "center", justifyContent: "center", width: '50%', borderRadius: 8, height: 50, backgroundColor: '#7F79AB' }}>
                             <Text style={{ color: '#FFF', fontWeight: "bold" }}>Criar</Text>
                         </TouchableOpacity>

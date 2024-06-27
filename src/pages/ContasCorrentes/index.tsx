@@ -3,6 +3,7 @@ import { StyleSheet, Text, View, ScrollView, TouchableOpacity, FlatList } from '
 import React from 'react'
 import { AppStackParamList } from '../../Routes/app.routes';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import AntDesign from '@expo/vector-icons/AntDesign';
 
 type NavigationProp = NativeStackNavigationProp<AppStackParamList>;
 
@@ -12,6 +13,9 @@ export default function PageContasCorrentes() {
     const adicionarContaCorrente = () => {
         navigation.navigate('AdicionarContaCorrente');
     };
+    const voltar = () => {
+        navigation.pop();
+    }
 
     const data = [
         { Agencia: 'AGENCIA', Valor: 'R$ 200,00' },
@@ -23,9 +27,9 @@ export default function PageContasCorrentes() {
 
     return (
         <ScrollView contentContainerStyle={styles.scrollViewContainer}>
-            <View style={{ display: 'flex', flexDirection: 'row', marginLeft: 20, marginTop: 40 }}>
-                <Text style={{ color: '#fff' }}>Voltar</Text>
-                <Text style={{ color: '#fff', marginLeft: 10, fontWeight: "bold", marginBottom: 60 }}>Ola Kaio</Text>
+            <View style={{ display: 'flex', flexDirection: 'row', marginLeft: 20, marginTop: 40, marginBottom: 20 }}>
+                <AntDesign name="left" size={20} color="#fff" />
+                <Text onPress={voltar} style={{ color: '#fff', fontSize: 15, marginLeft:5 }}>Voltar</Text>
             </View>
 
             <View style={styles.containerTwo}>
