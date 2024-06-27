@@ -1,7 +1,10 @@
 
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { Entypo, FontAwesome } from '@expo/vector-icons'
+import { Entypo, AntDesign } from '@expo/vector-icons'
 import { View, Text, Platform } from 'react-native';
+import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
+import Ionicons from '@expo/vector-icons/Ionicons';
+import MaterialIcons from '@expo/vector-icons/MaterialIcons';
 
 import Home from "../pages/Home"
 import HistoricoTransacoes from "../pages/HistoricoTransacoes";
@@ -42,8 +45,7 @@ export default function Tabs() {
                 options={{
                     tabBarIcon: ({ focused }) => (
                         <View style={{ alignItems: 'center', justifyContent: 'center' }}>
-                            <Entypo name='home' size={24} color={focused ? "#16247d" : "#111"} />
-                            <Text style={{ fontSize: 12, color: '#16247d' }}>HOME</Text>
+                            <Entypo name='home' size={30} color={focused ? "#16247d" : "#111"} />
                         </View>
                     ),
                 }}
@@ -55,8 +57,7 @@ export default function Tabs() {
                 options={{
                     tabBarIcon: ({ focused }) => (
                         <View style={{ alignItems: 'center', justifyContent: 'center' }}>
-                            <Entypo name='home' size={24} color={focused ? "#16247d" : "#111"} />
-                            <Text style={{ fontSize: 12, color: '#16247d' }}>PageEntradaFinanceiraExtra</Text>
+                            <MaterialIcons name="attach-money" color={focused ? "#16247d" : "#111"} size={30} />
                         </View>
                     ),
                 }}
@@ -77,7 +78,7 @@ export default function Tabs() {
                             borderRadius: Platform.OS == "ios" ? 25 : 30,
                         }}>
 
-                            <FontAwesome name='exchange' size={24} color="#fff" />
+                            <AntDesign name="plus" size={30} color="white" />
                         </View>
                     ),
                 }}
@@ -89,8 +90,7 @@ export default function Tabs() {
                 options={{
                     tabBarIcon: ({ focused }) => (
                         <View style={{ alignItems: 'center', justifyContent: 'center' }}>
-                            <Entypo name='home' size={24} color={focused ? "#16247d" : "#111"} />
-                            <Text style={{ fontSize: 12, color: '#16247d' }}>HistoricoTransacoes</Text>
+                            <Ionicons name="newspaper-outline" size={30} color={focused ? "#16247d" : "#111"} />
                         </View>
                     ),
                 }}
@@ -102,8 +102,7 @@ export default function Tabs() {
                 options={{
                     tabBarIcon: ({ focused }) => (
                         <View style={{ alignItems: 'center', justifyContent: 'center' }}>
-                            <Entypo name='home' size={24} color={focused ? "#16247d" : "#111"} />
-                            <Text style={{ fontSize: 12, color: '#16247d' }}>PagePersonalizacaoAndConfig</Text>
+                            <MaterialCommunityIcons name="microsoft-xbox-controller-menu" color={focused ? "#16247d" : "#111"} size={40} />
                         </View>
                     ),
                 }}
