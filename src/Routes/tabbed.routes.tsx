@@ -45,7 +45,7 @@ export default function Tabs() {
                 options={{
                     tabBarIcon: ({ focused }) => (
                         <View style={{ alignItems: 'center', justifyContent: 'center' }}>
-                            <Entypo name='home' size={30} color={focused ? "#16247d" : "#111"} />
+                            <Entypo name='home' size={focused ? 35 : 28} color={focused ? "#000" : "#222"} />
                         </View>
                     ),
                 }}
@@ -57,7 +57,7 @@ export default function Tabs() {
                 options={{
                     tabBarIcon: ({ focused }) => (
                         <View style={{ alignItems: 'center', justifyContent: 'center' }}>
-                            <MaterialIcons name="attach-money" color={focused ? "#16247d" : "#111"} size={30} />
+                            <MaterialIcons name="attach-money"  size={focused ? 35 : 28} color={focused ? "#000" : "#111"} />
                         </View>
                     ),
                 }}
@@ -71,11 +71,11 @@ export default function Tabs() {
                         <View style={{
                             alignItems: 'center',
                             justifyContent: 'center',
-                            backgroundColor: '#16247d',
+                            backgroundColor: '#7771A3',
                             width: Platform.OS == "ios" ? 50 : 60,
                             height: Platform.OS == "ios" ? 50 : 60,
                             top: Platform.OS == "ios" ? -10 : -20,
-                            borderRadius: Platform.OS == "ios" ? 25 : 30,
+                            borderRadius: Platform.OS == "ios" ? 25 : 30
                         }}>
 
                             <AntDesign name="plus" size={30} color="white" />
@@ -90,7 +90,7 @@ export default function Tabs() {
                 options={{
                     tabBarIcon: ({ focused }) => (
                         <View style={{ alignItems: 'center', justifyContent: 'center' }}>
-                            <Ionicons name="newspaper-outline" size={30} color={focused ? "#16247d" : "#111"} />
+                            <Ionicons name="newspaper-outline" size={focused ? 35 : 28} color={focused ? "#000" : "#111"} />
                         </View>
                     ),
                 }}
@@ -102,7 +102,7 @@ export default function Tabs() {
                 options={{
                     tabBarIcon: ({ focused }) => (
                         <View style={{ alignItems: 'center', justifyContent: 'center' }}>
-                            <MaterialCommunityIcons name="microsoft-xbox-controller-menu" color={focused ? "#16247d" : "#111"} size={40} />
+                            <MaterialCommunityIcons name="microsoft-xbox-controller-menu" size={focused ? 40 : 35} color={focused ? "#000" : "#111"} />
                         </View>
                     ),
                 }}
