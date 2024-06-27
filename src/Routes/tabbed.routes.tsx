@@ -1,7 +1,7 @@
 
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { Entypo } from '@expo/vector-icons'
-import { View, Text } from 'react-native';
+import { Entypo, FontAwesome } from '@expo/vector-icons'
+import { View, Text, Platform } from 'react-native';
 
 import Home from "../pages/Home"
 import HistoricoTransacoes from "../pages/HistoricoTransacoes";
@@ -35,6 +35,7 @@ export default function Tabs() {
                 backgroundColor: '#fff',
             },
         }}>
+
             <Tab.Screen
                 name='Home'
                 component={Home}
@@ -48,11 +49,65 @@ export default function Tabs() {
                 }}
             />
 
+            <Tab.Screen
+                name='PageEntradaFinanceiraExtra'
+                component={PageEntradaFinanceiraExtra}
+                options={{
+                    tabBarIcon: ({ focused }) => (
+                        <View style={{ alignItems: 'center', justifyContent: 'center' }}>
+                            <Entypo name='home' size={24} color={focused ? "#16247d" : "#111"} />
+                            <Text style={{ fontSize: 12, color: '#16247d' }}>PageEntradaFinanceiraExtra</Text>
+                        </View>
+                    ),
+                }}
+            />
 
-            <Tab.Screen name='PageEntradaFinanceiraExtra' component={PageEntradaFinanceiraExtra} options={{ headerShown: false }} />
-            <Tab.Screen name='PageContasCorrentes' component={PageContasCorrentes} options={{ headerShown: false }} />
-            <Tab.Screen name='HistoricoTransacoes' component={HistoricoTransacoes} options={{ headerShown: false }} />
-            <Tab.Screen name='PagePersonalizacaoAndConfig' component={PagePersonalizacaoAndConfig} options={{ headerShown: false }} />
+            <Tab.Screen
+                name='PageContasCorrentes'
+                component={PageContasCorrentes}
+                options={{
+                    tabBarIcon: ({ focused }) => (
+                        <View style={{
+                            alignItems: 'center',
+                            justifyContent: 'center',
+                            backgroundColor: '#16247d',
+                            width: Platform.OS == "ios" ? 50 : 60,
+                            height: Platform.OS == "ios" ? 50 : 60,
+                            top: Platform.OS == "ios" ? -10 : -20,
+                            borderRadius: Platform.OS == "ios" ? 25 : 30,
+                        }}>
+
+                            <FontAwesome name='exchange' size={24} color="#fff" />
+                        </View>
+                    ),
+                }}
+            />
+
+            <Tab.Screen
+                name='HistoricoTransacoes'
+                component={HistoricoTransacoes}
+                options={{
+                    tabBarIcon: ({ focused }) => (
+                        <View style={{ alignItems: 'center', justifyContent: 'center' }}>
+                            <Entypo name='home' size={24} color={focused ? "#16247d" : "#111"} />
+                            <Text style={{ fontSize: 12, color: '#16247d' }}>HistoricoTransacoes</Text>
+                        </View>
+                    ),
+                }}
+            />
+
+            <Tab.Screen
+                name='PagePersonalizacaoAndConfig'
+                component={PagePersonalizacaoAndConfig}
+                options={{
+                    tabBarIcon: ({ focused }) => (
+                        <View style={{ alignItems: 'center', justifyContent: 'center' }}>
+                            <Entypo name='home' size={24} color={focused ? "#16247d" : "#111"} />
+                            <Text style={{ fontSize: 12, color: '#16247d' }}>PagePersonalizacaoAndConfig</Text>
+                        </View>
+                    ),
+                }}
+            />
         </Tab.Navigator>
     )
 }
