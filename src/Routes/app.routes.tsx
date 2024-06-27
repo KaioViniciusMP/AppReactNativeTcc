@@ -1,9 +1,6 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
-
-
-import Home from "../pages/Home";
+import Home from "../pages/Home"
 import HistoricoTransacoes from "../pages/HistoricoTransacoes";
 import PageEscolherModalidade from "../pages/EscolherModalidade";
 import PageConfiguracoes from "../pages/Configuracoes";
@@ -13,6 +10,7 @@ import PageContasCorrentes from "../pages/ContasCorrentes";
 import PageAdicionarContaCorrente from "../pages/AddContaCorrente";
 import RelatarProblema from "../pages/RelatarProblema";
 import PrivacidadeSeguranca from "../pages/PrivacidadeAndSeguranca";
+import Tabs from "./tabbed.routes";
 
 export type AppStackParamList = {
     Tabs: undefined
@@ -27,15 +25,9 @@ export type AppStackParamList = {
     RelatarProblema: undefined;
     PrivacidadeSeguranca: undefined;
 };
-export type AppTabsParamList = {
-    Home: undefined;
-    HistoricoTransacoes: undefined;
-    EscolherModalidade: undefined;
-    Configuracoes: undefined;
-    Ajuda: undefined;
-};
 
-const Tab = createBottomTabNavigator<AppTabsParamList>();
+
+
 const Stack = createNativeStackNavigator<AppStackParamList>();
 
 export default function AppRoutes() {
@@ -57,14 +49,3 @@ export default function AppRoutes() {
     )
 }
 
-export function Tabs(){
-    return (
-        <Tab.Navigator>
-            <Tab.Screen name='Home' component={Home} options={{headerShown: false}} />
-            <Tab.Screen name='HistoricoTransacoes' component={HistoricoTransacoes} options={{headerShown: false}} />
-            <Tab.Screen name='EscolherModalidade' component={PageEscolherModalidade} options={{headerShown: false}} />
-            <Tab.Screen name='Configuracoes' component={PageConfiguracoes} options={{headerShown: false}} />
-            <Tab.Screen name='Ajuda' component={PageAjuda} options={{headerShown: false}} />
-        </Tab.Navigator>
-    )
-}
