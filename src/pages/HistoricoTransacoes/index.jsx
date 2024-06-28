@@ -4,6 +4,7 @@ import { useRoute } from '@react-navigation/native';
 
 export default function HistoricoTransacoes() {
     let data;
+    let primeiroItemArray;
 
     const dataHistoricoCompleto = [
         { Key: 1, tipoHistorico: 'Completo', Agencia: 'AGENCIA', Valor: 'R$ 200,00', Descricao: 'Titulo vai aqui' },
@@ -42,9 +43,16 @@ export default function HistoricoTransacoes() {
     ];
 
     const route = useRoute();
+
     const { param1, param2 } = route.params;
     if (param1 == 'HistoricoInvestimentos') {
         data = dataHistoricoInvestimentos
+        primeiroItemArray = dataHistoricoInvestimentos[0]
+        console.log('o param1 veio certo: ' + data)
+    }
+    else if(param1 == 'HistoricoCompleto'){
+        data = HistoricoCompleto
+        primeiroItemArray = HistoricoCompleto[0]
         console.log('o param1 veio certo: ' + data)
     }
 
@@ -74,7 +82,7 @@ export default function HistoricoTransacoes() {
                     <Text style={{ fontWeight: "900", fontSize: 20, marginTop: 40, marginLeft: 35 }}>TRANSAÇÕES</Text>
                 </View>
                 <Text style={{ fontSize: 13, fontWeight: "bold", color: '#939393', textAlign: 'left', marginLeft: 35, marginBottom: 30 }}>
-                    {data.map((item) => item.tipoHistorico.split(' '))}
+                    {primeiroItemArray.tipoHistorico}
                 </Text>
 
                 <FlatList
