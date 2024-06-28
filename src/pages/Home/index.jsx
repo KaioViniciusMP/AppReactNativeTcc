@@ -40,35 +40,35 @@ export default function Home() {
                 </View>
                 <View style={styles.containerTwo}>
                     <View>
-                        <View onPress={ContasCorrentes} style={{ padding: 30 }}>
-                            <Text onPress={ContasCorrentes} style={{ fontSize: 15, color: 'white', fontWeight: "500" }}>Saldo disponivel</Text>
-                            <View onPress={ContasCorrentes} style={{ alignItems: "center", display: 'flex', flexDirection: "row", justifyContent: "space-between", borderBottomWidth: 1, borderBottomColor: 'white', }}>
-                                <Text onPress={ContasCorrentes} style={{ color: 'white', marginBottom: 10, fontSize: 30, marginTop: 5 }}>R$0,00</Text>
-                                <AntDesign onPress={ContasCorrentes} name="right" size={25} color="white" marginTop='10' />
+                        <TouchableOpacity onPress={ContasCorrentes} style={{ padding: 30 }}>
+                            <Text style={{ fontSize: 15, color: 'white', fontWeight: "500" }}>Saldo disponivel</Text>
+                            <View style={{ alignItems: "center", display: 'flex', flexDirection: "row", justifyContent: "space-between", borderBottomWidth: 1, borderBottomColor: 'white', }}>
+                                <Text style={{ color: 'white', marginBottom: 10, fontSize: 30, marginTop: 5 }}>R$0,00</Text>
+                                <AntDesign name="right" size={25} color="white" marginTop='10' />
                             </View>
-                        </View>
+                        </TouchableOpacity>
 
                         <View style={{ width: '100%', marginBottom: 40, display: 'flex', flexDirection: "row", justifyContent: "center", gap: 10 }}>
-                            <View onPress={configuracoes} style={{ display: 'flex', justifyContent: "center" }}>
+                            <TouchableOpacity onPress={configuracoes} style={{ display: 'flex', justifyContent: "center" }}>
                                 <View style={{ backgroundColor: '#D9D9D9', height: 70, width: 70, borderRadius: 20, display: "flex", alignItems: "center", justifyContent: "center" }}>
                                     <Octicons name="gear" size={30} color="black" />
                                 </View>
-                                <Text onPress={configuracoes} style={{ color: 'white', textAlign: "center", fontSize: 12 }}>Configurações</Text>
-                            </View>
+                                <Text style={{ color: 'white', textAlign: "center", fontSize: 12 }}>Configurações</Text>
+                            </TouchableOpacity>
 
-                            <View style={{ display: 'flex', justifyContent: "center" }}>
-                                <View onPress={Ajuda} style={{ backgroundColor: '#D9D9D9', height: 70, width: 70, borderRadius: 20, display: "flex", alignItems: "center", justifyContent: "center" }}>
-                                    <Feather onPress={Ajuda} name="help-circle" size={32} color="black" />
+                            <TouchableOpacity onPress={Ajuda} style={{ display: 'flex', justifyContent: "center" }}>
+                                <View style={{ backgroundColor: '#D9D9D9', height: 70, width: 70, borderRadius: 20, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                                    <Feather name="help-circle" size={32} color="black" />
                                 </View>
-                                <Text onPress={Ajuda} style={{ color: 'white', textAlign: "center", fontSize: 12 }}>Ajude</Text>
-                            </View>
+                                <Text style={{ color: 'white', textAlign: "center", fontSize: 12 }}>Ajude</Text>
+                            </TouchableOpacity>
 
-                            <View style={{ display: 'flex', justifyContent: "center" }}>
-                                <View onPress={EntradaFinanceiraExtra} style={{ backgroundColor: '#D9D9D9', height: 70, width: 70, borderRadius: 20, display: "flex", alignItems: "center", justifyContent: "center" }}>
-                                    <Text onPress={EntradaFinanceiraExtra}>icon</Text>
+                            <TouchableOpacity onPress={EntradaFinanceiraExtra} style={{ display: 'flex', justifyContent: "center" }}>
+                                <View style={{ backgroundColor: '#D9D9D9', height: 70, width: 70, borderRadius: 20, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                                    <Text>icon</Text>
                                 </View>
-                                <Text onPress={EntradaFinanceiraExtra} style={{ color: 'white', textAlign: "center", fontSize: 12 }}>Entrada</Text>
-                            </View>
+                                <Text style={{ color: 'white', textAlign: "center", fontSize: 12 }}>Entrada</Text>
+                            </TouchableOpacity>
 
                             <View style={{ display: 'flex', justifyContent: "center" }}>
                                 <View style={{ backgroundColor: '#D9D9D9', height: 70, width: 70, borderRadius: 20, display: "flex", alignItems: "center", justifyContent: "center" }}>
@@ -114,7 +114,6 @@ export default function Home() {
                                                 </View>
 
                                                 <Text style={{ fontSize: 40, alignSelf: "flex-end" }}>{item.seta}</Text>
-
                                             </View>
                                         )}
                                     />
@@ -139,6 +138,7 @@ const styles = StyleSheet.create({
         backgroundColor: '#5D5C96',
         flexDirection: 'column',
         justifyContent: 'flex-end',
+        marginBottom: 50
     },
     containerTwo: {
         flexGrow: 1,

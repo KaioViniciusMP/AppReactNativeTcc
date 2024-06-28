@@ -16,10 +16,10 @@ export default function RelatarProblema() {
 
     return (
         <ScrollView contentContainerStyle={styles.scrollViewContainer}>
-            <View style={{ display: 'flex', flexDirection: 'row', marginLeft: 20, marginTop: 40 }}>
+            <TouchableOpacity style={{ display: 'flex', flexDirection: 'row', marginLeft: 20, marginTop: 40 }}>
                 <AntDesign name="left" size={20} color="#fff" />
                 <Text style={{ color: '#fff', fontSize: 15, marginLeft: 5, marginBottom: 60 }}>Voltar</Text>
-            </View>
+            </TouchableOpacity>
 
             <View style={styles.containerTwo}>
 

@@ -26,10 +26,10 @@ export default function HistoricoTransacoes() {
 
     return (
         <ScrollView contentContainerStyle={styles.scrollViewContainer}>
-            <View style={{ display: 'flex', flexDirection: 'row', marginLeft: 20, marginTop: 40, marginBottom: 60 }}>
+            <TouchableOpacity style={{ display: 'flex', flexDirection: 'row', marginLeft: 20, marginTop: 40, marginBottom: 60 }}>
                 <AntDesign name="left" size={20} color="#fff" />
                 <Text style={{ color: '#fff', fontSize: 15, marginLeft: 5 }}>Voltar</Text>
-            </View>
+            </TouchableOpacity>
 
             <View style={styles.containerTwo}>
                 <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'flex-start' }}>

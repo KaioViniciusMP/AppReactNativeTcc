@@ -16,10 +16,10 @@ export default function PageAdicionarContaCorrente() {
 
     return (
         <ScrollView contentContainerStyle={styles.scrollViewContainer}>
-            <View style={{ display: 'flex', flexDirection: 'row', marginLeft: 20, marginTop: 40, marginBottom: 20 }}>
+            <TouchableOpacity onPress={voltar} style={{ display: 'flex', flexDirection: 'row', marginLeft: 20, marginTop: 40, marginBottom: 20 }}>
                 <AntDesign name="left" size={20} color="#fff" />
-                <Text onPress={voltar} style={{ color: '#fff', fontSize: 15, marginLeft:5 }}>Voltar</Text>
-            </View>
+                <Text style={{ color: '#fff', fontSize: 15, marginLeft:5 }}>Voltar</Text>
+            </TouchableOpacity>
 
             <View style={styles.containerTwo}>
                 <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center' }}>
