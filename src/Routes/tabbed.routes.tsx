@@ -17,7 +17,10 @@ export type AppTabsParamList = {
     Home: undefined;
     PageEntradaFinanceiraExtra: undefined;
     PageContasCorrentes: undefined;
-    HistoricoTransacoes: undefined;
+    HistoricoTransacoes: {
+        param1: string; // Exemplo de parâmetro
+        param2: number; // Outro exemplo de parâmetro
+    };
     PagePersonalizacaoAndConfig: undefined;
 };
 

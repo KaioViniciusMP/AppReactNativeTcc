@@ -15,7 +15,10 @@ import Tabs from "./tabbed.routes";
 export type AppStackParamList = {
     Tabs: undefined
     Home: undefined;
-    HistoricoTransacoes: undefined;
+    HistoricoTransacoes: {
+        param1: string; // Exemplo de parâmetro
+        param2: number; // Outro exemplo de parâmetro
+    };
     EscolherModalidade: undefined;
     Configuracoes: undefined;
     Ajuda: undefined;

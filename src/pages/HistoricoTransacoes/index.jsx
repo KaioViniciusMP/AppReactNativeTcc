@@ -1,14 +1,52 @@
 import { StyleSheet, Text, View, ScrollView, TouchableOpacity, FlatList, Alert } from 'react-native'
 import AntDesign from '@expo/vector-icons/AntDesign';
+import { useRoute } from '@react-navigation/native';
 
 export default function HistoricoTransacoes() {
-    const data = [
-        { Key: 1, Agencia: 'AGENCIA', Valor: 'R$ 200,00', Descricao: 'Titulo vai aqui' },
-        { Key: 2, Agencia: 'AGENCIA', Valor: 'R$ 500,00', Descricao: 'Titulo vai aqui' },
-        { Key: 3, Agencia: 'Itaú', Valor: 'R$ 500,00', Descricao: 'Titulo vai aqui' },
-        { Key: 4, Agencia: 'Bradesco', Valor: 'R$ 500,00', Descricao: 'Titulo vai aqui' },
-        { Key: 5, Agencia: 'Santander', Valor: 'R$ 500,00', Descricao: 'Titulo vai aqui' },
+    let data;
+
+    const dataHistoricoCompleto = [
+        { Key: 1, tipoHistorico: 'Completo', Agencia: 'AGENCIA', Valor: 'R$ 200,00', Descricao: 'Titulo vai aqui' },
+        { Key: 2, tipoHistorico: 'Completo', Agencia: 'AGENCIA', Valor: 'R$ 500,00', Descricao: 'Titulo vai aqui' },
+        { Key: 3, tipoHistorico: 'Completo', Agencia: 'Itaú', Valor: 'R$ 500,00', Descricao: 'Titulo vai aqui' },
+        { Key: 4, tipoHistorico: 'Completo', Agencia: 'Bradesco', Valor: 'R$ 500,00', Descricao: 'Titulo vai aqui' },
+        { Key: 5, tipoHistorico: 'Completo', Agencia: 'Santander', Valor: 'R$ 500,00', Descricao: 'Titulo vai aqui' },
     ];
+    const dataHistoricoInvestimentos = [
+        { Key: 1, tipoHistorico: 'Investimentos', Agencia: 'AGENCIA', Valor: 'R$ 200,00', Descricao: 'Titulo vai aqui' },
+        { Key: 2, tipoHistorico: 'Investimentos', Agencia: 'AGENCIA', Valor: 'R$ 500,00', Descricao: 'Titulo vai aqui' },
+        { Key: 3, tipoHistorico: 'Investimentos', Agencia: 'Itaú', Valor: 'R$ 500,00', Descricao: 'Titulo vai aqui' },
+        { Key: 4, tipoHistorico: 'Investimentos', Agencia: 'Bradesco', Valor: 'R$ 500,00', Descricao: 'Titulo vai aqui' },
+        { Key: 5, tipoHistorico: 'Investimentos', Agencia: 'Santander', Valor: 'R$ 500,00', Descricao: 'Titulo vai aqui' },
+    ];
+    const dataHistoricoAlimentacao = [
+        { Key: 1, tipoHistorico: 'Alimentacao', Agencia: 'AGENCIA', Valor: 'R$ 200,00', Descricao: 'Titulo vai aqui' },
+        { Key: 2, tipoHistorico: 'Alimentacao', Agencia: 'AGENCIA', Valor: 'R$ 500,00', Descricao: 'Titulo vai aqui' },
+        { Key: 3, tipoHistorico: 'Alimentacao', Agencia: 'Itaú', Valor: 'R$ 500,00', Descricao: 'Titulo vai aqui' },
+        { Key: 4, tipoHistorico: 'Alimentacao', Agencia: 'Bradesco', Valor: 'R$ 500,00', Descricao: 'Titulo vai aqui' },
+        { Key: 5, tipoHistorico: 'Alimentacao', Agencia: 'Santander', Valor: 'R$ 500,00', Descricao: 'Titulo vai aqui' },
+    ];
+    const dataHistoricoLazer = [
+        { Key: 1, tipoHistorico: 'Lazer', Agencia: 'AGENCIA', Valor: 'R$ 200,00', Descricao: 'Titulo vai aqui' },
+        { Key: 2, tipoHistorico: 'Lazer', Agencia: 'AGENCIA', Valor: 'R$ 500,00', Descricao: 'Titulo vai aqui' },
+        { Key: 3, tipoHistorico: 'Lazer', Agencia: 'Itaú', Valor: 'R$ 500,00', Descricao: 'Titulo vai aqui' },
+        { Key: 4, tipoHistorico: 'Lazer', Agencia: 'Bradesco', Valor: 'R$ 500,00', Descricao: 'Titulo vai aqui' },
+        { Key: 5, tipoHistorico: 'Lazer', Agencia: 'Santander', Valor: 'R$ 500,00', Descricao: 'Titulo vai aqui' },
+    ];
+    const dataHistoricoTransporte = [
+        { Key: 1, tipoHistorico: 'Transporte', Agencia: 'AGENCIA', Valor: 'R$ 200,00', Descricao: 'Titulo vai aqui' },
+        { Key: 2, tipoHistorico: 'Transporte', Agencia: 'AGENCIA', Valor: 'R$ 500,00', Descricao: 'Titulo vai aqui' },
+        { Key: 3, tipoHistorico: 'Transporte', Agencia: 'Itaú', Valor: 'R$ 500,00', Descricao: 'Titulo vai aqui' },
+        { Key: 4, tipoHistorico: 'Transporte', Agencia: 'Bradesco', Valor: 'R$ 500,00', Descricao: 'Titulo vai aqui' },
+        { Key: 5, tipoHistorico: 'Transporte', Agencia: 'Santander', Valor: 'R$ 500,00', Descricao: 'Titulo vai aqui' },
+    ];
+
+    const route = useRoute();
+    const { param1, param2 } = route.params;
+    if (param1 == 'HistoricoInvestimentos') {
+        data = dataHistoricoInvestimentos
+        console.log('o param1 veio certo: ' + data)
+    }
 
     const ButtonAlert = (key, agencia) =>
         Alert.alert('Alert Title', `Item pressionado - Key: ${key}, Agência: ${agencia}`, [
@@ -35,7 +73,9 @@ export default function HistoricoTransacoes() {
                 <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'flex-start' }}>
                     <Text style={{ fontWeight: "900", fontSize: 20, marginTop: 40, marginLeft: 35 }}>TRANSAÇÕES</Text>
                 </View>
-                <Text style={{ fontSize: 13, fontWeight: "bold", color: '#939393', textAlign: 'left', marginLeft: 35, marginBottom: 30, }}>HISTORICO COMPLETO</Text>
+                <Text style={{ fontSize: 13, fontWeight: "bold", color: '#939393', textAlign: 'left', marginLeft: 35, marginBottom: 30 }}>
+                    {data.map((item) => item.tipoHistorico.split(' '))}
+                </Text>
 
                 <FlatList
                     data={data}

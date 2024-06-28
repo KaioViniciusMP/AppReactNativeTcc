@@ -31,12 +31,19 @@ export default function Home() {
         { icon: '5', title: 'Item 5', subtitle: 'subtitulo', porcentagem: '12%', seta: '>' },
     ];
 
+    const testeTelaHistorico = () => {
+        navigation.navigate('HistoricoTransacoes', {
+            param1: 'HistoricoInvestimentos',
+            param2: 1,
+        });
+    }
+
     return (
         <ScrollView contentContainerStyle={styles.scrollViewContainer}>
             <View style={styles.container}>
                 <View style={{ display: 'flex', height: 170, flexDirection: "row", alignItems: "center", paddingLeft: 20, marginBottom: 20 }}>
                     <View style={{ width: 50, height: 50, backgroundColor: '#7F79AB', borderRadius: 50 }}></View>
-                    <Text style={{ marginLeft: 10, fontWeight: "bold", color: "white" }}>Ola Kaio</Text>
+                    <Text style={{ marginLeft: 10, fontWeight: "bold", color: "white" }} onPress={testeTelaHistorico}>Ola Kaio</Text>
                 </View>
                 <View style={styles.containerTwo}>
                     <View>
