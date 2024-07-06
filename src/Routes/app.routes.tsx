@@ -11,6 +11,7 @@ import PageAdicionarContaCorrente from "../pages/AddContaCorrente";
 import RelatarProblema from "../pages/RelatarProblema";
 import PrivacidadeSeguranca from "../pages/PrivacidadeAndSeguranca";
 import Tabs from "./tabbed.routes";
+import Transferencia from "../pages/Transferencia";
 
 export type AppStackParamList = {
     Tabs: undefined
@@ -27,6 +28,9 @@ export type AppStackParamList = {
     AdicionarContaCorrente: undefined;
     RelatarProblema: undefined;
     PrivacidadeSeguranca: undefined;
+    Transferencia:{
+        localTransferencia: string;
+    };
 };
 
 
@@ -48,6 +52,7 @@ export default function AppRoutes() {
             <Stack.Screen name='AdicionarContaCorrente' component={PageAdicionarContaCorrente} options={{headerShown: false}} />
             <Stack.Screen name='RelatarProblema' component={RelatarProblema} options={{headerShown: false}} />
             <Stack.Screen name='PrivacidadeSeguranca' component={PrivacidadeSeguranca} options={{headerShown: false}} />
+            <Stack.Screen name='Transferencia' component={Transferencia} options={{headerShown: false}} />
         </Stack.Navigator>
     )
 }
