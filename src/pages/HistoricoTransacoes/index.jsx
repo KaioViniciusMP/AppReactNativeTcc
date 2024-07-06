@@ -41,6 +41,20 @@ export default function HistoricoTransacoes() {
         { Key: 4, tipoHistorico: 'Transporte', Agencia: 'Bradesco', Valor: 'R$ 500,00', Descricao: 'Titulo vai aqui' },
         { Key: 5, tipoHistorico: 'Transporte', Agencia: 'Santander', Valor: 'R$ 500,00', Descricao: 'Titulo vai aqui' },
     ];
+    const dataHistoricoSaude = [
+        { Key: 1, tipoHistorico: 'Saúde', Agencia: 'AGENCIA', Valor: 'R$ 200,00', Descricao: 'Titulo vai aqui' },
+        { Key: 2, tipoHistorico: 'Saúde', Agencia: 'AGENCIA', Valor: 'R$ 500,00', Descricao: 'Titulo vai aqui' },
+        { Key: 3, tipoHistorico: 'Saúde', Agencia: 'Itaú', Valor: 'R$ 500,00', Descricao: 'Titulo vai aqui' },
+        { Key: 4, tipoHistorico: 'Saúde', Agencia: 'Bradesco', Valor: 'R$ 500,00', Descricao: 'Titulo vai aqui' },
+        { Key: 5, tipoHistorico: 'Saúde', Agencia: 'Santander', Valor: 'R$ 500,00', Descricao: 'Titulo vai aqui' },
+    ];
+    const dataHistoricoCompras = [
+        { Key: 1, tipoHistorico: 'Saúde', Agencia: 'AGENCIA', Valor: 'R$ 200,00', Descricao: 'Titulo vai aqui' },
+        { Key: 2, tipoHistorico: 'Saúde', Agencia: 'AGENCIA', Valor: 'R$ 500,00', Descricao: 'Titulo vai aqui' },
+        { Key: 3, tipoHistorico: 'Saúde', Agencia: 'Itaú', Valor: 'R$ 500,00', Descricao: 'Titulo vai aqui' },
+        { Key: 4, tipoHistorico: 'Saúde', Agencia: 'Bradesco', Valor: 'R$ 500,00', Descricao: 'Titulo vai aqui' },
+        { Key: 5, tipoHistorico: 'Saúde', Agencia: 'Santander', Valor: 'R$ 500,00', Descricao: 'Titulo vai aqui' },
+    ];
 
     const route = useRoute();
 
@@ -65,6 +79,16 @@ export default function HistoricoTransacoes() {
         case "HistoricoTransporte":
             data = dataHistoricoTransporte
             primeiroItemArray = dataHistoricoTransporte[0]
+            console.log('o param1 veio certo: ' + data);
+            break
+        case "HistoricoSaude":
+            data = dataHistoricoSaude
+            primeiroItemArray = dataHistoricoSaude[0]
+            console.log('o param1 veio certo: ' + data);
+            break
+        case "HistoricoCompras":
+            data = dataHistoricoCompras
+            primeiroItemArray = dataHistoricoCompras[0]
             console.log('o param1 veio certo: ' + data);
             break
         default:

@@ -24,16 +24,17 @@ export default function Home() {
     };
 
     const data = [
-        { icon: '1', title: 'Item 1', subtitle: 'subtitulo', porcentagem: '12%', seta: '>' },
-        { icon: '2', title: 'Item 2', subtitle: 'subtitulo', porcentagem: '12%', seta: '>' },
-        { icon: '3', title: 'Item 3', subtitle: 'subtitulo', porcentagem: '12%', seta: '>' },
-        { icon: '4', title: 'Item 4', subtitle: 'subtitulo', porcentagem: '12%', seta: '>' },
-        { icon: '5', title: 'Item 5', subtitle: 'subtitulo', porcentagem: '12%', seta: '>' },
+        { icon: '1', title: 'Investimentos', subtitle: 'valor', porcentagem: '12%', seta: '>', navigationPage: 'HistoricoInvestimentos' },
+        { icon: '2', title: 'Alimentação', subtitle: 'subtitulo', porcentagem: '12%', seta: '>', navigationPage: 'HistoricoAlimentacao' },
+        { icon: '3', title: 'Transporte', subtitle: 'subtitulo', porcentagem: '12%', seta: '>', navigationPage: 'HistoricoTransporte' },
+        { icon: '4', title: 'Compras', subtitle: 'subtitulo', porcentagem: '12%', seta: '>', navigationPage: 'HistoricoCompras' },
+        { icon: '5', title: 'Saúde', subtitle: 'subtitulo', porcentagem: '12%', seta: '>', navigationPage: 'HistoricoSaude' },
+        { icon: '5', title: 'Lazer', subtitle: 'subtitulo', porcentagem: '12%', seta: '>', navigationPage: 'HistoricoLazer' },
     ];
 
-    const testeTelaHistorico = () => {
+    const TelaHistorico = (navigationPage) => {
         navigation.navigate('HistoricoTransacoes', {
-            param1: 'HistoricoInvestimentos',
+            param1: navigationPage,
             param2: 1,
         });
     }
@@ -43,7 +44,7 @@ export default function Home() {
             <View style={styles.container}>
                 <View style={{ display: 'flex', height: 170, flexDirection: "row", alignItems: "center", paddingLeft: 20, marginBottom: 20 }}>
                     <View style={{ width: 50, height: 50, backgroundColor: '#7F79AB', borderRadius: 50 }}></View>
-                    <Text style={{ marginLeft: 10, fontWeight: "bold", color: "white" }} onPress={testeTelaHistorico}>Ola Kaio</Text>
+                    <Text style={{ marginLeft: 10, fontWeight: "bold", color: "white" }}>Ola Kaio</Text>
                 </View>
                 <View style={styles.containerTwo}>
                     <View>
@@ -110,7 +111,7 @@ export default function Home() {
                                     <FlatList
                                         data={data}
                                         renderItem={({ item }) => (
-                                            <View style={{ display: 'flex', justifyContent: "space-between", flexDirection: "row", padding: 10, borderBottomWidth: 1, borderBottomColor: '#ccc' }}>
+                                            <TouchableOpacity onPress={() => TelaHistorico(item.navigationPage)} style={{ display: 'flex', justifyContent: "space-between", flexDirection: "row", padding: 10, borderBottomWidth: 1, borderBottomColor: '#ccc' }}>
                                                 <View style={{ display: 'flex', flexDirection: "row" }}>
                                                     <Text style={{ fontSize: 40, marginRight: 30 }}>{item.icon}</Text>
                                                     <View style={{ display: 'flex', flexDirection: "column" }}>
@@ -121,7 +122,7 @@ export default function Home() {
                                                 </View>
 
                                                 <Text style={{ fontSize: 40, alignSelf: "flex-end" }}>{item.seta}</Text>
-                                            </View>
+                                            </TouchableOpacity>
                                         )}
                                     />
                                 </View>
