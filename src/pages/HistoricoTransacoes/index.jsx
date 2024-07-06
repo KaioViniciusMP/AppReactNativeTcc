@@ -45,15 +45,32 @@ export default function HistoricoTransacoes() {
     const route = useRoute();
 
     const { param1, param2 } = route.params;
-    if (param1 == 'HistoricoInvestimentos') {
-        data = dataHistoricoInvestimentos
-        primeiroItemArray = dataHistoricoInvestimentos[0]
-        console.log('o param1 veio certo: ' + data)
-    }
-    else if(param1 == 'HistoricoCompleto'){
-        data = HistoricoCompleto
-        primeiroItemArray = HistoricoCompleto[0]
-        console.log('o param1 veio certo: ' + data)
+
+    switch (param1) {
+        case "HistoricoInvestimentos":
+            data = dataHistoricoInvestimentos
+            primeiroItemArray = dataHistoricoInvestimentos[0]
+            console.log('o param1 veio certo: ' + data);
+            break
+        case "HistoricoAlimentacao":
+            data = dataHistoricoAlimentacao
+            primeiroItemArray = dataHistoricoAlimentacao[0]
+            console.log('o param1 veio certo: ' + data);
+            break
+        case "HistoricoLazer":
+            data = dataHistoricoLazer
+            primeiroItemArray = dataHistoricoLazer[0]
+            console.log('o param1 veio certo: ' + data);
+            break
+        case "HistoricoTransporte":
+            data = dataHistoricoTransporte
+            primeiroItemArray = dataHistoricoTransporte[0]
+            console.log('o param1 veio certo: ' + data);
+            break
+        default:
+            data = dataHistoricoCompleto
+            primeiroItemArray = dataHistoricoCompleto[0]
+            console.log('o param1 null por ser acessado pela tabbedbar: ' + data);
     }
 
     const ButtonAlert = (key, agencia) =>
