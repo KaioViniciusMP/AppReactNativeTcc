@@ -3,15 +3,25 @@ import { useNavigation } from "@react-navigation/native";
 import { Picker } from '@react-native-picker/picker';
 import React, { useState } from 'react'
 import { AuthStackParamList } from '../../Routes/auth.routes';
+import { AppStackParamList } from '../../Routes/app.routes';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import AntDesign from '@expo/vector-icons/AntDesign';
+import { useRoute, RouteProp } from '@react-navigation/native';
 
 type NavigationProp = NativeStackNavigationProp<AuthStackParamList>;
+type TransferenciaRouteProp = RouteProp<AppStackParamList, 'Transferencia'>;
 
 export default function Transferencia() {
 
-    const [selectedValue, setSelectedValue] = useState("Escolha o remetente");
+    const [selectedValueAgencia, setSelectedValueAgencia] = useState("Escolha uma agencia");
+    const [selectedValueFormaPagamento, setSelectedValuePagamento] = useState("Escolha uma forma de pagamento");
     const navigation = useNavigation<NavigationProp>();
+
+    const route = useRoute<TransferenciaRouteProp>();
+    const { localTransferencia } = route.params;
+    console.log('localTransferencia recebido: ' + localTransferencia)
+    const [selectedValueLocalTransferencia, setSelectedValueLocalTransferencia] = useState(localTransferencia);
+
 
     const tipoTransferencia = [
         { label: "Lazer", value: "Lazer" },
@@ -51,17 +61,17 @@ export default function Transferencia() {
                         <Text style={{ fontSize: 20, fontWeight: "900", marginBottom: 20, marginTop: 40, marginLeft: 25, marginRight: 25 }}>R$0,00</Text>
                     </View>
 
-                    <View style={{  marginBottom: 40 ,marginTop: 10, display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
+                    <View style={{ marginBottom: 40, marginTop: 10, display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
                         <Text style={{ fontWeight: "900", marginLeft: 25, fontSize: 40 }}>R$ 0,00</Text>
                         <Text style={{ fontWeight: "bold", marginTop: 20, }}>icon</Text>
                     </View>
 
                     <View style={{ paddingLeft: 25, paddingRight: 20, alignSelf: 'center', justifyContent: 'center', display: 'flex', width: '100%', }}>
-                        <Text style={{ fontSize: 17, fontWeight: "semibold" }}>Transferindo para:</Text>
+                        <Text style={{ fontSize: 17, fontWeight: "semibold", color:'#656565' }}>Transferindo para:</Text>
                         <View style={{ marginBottom: 15, alignSelf: 'center', justifyContent: 'center', display: 'flex', width: '100%', borderRadius: 5, height: 40 }}>
                             <Picker
-                                selectedValue={selectedValue}
-                                onValueChange={(itemValue, itemIndex) => setSelectedValue(itemValue)}>
+                                selectedValue={selectedValueLocalTransferencia}
+                                onValueChange={(itemValue) => setSelectedValueLocalTransferencia(itemValue)}>
 
                                 {tipoTransferencia.map((item, index) => (
                                     <Picker.Item key={index} label={item.label} value={item.value} />
@@ -71,25 +81,29 @@ export default function Transferencia() {
                     </View>
 
                     <View style={{ paddingLeft: 25, paddingRight: 20, alignSelf: 'center', justifyContent: 'center', display: 'flex', width: '100%', }}>
-                        <Text style={{ fontSize: 17, fontWeight: "semibold" }}>Agência utilizada:</Text>
+                        <Text style={{ fontSize: 17, fontWeight: "semibold", color:'#656565' }}>Agência utilizada:</Text>
                         <View style={{ marginBottom: 15, alignSelf: 'center', justifyContent: 'center', display: 'flex', width: '100%', borderRadius: 5, height: 40 }}>
                             <Picker
-                                selectedValue={selectedValue}
-                                onValueChange={(itemValue, itemIndex) => setSelectedValue(itemValue)}>
+                                selectedValue={selectedValueAgencia}
+                                onValueChange={(itemValue) => setSelectedValueAgencia(itemValue)}>
+
+                                <Picker.Item style={{fontWeight: '900'}} label={selectedValueAgencia} value="" />
 
                                 {agenciaUtilizada.map((item, index) => (
-                                    <Picker.Item key={index} label={item.label} value={item.value} />
+                                    <Picker.Item style={{fontWeight: '900'}} key={index} label={item.label} value={item.value} />
                                 ))}
                             </Picker>
                         </View>
                     </View>
 
-                    <View style={{ paddingLeft: 25, paddingRight: 20, alignSelf: 'center', justifyContent: 'center', display: 'flex', width: '100%', }}>
-                        <Text style={{ fontSize: 17, fontWeight: "semibold" }}>Forma de pagamento:</Text>
+                    <View style={{ paddingLeft: 25, paddingRight: 20, alignSelf: 'center', justifyContent: 'center', display: 'flex', width: '100%' }}>
+                        <Text style={{ fontSize: 17, fontWeight: "semibold", color:'#656565' }}>Forma de pagamento:</Text>
                         <View style={{ marginBottom: 15, alignSelf: 'center', justifyContent: 'center', display: 'flex', width: '100%', borderRadius: 5, height: 40 }}>
                             <Picker
-                                selectedValue={selectedValue}
-                                onValueChange={(itemValue, itemIndex) => setSelectedValue(itemValue)}>
+                                selectedValue={selectedValueFormaPagamento}
+                                onValueChange={(itemValue) => setSelectedValuePagamento(itemValue)}>
+
+                                <Picker.Item label={selectedValueFormaPagamento} value="" />
 
                                 {formaPagamento.map((item, index) => (
                                     <Picker.Item key={index} label={item.label} value={item.value} />
@@ -98,18 +112,19 @@ export default function Transferencia() {
                         </View>
                     </View>
 
-                    <View style={{ paddingLeft: 25,alignSelf: 'center', justifyContent: 'center', display: 'flex', width: '100%', }}>
-                        <Text style={{ fontSize: 17, fontWeight: "semibold" }}>Data transferencia:</Text>
-                        <Text style={{ fontSize: 17, fontWeight: "900",marginBottom: 15, marginLeft: 10}}>Hoje</Text>
+
+                    <View style={{ paddingLeft: 25, alignSelf: 'center', justifyContent: 'center', display: 'flex', width: '100%', }}>
+                        <Text style={{ fontSize: 17, fontWeight: "semibold", color:'#656565' }}>Data transferencia:</Text>
+                        <Text style={{ fontSize: 17, fontWeight: "900", marginBottom: 15, marginLeft: 15, marginTop:5 }}>Hoje</Text>
                     </View>
 
                     <View style={{ paddingLeft: 25, alignSelf: 'center', justifyContent: 'center', display: 'flex', width: '100%', }}>
-                        <Text style={{ marginBottom: 1, fontSize: 17, fontWeight: "semibold" }}>Titulo transação:</Text>
-                        <TextInput style={{ marginBottom: 15, width: '90%', alignSelf: 'flex-start', borderRadius: 5, height: 40, paddingLeft: 10, borderWidth: 1, borderColor: '#7F79AB' }} placeholder='Escreva aqui o titulo da transação...' />
+                        <Text style={{ marginBottom: 15, fontSize: 17, fontWeight: "semibold", color:'#656565' }}>Titulo transação:</Text>
+                        <TextInput style={{ marginBottom: 15, width: '90%', alignSelf: 'flex-start', borderRadius: 5, height: 40, paddingLeft: 10, borderWidth: 1, borderColor: '#716A9C', }} placeholder='Escreva aqui o titulo da transação...' />
                     </View>
-                    
-                    <Text style={{ marginLeft: 25, fontSize: 17, fontWeight: "semibold" }}>Descrição:</Text>
-                    <View style={{ marginLeft: 25 ,alignSelf: 'flex-start', width: '85%', borderWidth: 1, borderRadius: 5, height: 250, marginTop: 15, display: 'flex', }}>
+
+                    <Text style={{ marginLeft: 25, fontSize: 17, fontWeight: "semibold", color:'#656565' }}>Descrição:</Text>
+                    <View style={{ borderColor: '#716A9C',marginLeft: 25, alignSelf: 'flex-start', width: '85%', borderWidth: 1, borderRadius: 5, height: 250, marginTop: 15, display: 'flex', }}>
                         <TextInput style={{ color: 'gray', margin: 10 }} multiline placeholder='Escreva aqui a descrição da transação...' />
                     </View>
 

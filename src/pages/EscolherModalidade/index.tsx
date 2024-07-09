@@ -42,7 +42,7 @@ export default function PageEscolherModalidade() {
         <ScrollView contentContainerStyle={styles.scrollViewContainer}>
             <TouchableOpacity onPress={voltar} style={{ display: 'flex', flexDirection: 'row', marginLeft: 20, marginTop: 40, marginBottom: 20 }}>
                 <AntDesign name="left" size={20} color="#fff" />
-                <Text style={{ color: '#fff', fontSize: 15, marginLeft: 5 }}>Voltar</Text>
+                <Text style={{ paddingBottom: 80, color: '#fff', fontSize: 15, marginLeft: 5 }}>Voltar</Text>
             </TouchableOpacity>
 
             <View style={styles.containerTwo}>
