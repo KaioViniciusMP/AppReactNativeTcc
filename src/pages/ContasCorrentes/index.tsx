@@ -11,13 +11,7 @@ interface ContaCorrente {
     codigo: number ,
     Agencia: string,
     Valor: string,
-    CartoesVinculados: Cartao[]
-}
-interface Cartao{
-    codigo: number,
-    bandeira: string,
-    nomeUsuario: string,
-    cvv: string
+    CartoesVinculados: []
 }
 
 export default function PageContasCorrentes() {
@@ -32,15 +26,16 @@ export default function PageContasCorrentes() {
 
     const acessarCartoes = (codigoConta: number) => {
         console.log(`codigo de conta passado: ${codigoConta}`);
+        console.log("codigo de conta passado:" + codigoConta);
         navigation.navigate('AddCartao', { codigoConta });
     };
 
     const data: ContaCorrente[] = [
-        { codigo: 1, Agencia: 'AGENCIA', Valor: 'R$ 200,00', CartoesVinculados: [{ codigo: 1, bandeira: 'Visa', nomeUsuario: 'Kaio', cvv: '1234' },{ codigo: 1, bandeira: 'Visa2', nomeUsuario: 'Kainho', cvv: '1234324' },{ codigo: 1, bandeira: 'Visa3', nomeUsuario: 'Kainho0000', cvv: '1234324' }, ]},
-        { codigo: 2, Agencia: 'AGENCIA', Valor: 'R$ 500,00', CartoesVinculados: [{ codigo: 2, bandeira: 'MasterCard', nomeUsuario: 'Kaio', cvv: '5678' }] },
-        { codigo: 3, Agencia: 'Itaú', Valor: 'R$ 500,00', CartoesVinculados: [{ codigo: 3, bandeira: 'Amex', nomeUsuario: 'Kaio', cvv: '9101' }] },
-        { codigo: 4, Agencia: 'Bradesco', Valor: 'R$ 500,00', CartoesVinculados: [{ codigo: 4, bandeira: 'Elo', nomeUsuario: 'Kaio', cvv: '1121' }] },
-        { codigo: 5, Agencia: 'Santander', Valor: 'R$ 500,00', CartoesVinculados: [{ codigo: 5, bandeira: 'Discover', nomeUsuario: 'Kaio', cvv: '3141' }] },
+        { codigo: 1, Agencia: 'AGENCIA', Valor: 'R$ 200,00', CartoesVinculados: []},
+        { codigo: 2, Agencia: 'AGENCIA', Valor: 'R$ 500,00', CartoesVinculados: []},
+        { codigo: 3, Agencia: 'Itaú', Valor: 'R$ 500,00', CartoesVinculados: []},
+        { codigo: 4, Agencia: 'Bradesco', Valor: 'R$ 500,00', CartoesVinculados: []},
+        { codigo: 5, Agencia: 'Santander', Valor: 'R$ 500,00', CartoesVinculados: []},
     ];
 
     return (
