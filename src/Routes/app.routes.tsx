@@ -12,6 +12,8 @@ import RelatarProblema from "../pages/RelatarProblema";
 import PrivacidadeSeguranca from "../pages/PrivacidadeAndSeguranca";
 import Tabs from "./tabbed.routes";
 import Transferencia from "../pages/Transferencia";
+import Configuracoes from "../pages/Configuracoes";
+import EditarUsuario from "../pages/EdicaoUsuario";
 
 export type AppStackParamList = {
     Tabs: undefined
@@ -31,6 +33,7 @@ export type AppStackParamList = {
     Transferencia:{
         localTransferencia: string;
     };
+    EditarUsuario: undefined;
 };
 
 
@@ -53,6 +56,7 @@ export default function AppRoutes() {
             <Stack.Screen name='RelatarProblema' component={RelatarProblema} options={{headerShown: false}} />
             <Stack.Screen name='PrivacidadeSeguranca' component={PrivacidadeSeguranca} options={{headerShown: false}} />
             <Stack.Screen name='Transferencia' component={Transferencia} options={{headerShown: false}} />
+            <Stack.Screen name='EditarUsuario' component={EditarUsuario} options={{headerShown: false}} />
         </Stack.Navigator>
     )
 }
