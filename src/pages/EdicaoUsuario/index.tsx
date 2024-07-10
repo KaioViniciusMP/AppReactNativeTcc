@@ -24,9 +24,9 @@ export default function EditarUsuario() {
             <View style={styles.containerTwo}>
 
                 <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'center' }}>
-                    <Text style={{ fontWeight: "bold", fontSize: 25, marginTop: 40, marginLeft: 25 }}>EDITAR</Text>
+                    <Text style={{ fontWeight: "bold", fontSize: 25, marginTop: 40 }}>EDITAR</Text>
                 </View>
-                <Text style={{ fontSize: 13, fontWeight: "bold", color: '#939393', textAlign: 'center', marginLeft: 25, marginBottom: 45, }}>EDITAR DADOS DO USUARIO</Text>
+                <Text style={{ fontSize: 13, fontWeight: "bold", color: '#939393', textAlign: 'center', marginBottom: 45, }}>EDITAR DADOS DO USUARIO</Text>
 
                 <View style={{ display: 'flex', width: '100%' }}>
                     <View style={{ alignSelf: 'center', justifyContent: 'center', display: 'flex', width: '100%', }}>

@@ -12,8 +12,8 @@ import RelatarProblema from "../pages/RelatarProblema";
 import PrivacidadeSeguranca from "../pages/PrivacidadeAndSeguranca";
 import Tabs from "./tabbed.routes";
 import Transferencia from "../pages/Transferencia";
-import Configuracoes from "../pages/Configuracoes";
 import EditarUsuario from "../pages/EdicaoUsuario";
+import AddCartao from "../pages/AddCartao";
 
 export type AppStackParamList = {
     Tabs: undefined
@@ -34,6 +34,9 @@ export type AppStackParamList = {
         localTransferencia: string;
     };
     EditarUsuario: undefined;
+    AddCartao: {
+        codigoConta: number;
+    };
 };
 
 
@@ -57,6 +60,7 @@ export default function AppRoutes() {
             <Stack.Screen name='PrivacidadeSeguranca' component={PrivacidadeSeguranca} options={{headerShown: false}} />
             <Stack.Screen name='Transferencia' component={Transferencia} options={{headerShown: false}} />
             <Stack.Screen name='EditarUsuario' component={EditarUsuario} options={{headerShown: false}} />
+            <Stack.Screen name='AddCartao' component={AddCartao} options={{headerShown: false}} />
         </Stack.Navigator>
     )
 }
