@@ -3,6 +3,9 @@ import { View, Text, TouchableOpacity, StyleSheet, ScrollView, FlatList } from "
 import AntDesign from '@expo/vector-icons/AntDesign';
 import { Octicons } from '@expo/vector-icons';
 import { Feather } from '@expo/vector-icons';
+import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
+import { Entypo } from '@expo/vector-icons'
+import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 
 export default function Home() {
     const navigation = useNavigation();
@@ -24,12 +27,12 @@ export default function Home() {
     };
 
     const data = [
-        { icon: '1', title: 'Investimentos', subtitle: 'valor', porcentagem: '12%', seta: '>', navigationPage: 'HistoricoInvestimentos' },
-        { icon: '2', title: 'Alimentação', subtitle: 'subtitulo', porcentagem: '12%', seta: '>', navigationPage: 'HistoricoAlimentacao' },
-        { icon: '3', title: 'Transporte', subtitle: 'subtitulo', porcentagem: '12%', seta: '>', navigationPage: 'HistoricoTransporte' },
-        { icon: '4', title: 'Compras', subtitle: 'subtitulo', porcentagem: '12%', seta: '>', navigationPage: 'HistoricoCompras' },
-        { icon: '5', title: 'Saúde', subtitle: 'subtitulo', porcentagem: '12%', seta: '>', navigationPage: 'HistoricoSaude' },
-        { icon: '5', title: 'Lazer', subtitle: 'subtitulo', porcentagem: '12%', seta: '>', navigationPage: 'HistoricoLazer' },
+        { icon: 'money-bill-trend-up', title: 'Investimentos', subtitle: 'valor', porcentagem: '12%', seta: '>', navigationPage: 'HistoricoInvestimentos' },
+        { icon: 'bowl-food', title: 'Alimentação', subtitle: 'subtitulo', porcentagem: '12%', seta: '>', navigationPage: 'HistoricoAlimentacao' },
+        { icon: 'car', title: 'Transporte', subtitle: 'subtitulo', porcentagem: '12%', seta: '>', navigationPage: 'HistoricoTransporte' },
+        { icon: 'cart-shopping', title: 'Compras', subtitle: 'subtitulo', porcentagem: '12%', seta: '>', navigationPage: 'HistoricoCompras' },
+        { icon: 'heart-pulse', title: 'Saúde', subtitle: 'subtitulo', porcentagem: '12%', seta: '>', navigationPage: 'HistoricoSaude' },
+        { icon: 'volleyball', title: 'Lazer', subtitle: 'subtitulo', porcentagem: '12%', seta: '>', navigationPage: 'HistoricoLazer' },
     ];
 
     const TelaHistorico = (navigationPage) => {
@@ -59,28 +62,28 @@ export default function Home() {
                         <View style={{ width: '100%', marginBottom: 40, display: 'flex', flexDirection: "row", justifyContent: "center", gap: 10 }}>
                             <TouchableOpacity onPress={configuracoes} style={{ display: 'flex', justifyContent: "center" }}>
                                 <View style={{ backgroundColor: '#D9D9D9', height: 70, width: 70, borderRadius: 20, display: "flex", alignItems: "center", justifyContent: "center" }}>
-                                    <Octicons name="gear" size={30} color="black" />
+                                    <Octicons name="gear" size={26} color="black" />
                                 </View>
                                 <Text style={{ color: 'white', textAlign: "center", fontSize: 12 }}>Configurações</Text>
                             </TouchableOpacity>
 
                             <TouchableOpacity onPress={Ajuda} style={{ display: 'flex', justifyContent: "center" }}>
                                 <View style={{ backgroundColor: '#D9D9D9', height: 70, width: 70, borderRadius: 20, display: "flex", alignItems: "center", justifyContent: "center" }}>
-                                    <Feather name="help-circle" size={32} color="black" />
+                                    <Feather name="help-circle" size={28} color="black" />
                                 </View>
                                 <Text style={{ color: 'white', textAlign: "center", fontSize: 12 }}>Ajude</Text>
                             </TouchableOpacity>
 
                             <TouchableOpacity onPress={EntradaFinanceiraExtra} style={{ display: 'flex', justifyContent: "center" }}>
                                 <View style={{ backgroundColor: '#D9D9D9', height: 70, width: 70, borderRadius: 20, display: "flex", alignItems: "center", justifyContent: "center" }}>
-                                    <Text>icon</Text>
+                                    <Entypo name='home' size={28} color={"#000"}/>
                                 </View>
                                 <Text style={{ color: 'white', textAlign: "center", fontSize: 12 }}>Entrada</Text>
                             </TouchableOpacity>
 
                             <View style={{ display: 'flex', justifyContent: "center" }}>
                                 <View style={{ backgroundColor: '#D9D9D9', height: 70, width: 70, borderRadius: 20, display: "flex", alignItems: "center", justifyContent: "center" }}>
-                                    <Text>icon</Text>
+                                    <MaterialCommunityIcons name="exit-to-app" size={32} color="black" />
                                 </View>
                                 <Text style={{ color: 'white', textAlign: "center", fontSize: 12 }}>Sair</Text>
                             </View>
@@ -113,7 +116,7 @@ export default function Home() {
                                         renderItem={({ item }) => (
                                             <TouchableOpacity onPress={() => TelaHistorico(item.navigationPage)} style={{ display: 'flex', justifyContent: "space-between", flexDirection: "row", padding: 10, borderBottomWidth: 1, borderBottomColor: '#ccc' }}>
                                                 <View style={{ display: 'flex', flexDirection: "row" }}>
-                                                    <Text style={{ fontSize: 40, marginRight: 30 }}>{item.icon}</Text>
+                                                    <FontAwesome6 name={item.icon} size={24} style={{ marginRight: 30, alignSelf:'center' }} color="black" />
                                                     <View style={{ display: 'flex', flexDirection: "column" }}>
                                                         <Text style={{ fontWeight: "bold" }}>{item.title}</Text>
                                                         <Text>{item.subtitle}</Text>

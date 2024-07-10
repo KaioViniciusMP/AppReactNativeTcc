@@ -1,15 +1,28 @@
 import { StyleSheet, Text, View, ScrollView, TouchableOpacity, FlatList, Alert } from 'react-native'
 import { useNavigation } from "@react-navigation/native";
+import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import { AppStackParamList } from '../../Routes/app.routes';
 
 import AntDesign from '@expo/vector-icons/AntDesign';
 import { Feather } from '@expo/vector-icons';
 import { Octicons } from '@expo/vector-icons';
 import { Entypo } from '@expo/vector-icons'
+import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
+
+type NavigationProp = NativeStackNavigationProp<AppStackParamList>;
 
 export default function PagePersonalizacaoAndConfig() {
     const navigation = useNavigation();
+    const navigationApp = useNavigation<NavigationProp>();
+
     const PageHome = () => {
         navigation.goBack();
+    }
+    const Configuracoes = () => {
+        navigationApp.navigate('Configuracoes');
+    }
+    const Ajuda = () => {
+        navigationApp.navigate('Ajuda');
     }
 
     const ButtonAlert = () =>
@@ -34,23 +47,23 @@ export default function PagePersonalizacaoAndConfig() {
             </TouchableOpacity>
 
             <View style={styles.containerTwo}>
-                <TouchableOpacity style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', marginLeft: 20, marginTop: 40 }}>
+                <TouchableOpacity onPress={PageHome} style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', marginLeft: 20, marginTop: 40 }}>
                     <Entypo name='home' size={25} color={"#000"} />
                     <Text style={{ fontWeight: "900", fontSize: 15, marginLeft: 10 }}>Inicio</Text>
                 </TouchableOpacity>
 
-                <TouchableOpacity style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', marginLeft: 21, marginTop: 20 }}>
+                <TouchableOpacity onPress={Configuracoes} style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', marginLeft: 21, marginTop: 20 }}>
                     <Octicons name="gear" size={25} color="black" />
                     <Text style={{ fontWeight: "900", fontSize: 15, marginLeft: 10 }}>Configurações</Text>
                 </TouchableOpacity>
 
-                <TouchableOpacity style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', marginLeft: 20, marginTop: 20 }}>
+                <TouchableOpacity onPress={Ajuda} style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', marginLeft: 20, marginTop: 20 }}>
                     <Feather name="help-circle" size={25} color="black" />
                     <Text style={{ fontWeight: "900", fontSize: 15, marginLeft: 10 }}>Ajuda</Text>
                 </TouchableOpacity>
 
                 <TouchableOpacity onPress={sair} style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', marginLeft: 20, marginTop: 20 }}>
-                    <Feather name="help-circle" size={25} color="black" />
+                    <MaterialCommunityIcons name="exit-to-app" size={25} color="black" />
                     <Text style={{ fontWeight: "900", fontSize: 15, marginLeft: 10 }}>Sair</Text>
                 </TouchableOpacity>
             </View>
