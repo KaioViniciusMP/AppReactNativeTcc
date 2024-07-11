@@ -32,7 +32,7 @@ export default function PageContasCorrentes() {
 
     const data: ContaCorrente[] = [
         { codigo: 1, Agencia: 'AGENCIA', Valor: 'R$ 200,00', CartoesVinculados: []},
-        { codigo: 2, Agencia: 'AGENCIA', Valor: 'R$ 500,00', CartoesVinculados: []},
+        { codigo: 2, Agencia: 'BANCO DO BRASIL', Valor: 'R$ 500,00', CartoesVinculados: []},
         { codigo: 3, Agencia: 'Itaú', Valor: 'R$ 500,00', CartoesVinculados: []},
         { codigo: 4, Agencia: 'Bradesco', Valor: 'R$ 500,00', CartoesVinculados: []},
         { codigo: 5, Agencia: 'Santander', Valor: 'R$ 500,00', CartoesVinculados: []},

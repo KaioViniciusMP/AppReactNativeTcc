@@ -14,6 +14,7 @@ import Tabs from "./tabbed.routes";
 import Transferencia from "../pages/Transferencia";
 import EditarUsuario from "../pages/EdicaoUsuario";
 import AddCartao from "../pages/AddCartao";
+import DetalhesCompra from "../pages/DetalheProdutoCompra";
 
 export type AppStackParamList = {
     Tabs: undefined
@@ -36,6 +37,9 @@ export type AppStackParamList = {
     EditarUsuario: undefined;
     AddCartao: {
         codigoConta: number;
+    };
+    DetalhesCompra: {
+        codigoCompra: number;
     };
 };
 
@@ -61,6 +65,7 @@ export default function AppRoutes() {
             <Stack.Screen name='Transferencia' component={Transferencia} options={{headerShown: false}} />
             <Stack.Screen name='EditarUsuario' component={EditarUsuario} options={{headerShown: false}} />
             <Stack.Screen name='AddCartao' component={AddCartao} options={{headerShown: false}} />
+            <Stack.Screen name='DetalhesCompra' component={DetalhesCompra} options={{headerShown: false}} />
         </Stack.Navigator>
     )
 }
