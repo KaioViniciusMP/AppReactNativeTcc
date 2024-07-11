@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, ScrollView, TouchableOpacity, TextInput, FlatList } from 'react-native'
+import { StyleSheet, Text, View, ScrollView, TouchableOpacity, Alert, FlatList } from 'react-native'
 import { RouteProp, useNavigation } from "@react-navigation/native";
 import React, { useEffect, useState } from 'react';
 import { AuthStackParamList } from '../../Routes/auth.routes';
@@ -26,6 +26,11 @@ interface Cartao {
     dataVencimentoCartao: Date,
     limiteCartao: number
 }
+
+const ButtonAlert = () =>
+    Alert.alert('Atenção', `Funcionalidade disponivel em breve.`, [
+        { text: 'OK', onPress: () => console.log('Deslogar') },
+    ]);
 
 export default function AddCartao() {
     const navigation = useNavigation<NavigationProp>();
@@ -143,7 +148,7 @@ export default function AddCartao() {
 
 
                 <View style={styles.containerTwo}>
-                    <TouchableOpacity style={{ marginTop: 80, borderRadius: 10, alignSelf: 'center', alignItems: 'center', height: 45, backgroundColor: '#EDEDED', justifyContent: 'center', display: 'flex', flexDirection: 'row', width: '80%', }}>
+                    <TouchableOpacity onPress={ButtonAlert} style={{ marginTop: 80, borderRadius: 10, alignSelf: 'center', alignItems: 'center', height: 45, backgroundColor: '#EDEDED', justifyContent: 'center', display: 'flex', flexDirection: 'row', width: '80%', }}>
                         <Text>Adicionar novo cartão</Text>
                         <Text style={{ marginLeft: 10, fontSize: 17, textAlign: 'center', backgroundColor: '#000', width: 25, height: 25, borderRadius: 20, color: '#fff' }}>+</Text>
                     </TouchableOpacity>

@@ -1,5 +1,5 @@
 import { useNavigation } from "@react-navigation/native";
-import { View, Text, TouchableOpacity, StyleSheet, ScrollView, FlatList } from "react-native";
+import { View, Text, TouchableOpacity, StyleSheet, ScrollView, FlatList, Alert } from "react-native";
 import AntDesign from '@expo/vector-icons/AntDesign';
 import { Octicons } from '@expo/vector-icons';
 import { Feather } from '@expo/vector-icons';
@@ -42,6 +42,11 @@ export default function Home() {
         });
     }
 
+    const ButtonAlert = () =>
+        Alert.alert('Atenção', `Funcionalidade disponivel em breve.`, [
+            { text: 'OK', onPress: () => console.log('Deslogar') },
+        ]);
+
     return (
         <ScrollView contentContainerStyle={styles.scrollViewContainer}>
             <View style={styles.container}>
@@ -76,17 +81,17 @@ export default function Home() {
 
                             <TouchableOpacity onPress={EntradaFinanceiraExtra} style={{ display: 'flex', justifyContent: "center" }}>
                                 <View style={{ backgroundColor: '#D9D9D9', height: 70, width: 70, borderRadius: 20, display: "flex", alignItems: "center", justifyContent: "center" }}>
-                                    <Entypo name='home' size={28} color={"#000"}/>
+                                    <MaterialCommunityIcons name="finance" size={30} color="black" />
                                 </View>
                                 <Text style={{ color: 'white', textAlign: "center", fontSize: 12 }}>Entrada</Text>
                             </TouchableOpacity>
 
-                            <View style={{ display: 'flex', justifyContent: "center" }}>
+                            <TouchableOpacity onPress={ButtonAlert} style={{ display: 'flex', justifyContent: "center" }}>
                                 <View style={{ backgroundColor: '#D9D9D9', height: 70, width: 70, borderRadius: 20, display: "flex", alignItems: "center", justifyContent: "center" }}>
                                     <MaterialCommunityIcons name="exit-to-app" size={32} color="black" />
                                 </View>
                                 <Text style={{ color: 'white', textAlign: "center", fontSize: 12 }}>Sair</Text>
-                            </View>
+                            </TouchableOpacity>
                         </View>
 
                         <View style={styles.containerTree}>
