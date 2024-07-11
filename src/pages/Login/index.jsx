@@ -1,17 +1,23 @@
 import { useNavigation } from "@react-navigation/native";
-import { useState } from "react";
+import { useState, useContext } from "react";
 import { View, Text, TouchableOpacity, StyleSheet, TextInput } from "react-native";
+import { AuthContext } from "../../context";
 
 export default function Login() {
     const [txtSenha, setSenha] = useState('');
     const [txtUsuario, setUsuario] = useState('');
-
     const navigation = useNavigation();
+    const {signIn} = useContext(AuthContext)
+
     const PageHome = () => {
         navigation.navigate('Home')
     }
     const PageCadastro = () => {
         navigation.navigate('Cadastro')
+    }
+
+    async function handleLogin(){
+        await signIn({ txtUsuario, txtSenha})
     }
 
     return (
@@ -45,7 +51,7 @@ export default function Login() {
 
 
                 <View style={styles.containerInput}>
-                    <TouchableOpacity onPress={PageHome} style={styles.Button}>
+                    <TouchableOpacity onPress={handleLogin} style={styles.Button}>
                         <Text style={styles.LabelButton}>Login</Text>
                     </TouchableOpacity>
                     <Text onPress={PageCadastro} style={styles.LabelBottom}>Não possui uma conta?</Text>
