@@ -4,21 +4,49 @@ import React, { useState } from 'react'
 import { AuthStackParamList } from '../../Routes/auth.routes';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import AntDesign from '@expo/vector-icons/AntDesign';
+import api from '../../services/api';
 
 type NavigationProp = NativeStackNavigationProp<AuthStackParamList>;
 
 export default function PageAdicionarContaCorrente() {
     const navigation = useNavigation<NavigationProp>();
+    const [agencia, setAgencia] = useState('');
+    const [usuarioCodigo, setUsuarioCodigo] = useState('1');
+    const [saldo, setSaldo] = useState('');
+
+    const CriarContaCorrenteRequest = {
+        agencia: agencia,
+        usuarioCodigo: usuarioCodigo,
+        saldo: saldo
+    };
 
     const voltar = () => {
         navigation.canGoBack();
     }
 
+    const criarContaCorrente = () => {
+        api.post('/ContaCorrente', CriarContaCorrenteRequest)
+            .then(response => {
+                console.log(response.data);
+                if (response.data.status) {
+                    console.log("Conta corrente criada e vinculada ao usuário com sucesso.");
+                    console.log(response.data.objInfo);
+                    // Você pode adicionar alguma navegação ou outra ação aqui
+                } else {
+                    console.log("Falha ao criar conta corrente:", response.data.message);
+                }
+            })
+            .catch(err => {
+                console.error("Ops! Ocorreu um erro: " + err);
+            });
+    };
+
+
     return (
         <ScrollView contentContainerStyle={styles.scrollViewContainer}>
             <TouchableOpacity onPress={voltar} style={{ display: 'flex', flexDirection: 'row', marginLeft: 20, marginTop: 40, marginBottom: 20 }}>
                 <AntDesign name="left" size={20} color="#fff" />
-                <Text style={{ color: '#fff', fontSize: 15, marginLeft:5 }}>Voltar</Text>
+                <Text style={{ color: '#fff', fontSize: 15, marginLeft: 5 }}>Voltar</Text>
             </TouchableOpacity>
 
             <View style={styles.containerTwo}>
@@ -30,16 +58,16 @@ export default function PageAdicionarContaCorrente() {
                 <View style={{ display: 'flex', width: '100%' }}>
                     <View style={{ alignSelf: 'center', justifyContent: 'center', display: 'flex', width: '100%', }}>
                         <Text style={{ marginLeft: 50, fontSize: 17, fontWeight: "semibold" }}>Agencia:</Text>
-                        <TextInput style={{ marginBottom: 15, width: '80%', alignSelf: 'center', borderRadius: 5, height: 40, paddingLeft: 10, borderWidth: 2, borderColor: '#7F79AB' }} placeholder='Defina o valor recebido...' />
+                        <TextInput onChangeText={setAgencia} style={{ marginBottom: 15, width: '80%', alignSelf: 'center', borderRadius: 5, height: 40, paddingLeft: 10, borderWidth: 2, borderColor: '#7F79AB' }} placeholder='Defina o valor recebido...' />
                     </View>
 
                     <View style={{ alignSelf: 'center', justifyContent: 'center', display: 'flex', width: '100%', }}>
                         <Text style={{ marginLeft: 50, fontSize: 17, fontWeight: "semibold" }}>Saldo:</Text>
-                        <TextInput style={{ marginBottom: 15, width: '80%', alignSelf: 'center', borderRadius: 5, height: 40, paddingLeft: 10, borderWidth: 2, borderColor: '#7F79AB' }} placeholder='Digite a descrição...' />
+                        <TextInput onChangeText={setSaldo} style={{ marginBottom: 15, width: '80%', alignSelf: 'center', borderRadius: 5, height: 40, paddingLeft: 10, borderWidth: 2, borderColor: '#7F79AB' }} placeholder='Digite a descrição...' />
                     </View>
 
                     <View style={{ marginTop: 40, justifyContent: 'center', display: 'flex', width: '100%', alignItems: 'center' }}>
-                        <TouchableOpacity style={{ display: "flex", alignItems: "center", justifyContent: "center", width: '50%', borderRadius: 8, height: 50, backgroundColor: '#7F79AB' }}>
+                        <TouchableOpacity onPress={criarContaCorrente} style={{ display: "flex", alignItems: "center", justifyContent: "center", width: '50%', borderRadius: 8, height: 50, backgroundColor: '#7F79AB' }}>
                             <Text style={{ color: '#FFF', fontWeight: "bold" }}>Criar</Text>
                         </TouchableOpacity>
                         <Text style={{ color: '#7F79AB', fontWeight: "bold", marginTop: 10 }}>Cancelar operação</Text>

@@ -1,21 +1,30 @@
 import { useNavigation } from "@react-navigation/native";
 import { StyleSheet, Text, View, ScrollView, TouchableOpacity, FlatList } from 'react-native'
-import React from 'react'
+import React,{useState,useEffect} from 'react'
 import { AppStackParamList } from '../../Routes/app.routes';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import AntDesign from '@expo/vector-icons/AntDesign';
+import api from "../../services/api";
 
 type NavigationProp = NativeStackNavigationProp<AppStackParamList>;
 
+// interface ContaCorrente {
+//     codigo: number ,
+//     Agencia: string,
+//     Valor: string,
+//     CartoesVinculados: []
+// }
+
 interface ContaCorrente {
-    codigo: number ,
-    Agencia: string,
-    Valor: string,
-    CartoesVinculados: []
+    codigo: number;
+    agencia: string;
+    usuarioCodigo: number,
+    saldo: number;
 }
 
 export default function PageContasCorrentes() {
     const navigation = useNavigation<NavigationProp>();
+    const [contasCorrentes, setContasCorrentes] = useState<ContaCorrente[]>([]);
 
     const adicionarContaCorrente = () => {
         navigation.navigate('AdicionarContaCorrente');
@@ -30,13 +39,25 @@ export default function PageContasCorrentes() {
         navigation.navigate('AddCartao', { codigoConta });
     };
 
-    const data: ContaCorrente[] = [
-        { codigo: 1, Agencia: 'AGENCIA', Valor: 'R$ 200,00', CartoesVinculados: []},
-        { codigo: 2, Agencia: 'BANCO DO BRASIL', Valor: 'R$ 500,00', CartoesVinculados: []},
-        { codigo: 3, Agencia: 'Itaú', Valor: 'R$ 500,00', CartoesVinculados: []},
-        { codigo: 4, Agencia: 'Bradesco', Valor: 'R$ 500,00', CartoesVinculados: []},
-        { codigo: 5, Agencia: 'Santander', Valor: 'R$ 500,00', CartoesVinculados: []},
-    ];
+    // const data: ContaCorrente[] = [
+    //     { codigo: 1, Agencia: 'AGENCIA', Valor: 'R$ 200,00', CartoesVinculados: []},
+    //     { codigo: 2, Agencia: 'BANCO DO BRASIL', Valor: 'R$ 500,00', CartoesVinculados: []},
+    //     { codigo: 3, Agencia: 'Itaú', Valor: 'R$ 500,00', CartoesVinculados: []},
+    //     { codigo: 4, Agencia: 'Bradesco', Valor: 'R$ 500,00', CartoesVinculados: []},
+    //     { codigo: 5, Agencia: 'Santander', Valor: 'R$ 500,00', CartoesVinculados: []},
+    // ];
+
+    useEffect(() => {
+        api.get('/ContaCorrente')
+            .then(response => {
+                console.log(response.data);
+                if (response.data && Array.isArray(response.data)) {
+                    setContasCorrentes(response.data);
+                }
+            })
+            .catch(err => console.error("Ops! Ocorreu um erro:", err));
+    }, []);
+    
 
     return (
         <ScrollView contentContainerStyle={styles.scrollViewContainer}>
@@ -58,15 +79,15 @@ export default function PageContasCorrentes() {
                 </View>
 
                 <FlatList
-                    data={data}
+                    data={contasCorrentes}
+                    keyExtractor={(item) => String(item.codigo)}
                     renderItem={({ item }) => (
                         <TouchableOpacity onPress={() => acessarCartoes(item.codigo)} style={{ display: 'flex', justifyContent: "space-between", flexDirection: "row", padding: 10, borderBottomWidth: 1, borderBottomColor: '#ccc' }}>
                             <View style={{ display: 'flex', flexDirection: "row", alignItems: 'center' }}>
-                                <Text style={{ fontWeight: 'bold' ,fontSize: 15, display: 'flex', flexDirection: "column", marginLeft: 20, marginTop: 20 }}>{item.Agencia}</Text>
+                                <Text style={{ fontWeight: 'bold', fontSize: 15, display: 'flex', flexDirection: "column", marginLeft: 20, marginTop: 20 }}>{item.agencia}</Text>
                             </View>
-
-                            <Text style={{ fontWeight: 'bold', fontSize: 15, alignSelf: "flex-end", marginRight: 20 }}>{item.Valor}</Text>
-                        </TouchableOpacity >
+                            <Text style={{ fontWeight: 'bold', fontSize: 15, alignSelf: "flex-end", marginRight: 20 }}>R$ {item.saldo}</Text>
+                        </TouchableOpacity>
                     )}
                 />
             </View>

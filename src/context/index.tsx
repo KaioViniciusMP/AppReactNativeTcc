@@ -36,7 +36,7 @@ export function AuthProvider({ children } : AuthProviderProps) {
 
         try {
             //fazer requisição com axios aqui
-            // const response = await api.pos('/rotaApi',{
+            // const response = await api.post('/rotaApi',{
             //     txtUsuario,
             //     txtSenha
             // })

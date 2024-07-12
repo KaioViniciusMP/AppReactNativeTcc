@@ -6,9 +6,13 @@ import { Feather } from '@expo/vector-icons';
 import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
 import { Entypo } from '@expo/vector-icons'
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
+import api from "../../services/api";
+import { useEffect, useState } from "react";
+import axios from "axios";
 
 export default function Home() {
     const navigation = useNavigation();
+    const [saldoDisponivelContaCorrente, setSaldoDisponivelContaCorrente] = useState('');
 
     const escolherModalidade = () => {
         navigation.navigate('EscolherModalidade');
@@ -47,6 +51,19 @@ export default function Home() {
             { text: 'OK', onPress: () => console.log('Deslogar') },
         ]);
 
+
+        useEffect(() => {
+            api.get('/ContaCorrente')
+                .then(response => {
+                    console.log(response.data);
+                    if (response.data && response.data.length > 0) {
+                        setSaldoDisponivelContaCorrente(response.data[0].saldo);
+                    }
+                })
+                .catch(err => console.error("ops! ocorreu um erro: " + err));
+        }, []);
+
+
     return (
         <ScrollView contentContainerStyle={styles.scrollViewContainer}>
             <View style={styles.container}>
@@ -59,38 +76,39 @@ export default function Home() {
                         <TouchableOpacity onPress={ContasCorrentes} style={{ padding: 30 }}>
                             <Text style={{ fontSize: 15, color: 'white', fontWeight: "500" }}>Saldo disponivel</Text>
                             <View style={{ alignItems: "center", display: 'flex', flexDirection: "row", justifyContent: "space-between", borderBottomWidth: 1, borderBottomColor: 'white', }}>
-                                <Text style={{ color: 'white', marginBottom: 10, fontSize: 30, marginTop: 5 }}>R$0,00</Text>
+                                
+                                <Text style={{ color: 'white', marginBottom: 10, fontSize: 30, marginTop: 5 }}>R$ {saldoDisponivelContaCorrente}</Text>
                                 <AntDesign name="right" size={25} color="white" marginTop='10' />
                             </View>
                         </TouchableOpacity>
 
                         <View style={{ width: '100%', marginBottom: 40, display: 'flex', flexDirection: "row", justifyContent: "center", gap: 10 }}>
-                            <TouchableOpacity onPress={configuracoes} style={{ display: 'flex', justifyContent: "center" }}>
-                                <View style={{ backgroundColor: '#D9D9D9', height: 70, width: 70, borderRadius: 20, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                            <TouchableOpacity onPress={configuracoes} style={{ width: '20%',display: 'flex', justifyContent: "center" }}>
+                                <View style={{ backgroundColor: '#D9D9D9', height: 70, width: '100%', borderRadius: 20, display: "flex", alignItems: "center", justifyContent: "center" }}>
                                     <Octicons name="gear" size={26} color="black" />
                                 </View>
-                                <Text style={{ color: 'white', textAlign: "center", fontSize: 12 }}>Configurações</Text>
+                                <Text style={{ color: 'white', textAlign: "center", fontSize: 14, fontWeight: 600 }}>Configurações</Text>
                             </TouchableOpacity>
 
-                            <TouchableOpacity onPress={Ajuda} style={{ display: 'flex', justifyContent: "center" }}>
-                                <View style={{ backgroundColor: '#D9D9D9', height: 70, width: 70, borderRadius: 20, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                            <TouchableOpacity onPress={Ajuda} style={{ width: '20%',display: 'flex', justifyContent: "center" }}>
+                                <View style={{ backgroundColor: '#D9D9D9', height: 70, width: '100%', borderRadius: 20, display: "flex", alignItems: "center", justifyContent: "center" }}>
                                     <Feather name="help-circle" size={28} color="black" />
                                 </View>
-                                <Text style={{ color: 'white', textAlign: "center", fontSize: 12 }}>Ajude</Text>
+                                <Text style={{ color: 'white', textAlign: "center", fontSize: 14, fontWeight: 600 }}>Ajude</Text>
                             </TouchableOpacity>
 
-                            <TouchableOpacity onPress={EntradaFinanceiraExtra} style={{ display: 'flex', justifyContent: "center" }}>
-                                <View style={{ backgroundColor: '#D9D9D9', height: 70, width: 70, borderRadius: 20, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                            <TouchableOpacity onPress={EntradaFinanceiraExtra} style={{ width: '20%',display: 'flex', justifyContent: "center" }}>
+                                <View style={{ backgroundColor: '#D9D9D9', height: 70, width: '100%', borderRadius: 20, display: "flex", alignItems: "center", justifyContent: "center" }}>
                                     <MaterialCommunityIcons name="finance" size={30} color="black" />
                                 </View>
-                                <Text style={{ color: 'white', textAlign: "center", fontSize: 12 }}>Entrada</Text>
+                                <Text style={{ color: 'white', textAlign: "center", fontSize: 14, fontWeight: 600 }}>Entrada</Text>
                             </TouchableOpacity>
 
-                            <TouchableOpacity onPress={ButtonAlert} style={{ display: 'flex', justifyContent: "center" }}>
-                                <View style={{ backgroundColor: '#D9D9D9', height: 70, width: 70, borderRadius: 20, display: "flex", alignItems: "center", justifyContent: "center" }}>
+                            <TouchableOpacity onPress={ButtonAlert} style={{ width: '20%',display: 'flex', justifyContent: "center" }}>
+                                <View style={{ backgroundColor: '#D9D9D9', height: 70, width: '100%', borderRadius: 20, display: "flex", alignItems: "center", justifyContent: "center" }}>
                                     <MaterialCommunityIcons name="exit-to-app" size={32} color="black" />
                                 </View>
-                                <Text style={{ color: 'white', textAlign: "center", fontSize: 12 }}>Sair</Text>
+                                <Text style={{ color: 'white', textAlign: "center", fontSize: 14, fontWeight: 600 }}>Sair</Text>
                             </TouchableOpacity>
                         </View>
 
@@ -98,14 +116,14 @@ export default function Home() {
                             <View style={{ padding: 30 }}>
                                 <Text style={{ fontWeight: "bold", marginBottom: 10 }}>Saldo disponivel</Text>
                                 <View style={{ display: 'flex', flexDirection: "row", alignItems: "center", justifyContent: "space-between", borderBottomWidth: 3, borderBottomColor: 'white', }}>
-                                    <Text style={{ color: '#000', fontWeight: "bold", fontSize: 35 }}>R$0,00</Text>
+                                    <Text style={{ color: '#000', fontWeight: "bold", fontSize: 35 }}>R$ {saldoDisponivelContaCorrente}</Text>
                                     <TouchableOpacity onPress={escolherModalidade} style={{ display: "flex", alignItems: "center", justifyContent: "center", width: '30%', borderRadius: 5, height: 30, borderWidth: 2, borderColor: '#7F79AB' }}>
                                         <Text style={{ color: '#7F79AB', fontWeight: "semibold" }}>Utilizar</Text>
                                     </TouchableOpacity>
                                 </View>
                                 <View style={{ display: 'flex', flexDirection: "row", justifyContent: "space-between", borderBottomWidth: 3, borderBottomColor: 'white', }}>
                                     <Text style={{ fontWeight: "bold" }}>Disponivel para utilizar</Text>
-                                    <Text style={{ fontWeight: "bold" }}>R$ 0,00</Text>
+                                    <Text style={{ fontWeight: "bold" }}>R$ {saldoDisponivelContaCorrente}</Text>
                                 </View>
                                 <View style={{ display: 'flex', flexDirection: "column", justifyContent: "space-between", borderBottomWidth: 3, borderBottomColor: 'white', marginTop: 30 }}>
                                     <Text style={{ fontWeight: "bold" }}>Seus rendimentos de 2024</Text>
@@ -121,7 +139,7 @@ export default function Home() {
                                         renderItem={({ item }) => (
                                             <TouchableOpacity onPress={() => TelaHistorico(item.navigationPage)} style={{ display: 'flex', justifyContent: "space-between", flexDirection: "row", padding: 10, borderBottomWidth: 1, borderBottomColor: '#ccc' }}>
                                                 <View style={{ display: 'flex', flexDirection: "row" }}>
-                                                    <FontAwesome6 name={item.icon} size={24} style={{ marginRight: 30, alignSelf:'center' }} color="black" />
+                                                    <FontAwesome6 name={item.icon} size={24} style={{ marginRight: 30, alignSelf: 'center' }} color="black" />
                                                     <View style={{ display: 'flex', flexDirection: "column" }}>
                                                         <Text style={{ fontWeight: "bold" }}>{item.title}</Text>
                                                         <Text>{item.subtitle}</Text>
