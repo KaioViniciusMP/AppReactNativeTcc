@@ -6,25 +6,36 @@ import { AppStackParamList } from '../../Routes/app.routes';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import { useRoute } from '@react-navigation/native';
+import api from '../../services/api';
 
 type NavigationProp = NativeStackNavigationProp<AuthStackParamList>;
 type NavigationAppProp = NativeStackNavigationProp<AppStackParamList>;
 type AddCartaoRouteProp = RouteProp<AppStackParamList, 'AddCartao'>
 
-interface ContaCorrente {
+// interface ContaCorrente {
+//     codigo: number,
+//     Agencia: string,
+//     Valor: string,
+//     CartoesVinculados: Cartao[]
+// }
+// interface Cartao {
+//     codigo: number,
+//     bandeira: string,
+//     nomeUsuario: string,
+//     cvv: string,
+//     corCartao: string,
+//     dataVencimentoCartao: Date,
+//     limiteCartao: number
+// }
+
+interface Cartao{
     codigo: number,
-    Agencia: string,
-    Valor: string,
-    CartoesVinculados: Cartao[]
-}
-interface Cartao {
-    codigo: number,
-    bandeira: string,
-    nomeUsuario: string,
+    contaCorrenteCodigo: number,
+    formaPagamento: string,
+    dataValidade: string,
+    bandeiraCartao: string,
     cvv: string,
-    corCartao: string,
-    dataVencimentoCartao: Date,
-    limiteCartao: number
+    limite: number,
 }
 
 const ButtonAlert = () =>
@@ -41,35 +52,61 @@ export default function AddCartao() {
 
     const [cartoes, setCartoes] = useState<Cartao[]>([]);
 
-    const data: ContaCorrente[] = [
-        { codigo: 1, Agencia: 'AGENCIA', Valor: 'R$ 200,00', CartoesVinculados: [
-            { codigo: 1, bandeira: 'Visa', nomeUsuario: 'Kaio Vinicius Morais Pereira', cvv: '123784529564', corCartao: '#313131', dataVencimentoCartao: new Date('2024-12-20'), limiteCartao: 5000.50 },
-            { codigo: 2, bandeira: 'Visa2', nomeUsuario: 'Kaio Vinicius Morais Pereira', cvv: '1234326544', corCartao: '#BA00B2', dataVencimentoCartao: new Date('2025-01-15'), limiteCartao: 6000.75 },
-            { codigo: 3, bandeira: 'Visa3', nomeUsuario: 'Kaio Vinicius Morais Pereira', cvv: '1234324789', corCartao: '#00BB07', dataVencimentoCartao: new Date('2023-11-30'), limiteCartao: 7000.99 }
-        ]},
-        { codigo: 2, Agencia: 'AGENCIA', Valor: 'R$ 500,00', CartoesVinculados: [
-            { codigo: 4, bandeira: 'MasterCard', nomeUsuario: 'Kaio', cvv: '5678', corCartao: '#B10000', dataVencimentoCartao: new Date('2024-05-22'), limiteCartao: 8000.25 }
-        ]},
-        { codigo: 3, Agencia: 'Itaú', Valor: 'R$ 500,00', CartoesVinculados: [
-            { codigo: 5, bandeira: 'Amex', nomeUsuario: 'Kaio', cvv: '9101', corCartao: '#F0B10D', dataVencimentoCartao: new Date('2023-08-17'), limiteCartao: 9000.80 }
-        ]},
-        { codigo: 4, Agencia: 'Bradesco', Valor: 'R$ 500,00', CartoesVinculados: [
-            { codigo: 6, bandeira: 'Elo', nomeUsuario: 'Kaio', cvv: '1121', corCartao: '#FF9900', dataVencimentoCartao: new Date('2024-07-10'), limiteCartao: 10000.00 }
-        ]},
-        { codigo: 5, Agencia: 'Santander', Valor: 'R$ 500,00', CartoesVinculados: [
-            { codigo: 7, bandeira: 'Discover', nomeUsuario: 'Kaio', cvv: '3141', corCartao: '#FF9900', dataVencimentoCartao: new Date('2025-09-12'), limiteCartao: 11000.50 }
-        ]}
+    const coresAleatoriasCartoes = [
+        '#313131', // Cor do cartão do primeiro exemplo
+        '#BA00B2', // Cor do cartão do segundo exemplo
+        '#00BB07', // Cor do cartão do terceiro exemplo
+        '#B10000', // Cor do cartão do terceiro exemplo
+        '#F0B10D', // Cor do cartão do terceiro exemplo
+        '#FF9900', // Cor do cartão do terceiro exemplo
+        '#FF9900', // Cor do cartão do terceiro exemplo
     ];
 
+    const gerarCorAleatoria = () => {
+        const indiceAleatorio = Math.floor(Math.random() * coresAleatoriasCartoes.length);
+        return coresAleatoriasCartoes[indiceAleatorio];
+    };
+
+    // const data: ContaCorrente[] = [
+    //     { codigo: 1, Agencia: 'AGENCIA', Valor: 'R$ 200,00', CartoesVinculados: [
+    //         { codigo: 1, bandeira: 'Visa', nomeUsuario: 'Kaio Vinicius Morais Pereira', cvv: '123784529564', corCartao: '#313131', dataVencimentoCartao: new Date('2024-12-20'), limiteCartao: 5000.50 },
+    //         { codigo: 2, bandeira: 'Visa2', nomeUsuario: 'Kaio Vinicius Morais Pereira', cvv: '1234326544', corCartao: '#BA00B2', dataVencimentoCartao: new Date('2025-01-15'), limiteCartao: 6000.75 },
+    //         { codigo: 3, bandeira: 'Visa3', nomeUsuario: 'Kaio Vinicius Morais Pereira', cvv: '1234324789', corCartao: '#00BB07', dataVencimentoCartao: new Date('2023-11-30'), limiteCartao: 7000.99 }
+    //     ]},
+    //     { codigo: 2, Agencia: 'AGENCIA', Valor: 'R$ 500,00', CartoesVinculados: [
+    //         { codigo: 4, bandeira: 'MasterCard', nomeUsuario: 'Kaio', cvv: '5678', corCartao: '#B10000', dataVencimentoCartao: new Date('2024-05-22'), limiteCartao: 8000.25 }
+    //     ]},
+    //     { codigo: 3, Agencia: 'Itaú', Valor: 'R$ 500,00', CartoesVinculados: [
+    //         { codigo: 5, bandeira: 'Amex', nomeUsuario: 'Kaio', cvv: '9101', corCartao: '#F0B10D', dataVencimentoCartao: new Date('2023-08-17'), limiteCartao: 9000.80 }
+    //     ]},
+    //     { codigo: 4, Agencia: 'Bradesco', Valor: 'R$ 500,00', CartoesVinculados: [
+    //         { codigo: 6, bandeira: 'Elo', nomeUsuario: 'Kaio', cvv: '1121', corCartao: '#FF9900', dataVencimentoCartao: new Date('2024-07-10'), limiteCartao: 10000.00 }
+    //     ]},
+    //     { codigo: 5, Agencia: 'Santander', Valor: 'R$ 500,00', CartoesVinculados: [
+    //         { codigo: 7, bandeira: 'Discover', nomeUsuario: 'Kaio', cvv: '3141', corCartao: '#FF9900', dataVencimentoCartao: new Date('2025-09-12'), limiteCartao: 11000.50 }
+    //     ]}
+    // ];
+
     useEffect(() => {
-        const conta = data.find(c => c.codigo === codigoConta);
-        if (conta) {
-            console.log(conta.CartoesVinculados);
-            setCartoes(conta.CartoesVinculados);
-        } else {
-            console.log('Conta não encontrada');
-        }
-    }, [codigoConta]);
+        api.get('/Cartao')
+            .then(response => {
+                console.log(response.data);
+                if (response.data && Array.isArray(response.data)) {
+                    setCartoes(response.data);
+                }
+            })
+            .catch(err => console.error("Ops! Ocorreu um erro:", err));
+    }, []);
+
+    // useEffect(() => {
+    //     const conta = data.find(c => c.codigo === codigoConta);
+    //     if (conta) {
+    //         console.log(conta.CartoesVinculados);
+    //         setCartoes(conta.CartoesVinculados);
+    //     } else {
+    //         console.log('Conta não encontrada');
+    //     }
+    // }, [codigoConta]);
 
     const voltar = () => {
         navigation.goBack();
@@ -118,7 +155,7 @@ export default function AddCartao() {
                             key={index}
                             style={{
                                 display: 'flex',
-                                backgroundColor: cartao.corCartao,
+                                backgroundColor: gerarCorAleatoria(),
                                 width: 300,
                                 height: 190,
                                 justifyContent: 'space-between',
@@ -130,15 +167,15 @@ export default function AddCartao() {
                                 marginRight: 70
                             }}>
                             <View>
-                                <Text style={{ color: '#fff', fontSize: 12 }}>{cartao.dataVencimentoCartao.toLocaleDateString('pt-BR')}</Text>
-                                <Text style={{ color: '#fff', fontWeight: '900', fontSize: 20 }}>{cartao.bandeira}</Text>
+                                <Text style={{ color: '#fff', fontSize: 12 }}>{cartao.dataValidade}</Text>
+                                <Text style={{ color: '#fff', fontWeight: '900', fontSize: 20 }}>{cartao.bandeiraCartao}</Text>
                             </View>
 
                             <View>
-                                <Text style={{ color: '#fff' }}>{cartao.nomeUsuario}</Text>
+                                <Text style={{ color: '#fff' }}>nomeUsuario</Text>
                                 <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
                                     <Text style={{ color: '#fff' }}>{cartao.cvv}</Text>
-                                    <Text style={{ color: '#fff' }}>{cartao.limiteCartao}</Text>
+                                    <Text style={{ color: '#fff' }}>{cartao.limite}</Text>
                                 </View>
                             </View>
                         </View>

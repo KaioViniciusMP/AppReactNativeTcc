@@ -84,7 +84,7 @@ export default function PageContasCorrentes() {
                     renderItem={({ item }) => (
                         <TouchableOpacity onPress={() => acessarCartoes(item.codigo)} style={{ display: 'flex', justifyContent: "space-between", flexDirection: "row", padding: 10, borderBottomWidth: 1, borderBottomColor: '#ccc' }}>
                             <View style={{ display: 'flex', flexDirection: "row", alignItems: 'center' }}>
-                                <Text style={{ fontWeight: 'bold', fontSize: 15, display: 'flex', flexDirection: "column", marginLeft: 20, marginTop: 20 }}>{item.agencia}</Text>
+                                <Text style={{ fontWeight: 'bold', fontSize: 15, display: 'flex', flexDirection: "column", marginLeft: 20, marginTop: 20, textTransform:"uppercase" }}>{item.agencia}</Text>
                             </View>
                             <Text style={{ fontWeight: 'bold', fontSize: 15, alignSelf: "flex-end", marginRight: 20 }}>R$ {item.saldo}</Text>
                         </TouchableOpacity>
