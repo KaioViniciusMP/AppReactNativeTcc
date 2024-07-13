@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, ScrollView, TouchableOpacity, FlatList, TextInput } from 'react-native'
+import { StyleSheet, Text, View, ScrollView, TouchableOpacity, FlatList, TextInput,Alert } from 'react-native'
 import { useNavigation } from "@react-navigation/native";
 import React, { useState } from 'react'
 import { AuthStackParamList } from '../../Routes/auth.routes';
@@ -14,6 +14,12 @@ export default function PageAdicionarContaCorrente() {
     const [usuarioCodigo, setUsuarioCodigo] = useState('1');
     const [saldo, setSaldo] = useState('');
 
+    const AlertaContaCriada = () =>
+        Alert.alert('Corrente criada com sucesso!', `Deseja permanecer na tela e criar mais uma conta corrente?`, [
+            { text: 'Permanecer', onPress: () => (console.log(`O usuario decidiu permancer na tela para criar mais uma conta corrente`)) },
+            { text: 'Sair', onPress: () => navigation.pop()},
+        ]);
+
     const CriarContaCorrenteRequest = {
         agencia: agencia,
         usuarioCodigo: usuarioCodigo,
@@ -21,7 +27,7 @@ export default function PageAdicionarContaCorrente() {
     };
 
     const voltar = () => {
-        navigation.canGoBack();
+        navigation.pop();
     }
 
     const criarContaCorrente = () => {
@@ -31,12 +37,17 @@ export default function PageAdicionarContaCorrente() {
                 if (response.data.status) {
                     console.log("Conta corrente criada e vinculada ao usuário com sucesso.");
                     console.log(response.data.objInfo);
-                    // Você pode adicionar alguma navegação ou outra ação aqui
+                    setSaldo(``)
+                    setAgencia(``)
+                    AlertaContaCriada()
                 } else {
                     console.log("Falha ao criar conta corrente:", response.data.message);
                 }
             })
             .catch(err => {
+                Alert.alert('Ops.. Uma agencia com este nome ja existe!', `Digite outro nome de agencia para poder cadastrar`, [
+                    { text: 'Fechar', onPress: () => (console.log(`O usuario decidiu escolher outro nome de agencia para realizar a criacao de agencia`)) }
+                ]);
                 console.error("Ops! Ocorreu um erro: " + err);
             });
     };
@@ -44,7 +55,7 @@ export default function PageAdicionarContaCorrente() {
 
     return (
         <ScrollView contentContainerStyle={styles.scrollViewContainer}>
-            <TouchableOpacity onPress={voltar} style={{ display: 'flex', flexDirection: 'row', marginLeft: 20, marginTop: 40, marginBottom: 20 }}>
+            <TouchableOpacity onPress={voltar} style={{ display: 'flex', flexDirection: 'row', marginLeft: 20, marginTop: 40, marginBottom: 100 }}>
                 <AntDesign name="left" size={20} color="#fff" />
                 <Text style={{ color: '#fff', fontSize: 15, marginLeft: 5 }}>Voltar</Text>
             </TouchableOpacity>
@@ -70,7 +81,7 @@ export default function PageAdicionarContaCorrente() {
                         <TouchableOpacity onPress={criarContaCorrente} style={{ display: "flex", alignItems: "center", justifyContent: "center", width: '50%', borderRadius: 8, height: 50, backgroundColor: '#7F79AB' }}>
                             <Text style={{ color: '#FFF', fontWeight: "bold" }}>Criar</Text>
                         </TouchableOpacity>
-                        <Text style={{ color: '#7F79AB', fontWeight: "bold", marginTop: 10 }}>Cancelar operação</Text>
+                        <Text onPress={voltar} style={{ color: '#7F79AB', fontWeight: "bold", marginTop: 10 }}>Cancelar operação</Text>
                     </View>
                 </View>
             </View>

@@ -12,7 +12,7 @@ import axios from "axios";
 
 export default function Home() {
     const navigation = useNavigation();
-    const [saldoDisponivelContaCorrente, setSaldoDisponivelContaCorrente] = useState('');
+    const [saldoDisponivelContaCorrente, setSaldoDisponivelContaCorrente] = useState(0);
 
     const escolherModalidade = () => {
         navigation.navigate('EscolherModalidade');
@@ -77,7 +77,7 @@ export default function Home() {
                             <Text style={{ fontSize: 15, color: 'white', fontWeight: "500" }}>Saldo disponivel</Text>
                             <View style={{ alignItems: "center", display: 'flex', flexDirection: "row", justifyContent: "space-between", borderBottomWidth: 1, borderBottomColor: 'white', }}>
                                 
-                                <Text style={{ color: 'white', marginBottom: 10, fontSize: 30, marginTop: 5 }}>R$ {saldoDisponivelContaCorrente}</Text>
+                                <Text style={{ color: 'white', marginBottom: 10, fontSize: 30, marginTop: 5 }}>R$ {saldoDisponivelContaCorrente.toFixed(2)}</Text>
                                 <AntDesign name="right" size={25} color="white" marginTop='10' />
                             </View>
                         </TouchableOpacity>
@@ -87,7 +87,7 @@ export default function Home() {
                                 <View style={{ backgroundColor: '#D9D9D9', height: 70, width: '100%', borderRadius: 20, display: "flex", alignItems: "center", justifyContent: "center" }}>
                                     <Octicons name="gear" size={26} color="black" />
                                 </View>
-                                <Text style={{ color: 'white', textAlign: "center", fontSize: 14, fontWeight: 600 }}>Configurações</Text>
+                                <Text style={{ color: 'white', textAlign: "center", fontWeight: 600 }}>Configurar</Text>
                             </TouchableOpacity>
 
                             <TouchableOpacity onPress={Ajuda} style={{ width: '20%',display: 'flex', justifyContent: "center" }}>
@@ -116,14 +116,14 @@ export default function Home() {
                             <View style={{ padding: 30 }}>
                                 <Text style={{ fontWeight: "bold", marginBottom: 10 }}>Saldo disponivel</Text>
                                 <View style={{ display: 'flex', flexDirection: "row", alignItems: "center", justifyContent: "space-between", borderBottomWidth: 3, borderBottomColor: 'white', }}>
-                                    <Text style={{ color: '#000', fontWeight: "bold", fontSize: 35 }}>R$ {saldoDisponivelContaCorrente}</Text>
+                                    <Text style={{ color: '#000', fontWeight: "bold", fontSize: 30 }}>R$ {saldoDisponivelContaCorrente.toFixed(2)}</Text>
                                     <TouchableOpacity onPress={escolherModalidade} style={{ display: "flex", alignItems: "center", justifyContent: "center", width: '30%', borderRadius: 5, height: 30, borderWidth: 2, borderColor: '#7F79AB' }}>
                                         <Text style={{ color: '#7F79AB', fontWeight: "semibold" }}>Utilizar</Text>
                                     </TouchableOpacity>
                                 </View>
                                 <View style={{ display: 'flex', flexDirection: "row", justifyContent: "space-between", borderBottomWidth: 3, borderBottomColor: 'white', }}>
                                     <Text style={{ fontWeight: "bold" }}>Disponivel para utilizar</Text>
-                                    <Text style={{ fontWeight: "bold" }}>R$ {saldoDisponivelContaCorrente}</Text>
+                                    <Text style={{ fontWeight: "bold" }}>R$ {saldoDisponivelContaCorrente.toFixed(2)}</Text>
                                 </View>
                                 <View style={{ display: 'flex', flexDirection: "column", justifyContent: "space-between", borderBottomWidth: 3, borderBottomColor: 'white', marginTop: 30 }}>
                                     <Text style={{ fontWeight: "bold" }}>Seus rendimentos de 2024</Text>
