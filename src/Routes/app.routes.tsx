@@ -37,9 +37,11 @@ export type AppStackParamList = {
     EditarUsuario: undefined;
     AddCartao: {
         codigoConta: number;
+        saldoContaCorrenteAtual: number;
     };
     DetalhesCompra: {
-        codigoCompra: number;
+        codigoTransacaoFeita: number;
+        usuarioCodigo: number;
     };
 };
 

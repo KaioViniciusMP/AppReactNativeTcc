@@ -4,60 +4,67 @@ import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import { AppStackParamList } from '../../Routes/app.routes';
 import { useRoute } from '@react-navigation/native';
 import React, { useEffect, useState } from 'react';
+import api from '../../services/api';
 
 import AntDesign from '@expo/vector-icons/AntDesign';
 
-type NavigationProp = NativeStackNavigationProp<AppStackParamList>;
 type DetalhesCompraProp = RouteProp<AppStackParamList, 'DetalhesCompra'>;
 
+// type Compra = {
+//     codigo: number;
+//     tituloProduto: string;
+//     subtitulo: string;
+//     Valor: string;
+//     formaPagamento: string;
+//     modalidade: string;
+//     cartaoUtilizado: string;
+//     cvvCartao: string;
+//     dataTransacao: string;
+//     agenciaUtilizada: string;
+//     descricao: string;
+// };
+
 type Compra = {
-    codigo: number;
-    tituloProduto: string;
-    subtitulo: string;
-    Valor: string;
-    formaPagamento: string;
-    modalidade: string;
-    cartaoUtilizado: string;
-    cvvCartao: string;
-    dataTransacao: string;
-    agenciaUtilizada: string;
+    codigoTransacao: number;
+    titulo: string;
     descricao: string;
+    valorTransacao: string;
+    nomeModalidade: string;
+    dataTransacao: string;
+    cvv: string;
+    bandeiraCartao: string;
+    codigoUsuario: string;
+    formaPagamento: string;
+    agencia: string;
 };
 
 export default function DetalhesCompra() {
     const navigation = useNavigation();
-    const navigationApp = useNavigation<NavigationProp>();
-    const [compras, setCompras] = useState<Compra | undefined>(undefined);
+    //const [compra, setCompra] = useState<Compra | undefined>(undefined);
+    const [compra, setCompra] = useState<Compra | null>(null);
 
     const PageHome = () => {
         navigation.goBack();
     }
 
     const route = useRoute<DetalhesCompraProp>();
-    const { codigoCompra } = route.params;
-
-    const transacoes = [
-        { codigo: 1, tituloProduto: 'Carro', subtitulo: 'Veículo para transporte', Valor: `R$ ${(Math.random() * 1000 + 100).toFixed(2)}`, formaPagamento: 'debito', modalidade: 'investimentos', cartaoUtilizado: 'Nubank', cvvCartao: '789465132', dataTransacao: '12/06/2024', agenciaUtilizada: 'itau', descricao: 'Esse carro eu comprei com o intuito de ir trabalhar' },
-        { codigo: 2, tituloProduto: 'Moto', subtitulo: 'Veículo de duas rodas', Valor: `R$ ${(Math.random() * 1000 + 100).toFixed(2)}`, formaPagamento: 'credito', modalidade: 'transporte', cartaoUtilizado: 'Visa', cvvCartao: '123456789', dataTransacao: '15/07/2024', agenciaUtilizada: 'bradesco', descricao: 'Comprei uma moto para passeios de fim de semana' },
-        { codigo: 3, tituloProduto: 'Casa', subtitulo: 'Imóvel residencial', Valor: `R$ ${(Math.random() * 1000 + 100).toFixed(2)}`, formaPagamento: 'debito', modalidade: 'imoveis', cartaoUtilizado: 'MasterCard', cvvCartao: '987654321', dataTransacao: '20/08/2024', agenciaUtilizada: 'santander', descricao: 'Casa para passar as férias' },
-        { codigo: 4, tituloProduto: 'Violão', subtitulo: 'Instrumento musical', Valor: `R$ ${(Math.random() * 1000 + 100).toFixed(2)}`, formaPagamento: 'credito', modalidade: 'instrumentos', cartaoUtilizado: 'Amex', cvvCartao: '123987456', dataTransacao: '05/09/2024', agenciaUtilizada: 'itau', descricao: 'Para aprender a tocar música' },
-        { codigo: 5, tituloProduto: 'Notebook', subtitulo: 'Computador portátil', Valor: `R$ ${(Math.random() * 1000 + 100).toFixed(2)}`, formaPagamento: 'debito', modalidade: 'eletronicos', cartaoUtilizado: 'Elo', cvvCartao: '654789321', dataTransacao: '18/10/2024', agenciaUtilizada: 'bradesco', descricao: 'Para trabalho e estudos' },
-        { codigo: 6, tituloProduto: 'Cachorro', subtitulo: 'Animal de estimação', Valor: `R$ ${(Math.random() * 1000 + 100).toFixed(2)}`, formaPagamento: 'credito', modalidade: 'animais', cartaoUtilizado: 'Discover', cvvCartao: '789123654', dataTransacao: '22/11/2024', agenciaUtilizada: 'santander', descricao: 'Novo membro da família' },
-        { codigo: 7, tituloProduto: 'Viagem a Dubai', subtitulo: 'Passeio turístico', Valor: `R$ ${(Math.random() * 1000 + 100).toFixed(2)}`, formaPagamento: 'debito', modalidade: 'viagens', cartaoUtilizado: 'Nubank', cvvCartao: '321654987', dataTransacao: '01/12/2024', agenciaUtilizada: 'itau', descricao: 'Férias dos sonhos' },
-        { codigo: 8, tituloProduto: 'Livro', subtitulo: 'Material de leitura', Valor: `R$ ${(Math.random() * 1000 + 100).toFixed(2)}`, formaPagamento: 'credito', modalidade: 'educacao', cartaoUtilizado: 'Visa', cvvCartao: '456789123', dataTransacao: '10/01/2025', agenciaUtilizada: 'bradesco', descricao: 'Para expandir conhecimentos' },
-        { codigo: 9, tituloProduto: 'Hornet', subtitulo: 'Moto esportiva', Valor: `R$ ${(Math.random() * 1000 + 100).toFixed(2)}`, formaPagamento: 'debito', modalidade: 'transporte', cartaoUtilizado: 'MasterCard', cvvCartao: '147258369', dataTransacao: '15/02/2025', agenciaUtilizada: 'santander', descricao: 'Nova moto para aventuras' },
-        { codigo: 10, tituloProduto: 'Monitor', subtitulo: 'Tela de computador', Valor: `R$ ${(Math.random() * 1000 + 100).toFixed(2)}`, formaPagamento: 'credito', modalidade: 'eletronicos', cartaoUtilizado: 'Amex', cvvCartao: '963852741', dataTransacao: '20/03/2025', agenciaUtilizada: 'itau', descricao: 'Melhorar a estação de trabalho' }
-    ];
+    const { codigoTransacaoFeita, usuarioCodigo } = route.params;
 
     useEffect(() => {
-        const compra = transacoes.find(c => c.codigo === codigoCompra);
-        if (compra) {
-            console.log(compra);
-            setCompras(compra);
-        } else {
-            console.log('Conta não encontrada');
-        }
-    }, [codigoCompra]);
+        console.log(`usuarioCodigo: ${usuarioCodigo}, codigoTransacaoFeita: ${codigoTransacaoFeita}`);
+    
+        api.post('Transacoes/DetalhesTransacao', {
+            codigoUsuario: usuarioCodigo,
+            codigoTransacaoFeita: codigoTransacaoFeita
+        })
+        .then(response => {
+            console.log(`dados tela de detalhes de transacao: ${JSON.stringify(response.data, null, 2)}`);
+            if (response.data && response.data.codigoTransacao) { // Verifica se existe código de transação na resposta
+                setCompra(response.data);
+            }
+        })
+        .catch(err => console.error("Ops! Ocorreu um erro: " + err));
+    }, [codigoTransacaoFeita]);
 
     return (
         <ScrollView contentContainerStyle={styles.scrollViewContainer}>
@@ -71,70 +78,74 @@ export default function DetalhesCompra() {
                     <Text style={{ marginBottom: 20, fontWeight: "900", fontSize: 25, marginTop: 40, textTransform: 'uppercase' }}>detalhes</Text>
                 </View>
 
-                {compras && (
-                    <View key={compras.codigo} style={{ display: 'flex', width: '100%' }}>
-                        <View style={{ alignSelf: 'center', justifyContent: 'center', display: 'flex', width: '100%', }}>
-                            <Text style={{ marginLeft: 50, fontSize: 17, fontWeight: "800" }}>Titulo transação:</Text>
-                            <View style={{ display: 'flex', justifyContent: 'center', marginBottom: 15, width: '80%', alignSelf: 'center', borderRadius: 5, height: 40, paddingLeft: 15, backgroundColor: '#D9D9D9' }}>
-                                <Text style={{ fontSize: 15, fontWeight: "500" }}>{compras.tituloProduto}</Text>
-                            </View>
+                {compra ? (
+                    <View key={compra.codigoTransacao} style={{ display: 'flex', width: '100%' }}>
+                    <View style={{ alignSelf: 'center', justifyContent: 'center', display: 'flex', width: '100%', }}>
+                        <Text style={{ marginLeft: 50, fontSize: 17, fontWeight: "800" }}>Titulo transação:</Text>
+                        <View style={{ display: 'flex', justifyContent: 'center', marginBottom: 15, width: '80%', alignSelf: 'center', borderRadius: 5, height: 40, paddingLeft: 15, backgroundColor: '#D9D9D9' }}>
+                            <Text style={{ fontSize: 15, fontWeight: "500" }}>{compra.titulo}</Text>
                         </View>
+                    </View>
 
-                        <View style={{ alignSelf: 'center', justifyContent: 'center', display: 'flex', width: '100%', }}>
-                            <Text style={{ marginLeft: 50, fontSize: 17, fontWeight: "800" }}>Valor transação:</Text>
-                            <View style={{ display: 'flex', justifyContent: 'center', marginBottom: 15, width: '80%', alignSelf: 'center', borderRadius: 5, height: 40, paddingLeft: 15, backgroundColor: '#D9D9D9' }}>
-                                <Text style={{ fontSize: 15, fontWeight: "500" }}>{compras.Valor}</Text>
-                            </View>
+                    <View style={{ alignSelf: 'center', justifyContent: 'center', display: 'flex', width: '100%', }}>
+                        <Text style={{ marginLeft: 50, fontSize: 17, fontWeight: "800" }}>Valor transação:</Text>
+                        <View style={{ display: 'flex', justifyContent: 'center', marginBottom: 15, width: '80%', alignSelf: 'center', borderRadius: 5, height: 40, paddingLeft: 15, backgroundColor: '#D9D9D9' }}>
+                            <Text style={{ fontSize: 15, fontWeight: "500" }}>{compra.valorTransacao}</Text>
                         </View>
+                    </View>
 
-                        <View style={{ alignSelf: 'center', justifyContent: 'center', display: 'flex', width: '100%', }}>
-                            <Text style={{ marginLeft: 50, fontSize: 17, fontWeight: "800" }}>Forma de pagamento:</Text>
-                            <View style={{ display: 'flex', justifyContent: 'center', marginBottom: 15, width: '80%', alignSelf: 'center', borderRadius: 5, height: 40, paddingLeft: 15, backgroundColor: '#D9D9D9' }}>
-                                <Text style={{ fontSize: 15, fontWeight: "500" }}>{compras.formaPagamento}</Text>
-                            </View>
+                    <View style={{ alignSelf: 'center', justifyContent: 'center', display: 'flex', width: '100%', }}>
+                        <Text style={{ marginLeft: 50, fontSize: 17, fontWeight: "800" }}>Forma de pagamento:</Text>
+                        <View style={{ display: 'flex', justifyContent: 'center', marginBottom: 15, width: '80%', alignSelf: 'center', borderRadius: 5, height: 40, paddingLeft: 15, backgroundColor: '#D9D9D9' }}>
+                            <Text style={{ fontSize: 15, fontWeight: "500" }}>{compra.formaPagamento}</Text>
                         </View>
+                    </View>
 
-                        <View style={{ alignSelf: 'center', justifyContent: 'center', display: 'flex', width: '100%', }}>
-                            <Text style={{ marginLeft: 50, fontSize: 17, fontWeight: "800" }}>Modalidade:</Text>
-                            <View style={{ display: 'flex', justifyContent: 'center', marginBottom: 15, width: '80%', alignSelf: 'center', borderRadius: 5, height: 40, paddingLeft: 15, backgroundColor: '#D9D9D9' }}>
-                                <Text style={{ fontSize: 15, fontWeight: "500" }}>{compras.modalidade}</Text>
-                            </View>
+                    <View style={{ alignSelf: 'center', justifyContent: 'center', display: 'flex', width: '100%', }}>
+                        <Text style={{ marginLeft: 50, fontSize: 17, fontWeight: "800" }}>Modalidade:</Text>
+                        <View style={{ display: 'flex', justifyContent: 'center', marginBottom: 15, width: '80%', alignSelf: 'center', borderRadius: 5, height: 40, paddingLeft: 15, backgroundColor: '#D9D9D9' }}>
+                            <Text style={{ fontSize: 15, fontWeight: "500" }}>{compra.nomeModalidade}</Text>
                         </View>
+                    </View>
 
-                        <View style={{ alignSelf: 'center', justifyContent: 'center', display: 'flex', width: '100%', }}>
-                            <Text style={{ marginLeft: 50, fontSize: 17, fontWeight: "800" }}>Cartão utilizado:</Text>
-                            <View style={{ display: 'flex', justifyContent: 'center', marginBottom: 15, width: '80%', alignSelf: 'center', borderRadius: 5, height: 40, paddingLeft: 15, backgroundColor: '#D9D9D9' }}>
-                                <Text style={{ fontSize: 15, fontWeight: "500" }}>{compras.cartaoUtilizado}</Text>
-                            </View>
+                    <View style={{ alignSelf: 'center', justifyContent: 'center', display: 'flex', width: '100%', }}>
+                        <Text style={{ marginLeft: 50, fontSize: 17, fontWeight: "800" }}>Cartão utilizado:</Text>
+                        <View style={{ display: 'flex', justifyContent: 'center', marginBottom: 15, width: '80%', alignSelf: 'center', borderRadius: 5, height: 40, paddingLeft: 15, backgroundColor: '#D9D9D9' }}>
+                            <Text style={{ fontSize: 15, fontWeight: "500" }}>{compra.bandeiraCartao}</Text>
                         </View>
+                    </View>
 
-                        <View style={{ alignSelf: 'center', justifyContent: 'center', display: 'flex', width: '100%', }}>
-                            <Text style={{ marginLeft: 50, fontSize: 17, fontWeight: "800" }}>CVV do cartão utilizado:</Text>
-                            <View style={{ display: 'flex', justifyContent: 'center', marginBottom: 15, width: '80%', alignSelf: 'center', borderRadius: 5, height: 40, paddingLeft: 15, backgroundColor: '#D9D9D9' }}>
-                                <Text style={{ fontSize: 15, fontWeight: "500" }}>{compras.cvvCartao}</Text>
-                            </View>
+                    <View style={{ alignSelf: 'center', justifyContent: 'center', display: 'flex', width: '100%', }}>
+                        <Text style={{ marginLeft: 50, fontSize: 17, fontWeight: "800" }}>CVV do cartão utilizado:</Text>
+                        <View style={{ display: 'flex', justifyContent: 'center', marginBottom: 15, width: '80%', alignSelf: 'center', borderRadius: 5, height: 40, paddingLeft: 15, backgroundColor: '#D9D9D9' }}>
+                            <Text style={{ fontSize: 15, fontWeight: "500" }}>{compra.cvv}</Text>
                         </View>
+                    </View>
 
-                        <View style={{ alignSelf: 'center', justifyContent: 'center', display: 'flex', width: '100%', }}>
-                            <Text style={{ marginLeft: 50, fontSize: 17, fontWeight: "800" }}>Data de transação:</Text>
-                            <View style={{ display: 'flex', justifyContent: 'center', marginBottom: 15, width: '80%', alignSelf: 'center', borderRadius: 5, height: 40, paddingLeft: 15, backgroundColor: '#D9D9D9' }}>
-                                <Text style={{ fontSize: 15, fontWeight: "500" }}>{compras.dataTransacao}</Text>
-                            </View>
+                    <View style={{ alignSelf: 'center', justifyContent: 'center', display: 'flex', width: '100%', }}>
+                        <Text style={{ marginLeft: 50, fontSize: 17, fontWeight: "800" }}>Data de transação:</Text>
+                        <View style={{ display: 'flex', justifyContent: 'center', marginBottom: 15, width: '80%', alignSelf: 'center', borderRadius: 5, height: 40, paddingLeft: 15, backgroundColor: '#D9D9D9' }}>
+                            <Text style={{ fontSize: 15, fontWeight: "500" }}>{compra.dataTransacao}</Text>
                         </View>
+                    </View>
 
-                        <View style={{ alignSelf: 'center', justifyContent: 'center', display: 'flex', width: '100%', }}>
-                            <Text style={{ marginLeft: 50, fontSize: 17, fontWeight: "800" }}>Agencia:</Text>
-                            <View style={{ display: 'flex', justifyContent: 'center', marginBottom: 15, width: '80%', alignSelf: 'center', borderRadius: 5, height: 40, paddingLeft: 15, backgroundColor: '#D9D9D9' }}>
-                                <Text style={{ fontSize: 15, fontWeight: "500" }}>{compras.agenciaUtilizada}</Text>
-                            </View>
+                    <View style={{ alignSelf: 'center', justifyContent: 'center', display: 'flex', width: '100%', }}>
+                        <Text style={{ marginLeft: 50, fontSize: 17, fontWeight: "800" }}>Agencia:</Text>
+                        <View style={{ display: 'flex', justifyContent: 'center', marginBottom: 15, width: '80%', alignSelf: 'center', borderRadius: 5, height: 40, paddingLeft: 15, backgroundColor: '#D9D9D9' }}>
+                            <Text style={{ fontSize: 15, fontWeight: "500" }}>{compra.agencia}</Text>
                         </View>
+                    </View>
 
-                        <View style={{ alignSelf: 'center', justifyContent: 'center', display: 'flex', width: '100%', }}>
-                            <Text style={{ marginLeft: 50, fontSize: 17, fontWeight: "800" }}>Descrição:</Text>
-                            <View style={{ display: 'flex', justifyContent: 'flex-start',paddingTop:10, marginBottom: 15, width: '80%', alignSelf: 'center', borderRadius: 5, height: 100, paddingLeft: 15, backgroundColor: '#D9D9D9' }}>
-                                <Text style={{ fontSize: 15, fontWeight: "500" }}>{compras.descricao}</Text>
-                            </View>
+                    <View style={{ alignSelf: 'center', justifyContent: 'center', display: 'flex', width: '100%', }}>
+                        <Text style={{ marginLeft: 50, fontSize: 17, fontWeight: "800" }}>Descrição:</Text>
+                        <View style={{ display: 'flex', justifyContent: 'flex-start', paddingTop: 10, marginBottom: 15, width: '80%', alignSelf: 'center', borderRadius: 5, height: 100, paddingLeft: 15, backgroundColor: '#D9D9D9' }}>
+                            <Text style={{ fontSize: 15, fontWeight: "500" }}>{compra.descricao}</Text>
                         </View>
+                    </View>
+                </View>
+                ) : (
+                    <View style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', width: '100%', height: 200 }}>
+                        <Text style={{ fontSize: 18, fontWeight: "500" }}>Nenhuma transação encontrada</Text>
                     </View>
                 )}
             </View>

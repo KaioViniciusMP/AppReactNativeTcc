@@ -33,10 +33,10 @@ export default function PageContasCorrentes() {
         navigation.pop();
     }
 
-    const acessarCartoes = (codigoConta: number) => {
+    const acessarCartoes = (codigoConta: number, saldoContaCorrenteAtual: number) => {
         console.log(`codigo de conta passado: ${codigoConta}`);
         console.log("codigo de conta passado:" + codigoConta);
-        navigation.navigate('AddCartao', { codigoConta });
+        navigation.navigate('AddCartao', { codigoConta, saldoContaCorrenteAtual,  });
     };
 
     // const data: ContaCorrente[] = [
@@ -50,13 +50,13 @@ export default function PageContasCorrentes() {
     useEffect(() => {
         api.get('/ContaCorrente')
             .then(response => {
-                console.log(response.data);
                 if (response.data && Array.isArray(response.data)) {
                     setContasCorrentes(response.data);
                 }
             })
             .catch(err => console.error("Ops! Ocorreu um erro:", err));
     }, []);
+
     
 
     return (
@@ -82,7 +82,7 @@ export default function PageContasCorrentes() {
                     data={contasCorrentes}
                     keyExtractor={(item) => String(item.codigo)}
                     renderItem={({ item }) => (
-                        <TouchableOpacity onPress={() => acessarCartoes(item.codigo)} style={{ display: 'flex', justifyContent: "space-between", flexDirection: "row", padding: 10, borderBottomWidth: 1, borderBottomColor: '#ccc' }}>
+                        <TouchableOpacity onPress={() => acessarCartoes(item.codigo, item.saldo)} style={{ display: 'flex', justifyContent: "space-between", flexDirection: "row", padding: 10, borderBottomWidth: 1, borderBottomColor: '#ccc' }}>
                             <View style={{ display: 'flex', flexDirection: "row", alignItems: 'center' }}>
                                 <Text style={{ fontWeight: 'bold', fontSize: 15, display: 'flex', flexDirection: "column", marginLeft: 20, marginTop: 20, textTransform:"uppercase" }}>{item.agencia}</Text>
                             </View>
