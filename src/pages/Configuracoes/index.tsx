@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, ScrollView, TouchableOpacity, FlatList } from 'react-native'
+import { StyleSheet, Text, View, ScrollView, TouchableOpacity, Alert } from 'react-native'
 import { useNavigation } from "@react-navigation/native";
 import React, { useState } from 'react'
 import { AuthStackParamList } from '../../Routes/auth.routes';
@@ -27,6 +27,10 @@ export default function PageConfiguracoes() {
         navigationApp.navigate('EditarUsuario');
     }
 
+    const ButtonAlert = () =>
+        Alert.alert('Atenção', `Funcionalidade disponivel em breve.`, [
+            { text: 'OK', onPress: () => console.log('Deslogar') },
+        ]);
 
     const voltar = () => {
         navigation.pop();
@@ -62,7 +66,7 @@ export default function PageConfiguracoes() {
                     <Text style={{ fontSize: 40, alignSelf: "flex-end" }}>{'>'}</Text>
                 </TouchableOpacity>
                 
-                <TouchableOpacity style={{ display: 'flex', justifyContent: "space-between", flexDirection: "row", padding: 10, borderBottomWidth: 1, borderBottomColor: '#ccc' }}>
+                <TouchableOpacity onPress={() => ButtonAlert()} style={{ display: 'flex', justifyContent: "space-between", flexDirection: "row", padding: 10, borderBottomWidth: 1, borderBottomColor: '#ccc' }}>
                     <View style={{ display: 'flex', flexDirection: "row", alignItems: 'center' }}>
                         <FontAwesome name='money' size={25} color="black" style={{ marginRight: 30, marginLeft: 20 }} />
                         <Text style={{ display: 'flex', flexDirection: "column" }}>Editar entrada de dinheiro mensal</Text>
