@@ -1,4 +1,5 @@
 import { createContext, ReactNode, useState } from "react";
+import api from "../services/api";
 
 type AuthContextData = {
     user: UserProps;
@@ -7,8 +8,10 @@ type AuthContextData = {
 }
 
 type UserProps = {
-    txtUsuario: string;
-    txtSenha: string;
+    usuarioCodigo: string;
+    usuario: string;
+    nome: string;
+    token: string;
 }
 
 type AuthProviderProps = {
@@ -22,29 +25,39 @@ type SignInProps = {
 
 export const AuthContext = createContext({} as AuthContextData);
 
-export function AuthProvider({ children } : AuthProviderProps) {
+export function AuthProvider({ children }: AuthProviderProps) {
     const [user, setUser] = useState<UserProps>({
-        txtUsuario: '',
-        txtSenha: '',
+        usuarioCodigo: '',
+        usuario: '',
+        nome: '',
+        token: '',
     })
 
     const [loadingAuth, setLoadingAuth] = useState(false);
-    const isAuthenticated = !!user.txtUsuario;
+    const isAuthenticated = !!user.usuario;
 
-    async function signIn({ txtUsuario, txtSenha}: SignInProps){
+    async function signIn({ txtUsuario, txtSenha }: SignInProps) {
         setLoadingAuth(true);
 
         try {
             //fazer requisição com axios aqui
-            // const response = await api.post('/rotaApi',{
-            //     txtUsuario,
-            //     txtSenha
-            // })
+            const response = await api.post('/Autenticacoes', {
+                Usuario: txtUsuario,
+                Senha: txtSenha
+            })
 
-            if(txtUsuario != '' && txtSenha != ''){
-                console.log('usuario logado: ' + txtUsuario + ' senha: ' + txtSenha)
-                setUser({txtUsuario, txtSenha})
-            }
+            console.log(response.data)
+
+            const { usuarioCodigo, usuario, nome, token } = response.data
+
+            setUser({
+                usuarioCodigo,
+                usuario,
+                nome,
+                token
+            })
+
+            setLoadingAuth(false);
 
         } catch (error) {
             console.log('erro ao acessar', error)
@@ -52,8 +65,8 @@ export function AuthProvider({ children } : AuthProviderProps) {
         }
     }
 
-    return(
-        <AuthContext.Provider value={{user, isAuthenticated, signIn}}>
+    return (
+        <AuthContext.Provider value={{ user, isAuthenticated, signIn }}>
             {children}
         </AuthContext.Provider>
     )
