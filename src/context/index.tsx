@@ -8,7 +8,7 @@ type AuthContextData = {
 }
 
 type UserProps = {
-    usuarioCodigo: string;
+    usuarioCodigo: number;
     usuario: string;
     nome: string;
     token: string;
@@ -27,7 +27,7 @@ export const AuthContext = createContext({} as AuthContextData);
 
 export function AuthProvider({ children }: AuthProviderProps) {
     const [user, setUser] = useState<UserProps>({
-        usuarioCodigo: '',
+        usuarioCodigo: 0,
         usuario: '',
         nome: '',
         token: '',

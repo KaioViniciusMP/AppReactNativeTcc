@@ -1,12 +1,13 @@
 import { StyleSheet, Text, View, ScrollView, TouchableOpacity, Alert, FlatList } from 'react-native'
 import { RouteProp, useNavigation } from "@react-navigation/native";
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState,useContext } from 'react';
 import { AuthStackParamList } from '../../Routes/auth.routes';
 import { AppStackParamList } from '../../Routes/app.routes';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import { useRoute } from '@react-navigation/native';
 import api from '../../services/api';
+import { AuthContext } from "../../context";
 
 type NavigationProp = NativeStackNavigationProp<AuthStackParamList>;
 type NavigationAppProp = NativeStackNavigationProp<AppStackParamList>;
@@ -72,9 +73,14 @@ export default function AddCartao() {
         const indiceAleatorio = Math.floor(Math.random() * coresAleatoriasCartoes.length);
         return coresAleatoriasCartoes[indiceAleatorio];
     };
+    const {user} = useContext(AuthContext)
+
+    const usuarioCodigo = user?.usuarioCodigo
+
+    console.log(`codigo do usuario que esta vindo no context: ${usuarioCodigo}`)
 
     useEffect(() => {
-        api.get('/Cartao')
+        api.post(`/Cartao/BuscarCartoesCadastrados`, usuarioCodigo)
             .then(response => {
                 console.log(response.data);
                 if (response.data && Array.isArray(response.data)) {
