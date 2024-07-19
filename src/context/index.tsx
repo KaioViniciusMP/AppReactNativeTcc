@@ -1,5 +1,7 @@
 import { createContext, ReactNode, useState } from "react";
 import api from "../services/api";
+import { Alert } from "react-native";
+import { AxiosError } from "axios";
 
 type AuthContextData = {
     user: UserProps;
@@ -37,6 +39,17 @@ export function AuthProvider({ children }: AuthProviderProps) {
     const isAuthenticated = !!user.usuario;
 
     async function signIn({ txtUsuario, txtSenha }: SignInProps) {
+        const AlertErrorConnectionService = () =>
+            Alert.alert('Error', `Ocorreu algum erro ao tentar se conectar com o servidor!`, [
+                { text: 'Fechar' },
+            ]);
+
+        const AlertUnauthorized = () =>
+            Alert.alert('Error', `Usuario ou senha inválidos!`, [
+                { text: 'Fechar' },
+            ]);
+
+
         setLoadingAuth(true);
 
         try {
@@ -59,8 +72,24 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
             setLoadingAuth(false);
 
-        } catch (error) {
-            console.log('erro ao acessar', error)
+        } catch (err) {
+            const error = err as AxiosError;
+
+            if (error.response) {
+                if (error.response.status === 404) {
+                    AlertErrorConnectionService()
+                }
+                else if (error.response.status === 401) {
+                    AlertUnauthorized()
+                }
+                else {
+                    AlertErrorConnectionService()
+                }
+            }
+            else {
+                console.log('Erro ao acessar', error);
+            }
+
             setLoadingAuth(false);
         }
     }

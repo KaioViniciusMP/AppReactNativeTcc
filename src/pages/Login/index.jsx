@@ -1,13 +1,13 @@
 import { useNavigation } from "@react-navigation/native";
 import { useState, useContext } from "react";
-import { View, Text, TouchableOpacity, StyleSheet, TextInput } from "react-native";
+import { View, Text, TouchableOpacity, StyleSheet, TextInput, Alert } from "react-native";
 import { AuthContext } from "../../context";
 
 export default function Login() {
     const [txtSenha, setSenha] = useState('');
     const [txtUsuario, setUsuario] = useState('');
     const navigation = useNavigation();
-    const {signIn} = useContext(AuthContext)
+    const { signIn } = useContext(AuthContext)
 
     const PageHome = () => {
         navigation.navigate('Home')
@@ -16,9 +16,34 @@ export default function Login() {
         navigation.navigate('Cadastro')
     }
 
-    async function handleLogin(){
-        await signIn({ txtUsuario, txtSenha})
+    async function handleLogin() {
+        // txtUsuario ? "" : AlertUsuarioInvalido
+        // txtSenha ? "" : AlertSenhaInvalido
+        if(txtUsuario == ""){
+            AlertUsuarioInvalido()
+        }
+        if(txtSenha == ""){
+            AlertSenhaInvalido()
+        }
+            
+        await signIn({ txtUsuario, txtSenha })
     }
+
+    const AlertUsuarioInvalido = () => {
+        setTimeout(() => {
+            Alert.alert('Error', 'Digite um usuário para realizar o login.', [
+                { text: 'Fechar' },
+            ]);
+        }, 1000); // Atraso de 1 segundo
+    };
+    
+    const AlertSenhaInvalido = () => {
+        setTimeout(() => {
+            Alert.alert('Error', 'Digite uma senha para realizar o login.', [
+                { text: 'Fechar' },
+            ]);
+        }, 1000); // Atraso de 1 segundo
+    };
 
     return (
         <View style={styles.container}>
