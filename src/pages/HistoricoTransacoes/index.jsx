@@ -1,100 +1,86 @@
 import { StyleSheet, Text, View, ScrollView, TouchableOpacity, FlatList, Alert } from 'react-native'
 import AntDesign from '@expo/vector-icons/AntDesign';
 import { useRoute } from '@react-navigation/native';
+import api from '../../services/api';
+import { useContext, useEffect, useState } from "react";
+import { AuthContext } from "../../context";
 
 export default function HistoricoTransacoes() {
-    let data;
-    let primeiroItemArray;
-
-    const dataHistoricoCompleto = [
-        { Key: 1, tipoHistorico: 'Completo', Agencia: 'AGENCIA', Valor: 'R$ 200,00', Descricao: 'Titulo vai aqui' },
-        { Key: 2, tipoHistorico: 'Completo', Agencia: 'AGENCIA', Valor: 'R$ 500,00', Descricao: 'Titulo vai aqui' },
-        { Key: 3, tipoHistorico: 'Completo', Agencia: 'Itaú', Valor: 'R$ 500,00', Descricao: 'Titulo vai aqui' },
-        { Key: 4, tipoHistorico: 'Completo', Agencia: 'Bradesco', Valor: 'R$ 500,00', Descricao: 'Titulo vai aqui' },
-        { Key: 5, tipoHistorico: 'Completo', Agencia: 'Santander', Valor: 'R$ 500,00', Descricao: 'Titulo vai aqui' },
-    ];
-    const dataHistoricoInvestimentos = [
-        { Key: 1, tipoHistorico: 'Investimentos', Agencia: 'AGENCIA', Valor: 'R$ 200,00', Descricao: 'Titulo vai aqui' },
-        { Key: 2, tipoHistorico: 'Investimentos', Agencia: 'AGENCIA', Valor: 'R$ 500,00', Descricao: 'Titulo vai aqui' },
-        { Key: 3, tipoHistorico: 'Investimentos', Agencia: 'Itaú', Valor: 'R$ 500,00', Descricao: 'Titulo vai aqui' },
-        { Key: 4, tipoHistorico: 'Investimentos', Agencia: 'Bradesco', Valor: 'R$ 500,00', Descricao: 'Titulo vai aqui' },
-        { Key: 5, tipoHistorico: 'Investimentos', Agencia: 'Santander', Valor: 'R$ 500,00', Descricao: 'Titulo vai aqui' },
-    ];
-    const dataHistoricoAlimentacao = [
-        { Key: 1, tipoHistorico: 'Alimentacao', Agencia: 'AGENCIA', Valor: 'R$ 200,00', Descricao: 'Titulo vai aqui' },
-        { Key: 2, tipoHistorico: 'Alimentacao', Agencia: 'AGENCIA', Valor: 'R$ 500,00', Descricao: 'Titulo vai aqui' },
-        { Key: 3, tipoHistorico: 'Alimentacao', Agencia: 'Itaú', Valor: 'R$ 500,00', Descricao: 'Titulo vai aqui' },
-        { Key: 4, tipoHistorico: 'Alimentacao', Agencia: 'Bradesco', Valor: 'R$ 500,00', Descricao: 'Titulo vai aqui' },
-        { Key: 5, tipoHistorico: 'Alimentacao', Agencia: 'Santander', Valor: 'R$ 500,00', Descricao: 'Titulo vai aqui' },
-    ];
-    const dataHistoricoLazer = [
-        { Key: 1, tipoHistorico: 'Lazer', Agencia: 'AGENCIA', Valor: 'R$ 200,00', Descricao: 'Titulo vai aqui' },
-        { Key: 2, tipoHistorico: 'Lazer', Agencia: 'AGENCIA', Valor: 'R$ 500,00', Descricao: 'Titulo vai aqui' },
-        { Key: 3, tipoHistorico: 'Lazer', Agencia: 'Itaú', Valor: 'R$ 500,00', Descricao: 'Titulo vai aqui' },
-        { Key: 4, tipoHistorico: 'Lazer', Agencia: 'Bradesco', Valor: 'R$ 500,00', Descricao: 'Titulo vai aqui' },
-        { Key: 5, tipoHistorico: 'Lazer', Agencia: 'Santander', Valor: 'R$ 500,00', Descricao: 'Titulo vai aqui' },
-    ];
-    const dataHistoricoTransporte = [
-        { Key: 1, tipoHistorico: 'Transporte', Agencia: 'AGENCIA', Valor: 'R$ 200,00', Descricao: 'Titulo vai aqui' },
-        { Key: 2, tipoHistorico: 'Transporte', Agencia: 'AGENCIA', Valor: 'R$ 500,00', Descricao: 'Titulo vai aqui' },
-        { Key: 3, tipoHistorico: 'Transporte', Agencia: 'Itaú', Valor: 'R$ 500,00', Descricao: 'Titulo vai aqui' },
-        { Key: 4, tipoHistorico: 'Transporte', Agencia: 'Bradesco', Valor: 'R$ 500,00', Descricao: 'Titulo vai aqui' },
-        { Key: 5, tipoHistorico: 'Transporte', Agencia: 'Santander', Valor: 'R$ 500,00', Descricao: 'Titulo vai aqui' },
-    ];
-    const dataHistoricoSaude = [
-        { Key: 1, tipoHistorico: 'Saúde', Agencia: 'AGENCIA', Valor: 'R$ 200,00', Descricao: 'Titulo vai aqui' },
-        { Key: 2, tipoHistorico: 'Saúde', Agencia: 'AGENCIA', Valor: 'R$ 500,00', Descricao: 'Titulo vai aqui' },
-        { Key: 3, tipoHistorico: 'Saúde', Agencia: 'Itaú', Valor: 'R$ 500,00', Descricao: 'Titulo vai aqui' },
-        { Key: 4, tipoHistorico: 'Saúde', Agencia: 'Bradesco', Valor: 'R$ 500,00', Descricao: 'Titulo vai aqui' },
-        { Key: 5, tipoHistorico: 'Saúde', Agencia: 'Santander', Valor: 'R$ 500,00', Descricao: 'Titulo vai aqui' },
-    ];
-    const dataHistoricoCompras = [
-        { Key: 1, tipoHistorico: 'Saúde', Agencia: 'AGENCIA', Valor: 'R$ 200,00', Descricao: 'Titulo vai aqui' },
-        { Key: 2, tipoHistorico: 'Saúde', Agencia: 'AGENCIA', Valor: 'R$ 500,00', Descricao: 'Titulo vai aqui' },
-        { Key: 3, tipoHistorico: 'Saúde', Agencia: 'Itaú', Valor: 'R$ 500,00', Descricao: 'Titulo vai aqui' },
-        { Key: 4, tipoHistorico: 'Saúde', Agencia: 'Bradesco', Valor: 'R$ 500,00', Descricao: 'Titulo vai aqui' },
-        { Key: 5, tipoHistorico: 'Saúde', Agencia: 'Santander', Valor: 'R$ 500,00', Descricao: 'Titulo vai aqui' },
-    ];
-
+    const { user } = useContext(AuthContext);
+    const [historico, setHistorico] = useState([])
+    const [contaCorrente, setContaCorrente] = useState([])
     const route = useRoute();
+    const { navigationPage } = route.params;
 
-    const { param1, param2 } = route.params;
+    const dados = {
+        data: undefined,
+        primeiroItemArray: undefined,
+        modalidadeCodigo: undefined,
+        tipoHistorico: undefined,
+    };
 
-    switch (param1) {
+    const buscarHistorico = (codigoModalidade) => {
+        api.post(`/Transacoes/BuscarHistoricoTransacoesPorModalidade`, {
+            usuarioCodigo: user?.usuarioCodigo,
+            modalidadeCodigo: codigoModalidade
+        })
+            .then(response => {
+                setHistorico(response.data)
+            })
+            .catch(err => console.error("ops! ocorreu um erro: " + err));
+    }
+    const buscarHistoricoCompleto = () => {
+        api.get(`/Transacoes/${user?.usuarioCodigo}`)
+            .then(response => {
+                setHistorico(response.data)
+            })
+            .catch(err => console.error("ops! ocorreu um erro: " + err));
+    }
+
+    useEffect(() => {
+        api.get(`/ContaCorrente`)
+            .then(response => {
+                setContaCorrente(response.data)
+            })
+            .catch(err => console.error("ops! ocorreu um erro: " + err));
+    }, [])
+
+    const criandoBody = (tipoHistoricoParam, dataParam, primeiroItemArrayParam, modalidadeCodigoParam) => {
+        dados.tipoHistorico = tipoHistoricoParam;
+        dados.data = dataParam;
+        dados.primeiroItemArray = primeiroItemArrayParam;
+        dados.modalidadeCodigo = modalidadeCodigoParam;
+    };
+
+    switch (navigationPage) {
         case "HistoricoInvestimentos":
-            data = dataHistoricoInvestimentos
-            primeiroItemArray = dataHistoricoInvestimentos[0]
-            console.log('o param1 veio certo: ' + data);
+            criandoBody("Investimentos", historico, historico[0], 4)
+            buscarHistorico(dados.modalidadeCodigo)
             break
         case "HistoricoAlimentacao":
-            data = dataHistoricoAlimentacao
-            primeiroItemArray = dataHistoricoAlimentacao[0]
-            console.log('o param1 veio certo: ' + data);
+            criandoBody("Alimentacao", historico, historico[0], 3)
+            buscarHistorico(dados.modalidadeCodigo)
             break
         case "HistoricoLazer":
-            data = dataHistoricoLazer
-            primeiroItemArray = dataHistoricoLazer[0]
-            console.log('o param1 veio certo: ' + data);
+            criandoBody("Lazer", historico, historico[0], 5)
+            buscarHistorico(dados.modalidadeCodigo)
             break
         case "HistoricoTransporte":
-            data = dataHistoricoTransporte
-            primeiroItemArray = dataHistoricoTransporte[0]
-            console.log('o param1 veio certo: ' + data);
+            criandoBody("Transporte", historico, historico[0], 2)
+            buscarHistorico(dados.modalidadeCodigo)
             break
         case "HistoricoSaude":
-            data = dataHistoricoSaude
-            primeiroItemArray = dataHistoricoSaude[0]
-            console.log('o param1 veio certo: ' + data);
+            criandoBody("Saude", historico, historico[0], 1)
+            buscarHistorico(dados.modalidadeCodigo)
             break
         case "HistoricoCompras":
-            data = dataHistoricoCompras
-            primeiroItemArray = dataHistoricoCompras[0]
-            console.log('o param1 veio certo: ' + data);
+            criandoBody("Compras", historico, historico[0], 6)
+            buscarHistorico(dados.modalidadeCodigo)
             break
         default:
-            data = dataHistoricoCompleto
-            primeiroItemArray = dataHistoricoCompleto[0]
-            console.log('o param1 null por ser acessado pela tabbedbar: ' + data);
+            buscarHistoricoCompleto()
+            dados.data = historico
+            dados.primeiroItemArray = historico[0]
     }
 
     const ButtonAlert = (key, agencia) =>
@@ -111,6 +97,11 @@ export default function HistoricoTransacoes() {
         ButtonAlert(key, agencia);
     };
 
+    const getAgenciaByCodigo = (codigo) => {
+        const conta = contaCorrente.find(i => i.codigo === codigo);
+        return conta ? conta.agencia : 'Desconhecida';
+    };
+
     return (
         <ScrollView contentContainerStyle={styles.scrollViewContainer}>
             <TouchableOpacity style={{ display: 'flex', flexDirection: 'row', marginLeft: 20, marginTop: 40, marginBottom: 60 }}>
@@ -122,24 +113,24 @@ export default function HistoricoTransacoes() {
                 <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'flex-start' }}>
                     <Text style={{ fontWeight: "900", fontSize: 20, marginTop: 40, marginLeft: 35 }}>TRANSAÇÕES</Text>
                 </View>
-                <Text style={{ fontSize: 13, fontWeight: "bold", color: '#939393', textAlign: 'left', marginLeft: 35, marginBottom: 30 }}>
-                    {primeiroItemArray.tipoHistorico}
+                <Text style={{ fontSize: 13, fontWeight: "bold", color: '#939393', textAlign: 'left', marginLeft: 35, marginBottom: 30, textTransform: 'uppercase' }}>
+                    {dados.tipoHistorico}
                 </Text>
 
                 <FlatList
-                    data={data}
+                    data={dados.data}
                     renderItem={({ item }) => (
                         <TouchableOpacity onPress={() => handlePress(item.Key, item.Agencia)} style={{ alignItems: 'center', display: 'flex', justifyContent: "space-between", flexDirection: "row", padding: 10, borderBottomWidth: 1, borderBottomColor: '#ccc' }}>
                             <View style={{ display: 'flex', flexDirection: "row", alignItems: 'center' }}>
                                 <View style={{ width: 60, height: 60, backgroundColor: "#D9D9D9", marginLeft: 20, borderRadius: 12 }} />
 
                                 <View style={{ display: 'flex', flexDirection: 'column' }}>
-                                    <Text style={{ fontWeight: 'bold', fontSize: 15, display: 'flex', marginLeft: 20 }}>{item.Agencia}</Text>
-                                    <Text style={{ fontWeight: 'bold', color: '#939393', fontSize: 12, marginLeft: 20, marginTop: 3 }}>{item.Descricao}</Text>
+                                    <Text style={{ fontWeight: 'bold', fontSize: 15, display: 'flex', marginLeft: 20 }}>{getAgenciaByCodigo(item.contaCorrenteCodigo)}</Text>
+                                    <Text style={{ fontWeight: 'bold', color: '#939393', fontSize: 12, marginLeft: 20, marginTop: 3 }}>{item.descricao}</Text>
                                 </View>
                             </View>
 
-                            <Text style={{ fontWeight: 'bold', fontSize: 15, marginRight: 20 }}>{item.Valor}</Text>
+                            <Text style={{ fontWeight: 'bold', fontSize: 15, marginRight: 20 }}>{item.valorTransacao}</Text>
                         </TouchableOpacity>
                     )}
                 />

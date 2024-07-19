@@ -10,7 +10,9 @@ import api from "../../services/api";
 import { useEffect, useState } from "react";
 import axios from "axios";
 
+
 export default function Home() {
+
     const navigation = useNavigation();
     const [saldoDisponivelContaCorrente, setSaldoDisponivelContaCorrente] = useState(0);
 
@@ -41,7 +43,7 @@ export default function Home() {
 
     const TelaHistorico = (navigationPage) => {
         navigation.navigate('HistoricoTransacoes', {
-            param1: navigationPage,
+            navigationPage: navigationPage,
             param2: 1,
         });
     }
@@ -52,16 +54,16 @@ export default function Home() {
         ]);
 
 
-        useEffect(() => {
-            api.get('/ContaCorrente')
-                .then(response => {
-                    console.log(response.data);
-                    if (response.data && response.data.length > 0) {
-                        setSaldoDisponivelContaCorrente(response.data[0].saldo);
-                    }
-                })
-                .catch(err => console.error("ops! ocorreu um erro: " + err));
-        }, []);
+    useEffect(() => {
+        api.get('/ContaCorrente')
+            .then(response => {
+                console.log(response.data);
+                if (response.data && response.data.length > 0) {
+                    setSaldoDisponivelContaCorrente(response.data[0].saldo);
+                }
+            })
+            .catch(err => console.error("ops! ocorreu um erro: " + err));
+    }, []);
 
 
     return (
@@ -76,35 +78,35 @@ export default function Home() {
                         <TouchableOpacity onPress={ContasCorrentes} style={{ padding: 30 }}>
                             <Text style={{ fontSize: 15, color: 'white', fontWeight: "500" }}>Saldo disponivel</Text>
                             <View style={{ alignItems: "center", display: 'flex', flexDirection: "row", justifyContent: "space-between", borderBottomWidth: 1, borderBottomColor: 'white', }}>
-                                
+
                                 <Text style={{ color: 'white', marginBottom: 10, fontSize: 30, marginTop: 5 }}>R$ {saldoDisponivelContaCorrente.toFixed(2)}</Text>
                                 <AntDesign name="right" size={25} color="white" marginTop='10' />
                             </View>
                         </TouchableOpacity>
 
                         <View style={{ width: '100%', marginBottom: 40, display: 'flex', flexDirection: "row", justifyContent: "center", gap: 10 }}>
-                            <TouchableOpacity onPress={configuracoes} style={{ width: '20%',display: 'flex', justifyContent: "center" }}>
+                            <TouchableOpacity onPress={configuracoes} style={{ width: '20%', display: 'flex', justifyContent: "center" }}>
                                 <View style={{ backgroundColor: '#D9D9D9', height: 70, width: '100%', borderRadius: 20, display: "flex", alignItems: "center", justifyContent: "center" }}>
                                     <Octicons name="gear" size={26} color="black" />
                                 </View>
                                 <Text style={{ color: 'white', textAlign: "center", fontWeight: 600 }}>Configurar</Text>
                             </TouchableOpacity>
 
-                            <TouchableOpacity onPress={Ajuda} style={{ width: '20%',display: 'flex', justifyContent: "center" }}>
+                            <TouchableOpacity onPress={Ajuda} style={{ width: '20%', display: 'flex', justifyContent: "center" }}>
                                 <View style={{ backgroundColor: '#D9D9D9', height: 70, width: '100%', borderRadius: 20, display: "flex", alignItems: "center", justifyContent: "center" }}>
                                     <Feather name="help-circle" size={28} color="black" />
                                 </View>
                                 <Text style={{ color: 'white', textAlign: "center", fontSize: 14, fontWeight: 600 }}>Ajude</Text>
                             </TouchableOpacity>
 
-                            <TouchableOpacity onPress={EntradaFinanceiraExtra} style={{ width: '20%',display: 'flex', justifyContent: "center" }}>
+                            <TouchableOpacity onPress={EntradaFinanceiraExtra} style={{ width: '20%', display: 'flex', justifyContent: "center" }}>
                                 <View style={{ backgroundColor: '#D9D9D9', height: 70, width: '100%', borderRadius: 20, display: "flex", alignItems: "center", justifyContent: "center" }}>
                                     <MaterialCommunityIcons name="finance" size={30} color="black" />
                                 </View>
                                 <Text style={{ color: 'white', textAlign: "center", fontSize: 14, fontWeight: 600 }}>Entrada</Text>
                             </TouchableOpacity>
 
-                            <TouchableOpacity onPress={ButtonAlert} style={{ width: '20%',display: 'flex', justifyContent: "center" }}>
+                            <TouchableOpacity onPress={ButtonAlert} style={{ width: '20%', display: 'flex', justifyContent: "center" }}>
                                 <View style={{ backgroundColor: '#D9D9D9', height: 70, width: '100%', borderRadius: 20, display: "flex", alignItems: "center", justifyContent: "center" }}>
                                     <MaterialCommunityIcons name="exit-to-app" size={32} color="black" />
                                 </View>

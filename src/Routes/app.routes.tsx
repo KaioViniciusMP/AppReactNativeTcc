@@ -20,7 +20,7 @@ export type AppStackParamList = {
     Tabs: undefined
     Home: undefined;
     HistoricoTransacoes: {
-        param1: string; // Exemplo de parâmetro
+        navigationPage: string; // Exemplo de parâmetro
         param2: number; // Outro exemplo de parâmetro
     };
     EscolherModalidade: undefined;
