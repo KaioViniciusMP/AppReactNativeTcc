@@ -55,14 +55,21 @@ export default function Home() {
 
 
     useEffect(() => {
-        api.get('/ContaCorrente')
-            .then(response => {
-                console.log(response.data);
-                if (response.data && response.data.length > 0) {
-                    setSaldoDisponivelContaCorrente(response.data[0].saldo);
-                }
-            })
-            .catch(err => console.error("ops! ocorreu um erro: " + err));
+        const fetchSaldo = () => {
+            api.get('/ContaCorrente')
+                .then(response => {
+                    console.log(response.data);
+                    if (response.data && response.data.length > 0) {
+                        setSaldoDisponivelContaCorrente(response.data[0].saldo);
+                    }
+                })
+                .catch(err => console.error("ops! ocorreu um erro: " + err));
+        };
+
+        fetchSaldo(); // Chamada inicial
+        const interval = setInterval(fetchSaldo, 5000); // Chama a API a cada 5 segundos
+
+        return () => clearInterval(interval); // Limpa o intervalo quando o componente desmonta
     }, []);
 
 

@@ -1,11 +1,16 @@
 import { StyleSheet, Text, View, ScrollView, TouchableOpacity, FlatList, Alert } from 'react-native'
 import AntDesign from '@expo/vector-icons/AntDesign';
 import { useRoute } from '@react-navigation/native';
+import { useNavigation } from "@react-navigation/native";
 import api from '../../services/api';
 import { useContext, useEffect, useState } from "react";
 import { AuthContext } from "../../context";
+import { AuthStackParamList } from '../../Routes/auth.routes';
+
+
 
 export default function HistoricoTransacoes() {
+    const navigation = useNavigation();
     const { user } = useContext(AuthContext);
     const [historico, setHistorico] = useState([])
     const [contaCorrente, setContaCorrente] = useState([])
@@ -84,7 +89,7 @@ export default function HistoricoTransacoes() {
     }
 
     const ButtonAlert = (key, agencia) =>
-        Alert.alert('Alert Title', `Item pressionado - Key: ${key}, Agência: ${agencia}`, [
+        Alert.alert('Alert Title', `Item pressionado - codigo: ${key}, Agência: ${agencia}`, [
             {
                 text: 'Cancel',
                 onPress: () => console.log('Cancel Pressed'),
@@ -102,9 +107,13 @@ export default function HistoricoTransacoes() {
         return conta ? conta.agencia : 'Desconhecida';
     };
 
+    const voltar = () => {
+        navigation.navigate('Home');
+    }
+
     return (
         <ScrollView contentContainerStyle={styles.scrollViewContainer}>
-            <TouchableOpacity style={{ display: 'flex', flexDirection: 'row', marginLeft: 20, marginTop: 40, marginBottom: 60 }}>
+            <TouchableOpacity onPress={voltar} style={{ display: 'flex', flexDirection: 'row', marginLeft: 20, marginTop: 40, marginBottom: 60 }}>
                 <AntDesign name="left" size={20} color="#fff" />
                 <Text style={{ color: '#fff', fontSize: 15, marginLeft: 5 }}>Voltar</Text>
             </TouchableOpacity>
@@ -120,7 +129,7 @@ export default function HistoricoTransacoes() {
                 <FlatList
                     data={dados.data}
                     renderItem={({ item }) => (
-                        <TouchableOpacity onPress={() => handlePress(item.Key, item.Agencia)} style={{ alignItems: 'center', display: 'flex', justifyContent: "space-between", flexDirection: "row", padding: 10, borderBottomWidth: 1, borderBottomColor: '#ccc' }}>
+                        <TouchableOpacity onPress={() => handlePress(item.codigo, getAgenciaByCodigo(item.contaCorrenteCodigo))} style={{ alignItems: 'center', display: 'flex', justifyContent: "space-between", flexDirection: "row", padding: 10, borderBottomWidth: 1, borderBottomColor: '#ccc' }}>
                             <View style={{ display: 'flex', flexDirection: "row", alignItems: 'center' }}>
                                 <View style={{ width: 60, height: 60, backgroundColor: "#D9D9D9", marginLeft: 20, borderRadius: 12 }} />
 
