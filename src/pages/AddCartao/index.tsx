@@ -78,14 +78,18 @@ export default function AddCartao() {
     const usuarioCodigo = user?.usuarioCodigo
 
     useEffect(() => {
-        api.post(`/Cartao/BuscarCartoesCadastrados`, usuarioCodigo)
-            .then(response => {
-                if (response.data && Array.isArray(response.data)) {
-                    setCartoes(response.data);
-                    console.log(response.data)
-                }
-            })
-            .catch(err => console.error("Ops! Ocorreu um erro:", err));
+        api.post('/Cartao/BuscarCartoesCadastrados', 
+            {
+                usuarioCodigo: usuarioCodigo
+            }
+        )
+        .then(response => {
+            if (response.data && Array.isArray(response.data)) {
+                setCartoes(response.data);
+                console.log(response.data);
+            }
+        })
+        .catch(err => console.error("Ops! Ocorreu um erro:", err));
 
 
         api.get(`/Transacoes/${codigoConta}`)
