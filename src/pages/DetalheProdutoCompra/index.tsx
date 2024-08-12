@@ -51,14 +51,11 @@ export default function DetalhesCompra() {
     const { codigoTransacaoFeita, usuarioCodigo } = route.params;
 
     useEffect(() => {
-        console.log(`usuarioCodigo: ${usuarioCodigo}, codigoTransacaoFeita: ${codigoTransacaoFeita}`);
-    
         api.post('Transacoes/DetalhesTransacao', {
             codigoUsuario: usuarioCodigo,
             codigoTransacaoFeita: codigoTransacaoFeita
         })
         .then(response => {
-            console.log(`dados tela de detalhes de transacao: ${JSON.stringify(response.data, null, 2)}`);
             if (response.data && response.data.codigoTransacao) { // Verifica se existe código de transação na resposta
                 setCompra(response.data);
             }

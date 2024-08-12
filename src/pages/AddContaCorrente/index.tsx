@@ -33,10 +33,7 @@ export default function PageAdicionarContaCorrente() {
     const criarContaCorrente = () => {
         api.post('/ContaCorrente', CriarContaCorrenteRequest)
             .then(response => {
-                console.log(response.data);
                 if (response.data.status) {
-                    console.log("Conta corrente criada e vinculada ao usuário com sucesso.");
-                    console.log(response.data.objInfo);
                     setSaldo(``)
                     setAgencia(``)
                     AlertaContaCriada()

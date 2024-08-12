@@ -34,8 +34,6 @@ export default function PageContasCorrentes() {
     }
 
     const acessarCartoes = (codigoConta: number, saldoContaCorrenteAtual: number) => {
-        console.log(`codigo de conta passado: ${codigoConta}`);
-        console.log("codigo de conta passado:" + codigoConta);
         navigation.navigate('AddCartao', { codigoConta, saldoContaCorrenteAtual,  });
     };
 

@@ -77,14 +77,12 @@ export default function AddCartao() {
 
     const usuarioCodigo = user?.usuarioCodigo
 
-    console.log(`codigo do usuario que esta vindo no context: ${usuarioCodigo}`)
-
     useEffect(() => {
         api.post(`/Cartao/BuscarCartoesCadastrados`, usuarioCodigo)
             .then(response => {
-                console.log(response.data);
                 if (response.data && Array.isArray(response.data)) {
                     setCartoes(response.data);
+                    console.log(response.data)
                 }
             })
             .catch(err => console.error("Ops! Ocorreu um erro:", err));
@@ -92,7 +90,6 @@ export default function AddCartao() {
 
         api.get(`/Transacoes/${codigoConta}`)
         .then(response => {
-            console.log(JSON.stringify(response.data, null, 2) + ' historico de transacoes');
             setTransacoes(response.data)
         })
         .catch(err => console.error("Ops! Ocorreu um erro:", err));

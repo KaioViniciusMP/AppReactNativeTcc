@@ -58,7 +58,6 @@ export default function Home() {
         const fetchSaldo = () => {
             api.get('/ContaCorrente')
                 .then(response => {
-                    console.log(response.data);
                     if (response.data && response.data.length > 0) {
                         setSaldoDisponivelContaCorrente(response.data[0].saldo);
                     }

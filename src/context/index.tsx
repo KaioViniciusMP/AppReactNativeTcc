@@ -59,8 +59,6 @@ export function AuthProvider({ children }: AuthProviderProps) {
                 Senha: txtSenha
             })
 
-            console.log(response.data)
-
             const { usuarioCodigo, usuario, nome, token } = response.data
 
             setUser({

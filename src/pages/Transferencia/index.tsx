@@ -19,7 +19,6 @@ export default function Transferencia() {
 
     const route = useRoute<TransferenciaRouteProp>();
     const { localTransferencia } = route.params;
-    console.log('localTransferencia recebido: ' + localTransferencia)
     const [selectedValueLocalTransferencia, setSelectedValueLocalTransferencia] = useState(localTransferencia);
 
 
