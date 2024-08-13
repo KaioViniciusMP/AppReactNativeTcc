@@ -1,41 +1,135 @@
-import { StyleSheet, Text, View, ScrollView, TouchableOpacity, TextInput, Platform } from 'react-native'
+import { StyleSheet, Text, View, ScrollView, TouchableOpacity, TextInput, Platform, Alert } from 'react-native'
 import { useNavigation } from "@react-navigation/native";
 import { Picker } from '@react-native-picker/picker';
-import React, { useState } from 'react'
+import React, { useContext, useEffect, useState } from 'react'
 import { AuthStackParamList } from '../../Routes/auth.routes';
 import { AppStackParamList } from '../../Routes/app.routes';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import { useRoute, RouteProp } from '@react-navigation/native';
+import api from '../../services/api';
+import { AuthContext } from '../../context';
 
 type NavigationProp = NativeStackNavigationProp<AuthStackParamList>;
 type TransferenciaRouteProp = RouteProp<AppStackParamList, 'Transferencia'>;
 
-export default function Transferencia() {
+interface Agencia {
+    codigo: number;
+    agencia: string;
+    usuarioCodigo: number;
+    saldo: number;
+}
+interface Modalidades {
+    codigo: number;
+    nomeModalidade: string;
+}
 
+export default function Transferencia() {
+    const { user } = useContext(AuthContext)
+    const [descricao, setDescricao] = useState('');
+    const [titulo, setTitulo] = useState('');
+
+    const [valorTransacao, setValorTransacao] = useState(0);
+    const [lstModalidadesDisponiveis, setLstModalidadesDisponiveis] = useState<Modalidades[]>([]);
+    const [lstAgenciasDisponiveis, setLstAgenciasDisponiveis] = useState<Agencia[]>([]);
     const [selectedValueAgencia, setSelectedValueAgencia] = useState("Escolha uma agencia");
     const [selectedValueFormaPagamento, setSelectedValuePagamento] = useState("Escolha uma forma de pagamento");
     const navigation = useNavigation<NavigationProp>();
 
     const route = useRoute<TransferenciaRouteProp>();
     const { localTransferencia } = route.params;
-    const [selectedValueLocalTransferencia, setSelectedValueLocalTransferencia] = useState(localTransferencia);
+    const [selectedValueLocalTransferenciaModalidade, setSelectedValueLocalTransferencia] = useState(localTransferencia);
 
 
-    const tipoTransferencia = [
-        { label: "Lazer", value: "Lazer" },
-        { label: "Compras", value: "Compras" },
-        { label: "Saúde", value: "Saúde" },
-        { label: "Transporte", value: "Transporte" },
-        { label: "Alimentação", value: "Alimentação" },
-        { label: "Investimentos", value: "Investimentos" },
-    ];
+    useEffect(() => {
+        const fetchSaldo = () => {
+            api.get('/ContaCorrente')
+                .then(response => {
+                    if (response.data && response.data.length > 0) {
+                        setLstAgenciasDisponiveis(response.data);
+                    }
+                })
+                .catch(err => console.error("ops! ocorreu um erro: " + err));
 
-    const agenciaUtilizada = [
-        { label: "Nubank", value: "Nubank" },
-        { label: "Itaú", value: "Itaú" },
-        { label: "Bradesco", value: "Bradesco" },
-    ]
+            api.get('/Transacoes/BuscarModalidades')
+                .then(response => {
+                    if (response.data && response.data.length > 0) {
+                        setLstModalidadesDisponiveis(response.data);
+                    }
+                })
+                .catch(err => console.error("ops! ocorreu um erro: " + err));
+        };
+
+        fetchSaldo(); // Chamada inicial
+        const interval = setInterval(fetchSaldo, 5000); // Chama a API a cada 5 segundos
+
+        return () => clearInterval(interval); // Limpa o intervalo quando o componente desmonta
+    }, []);
+
+    //selectedValueLocalTransferenciaModalidade - redefinir da tela anterior para ele vim o codigo da modalidade e nao so o nomee ser colocado na modalidadeCodigo
+
+    const realizarTransacao = () => {
+        if (isNaN(valorTransacao) || valorTransacao <= 0) {
+            Alert.alert('Erro', 'O valor da transação deve ser um número positivo.');
+            return;
+        }
+
+        // Formatação da data no formato esperado
+        const formattedDate = new Date().toISOString().split('T')[0] + "T00:00:00";
+
+        console.log(
+            `contaCorrenteCodigo: ${selectedValueAgencia} ,
+            valorTransacao: ${valorTransacao} ,
+            dataTransacao: ${formattedDate} ,
+            modalidadeCodigo: ${1} ,
+            descricao: ${descricao} ,
+            titulo: ${titulo} ,
+            formaPagamento: ${selectedValueFormaPagamento.toLowerCase()} ,
+            usuarioCodigo: ${user.usuarioCodigo} ,
+            cvvCartao: ${"123456789"}`
+        )
+
+        api.post('/Transacoes', {
+            contaCorrenteCodigo: selectedValueAgencia,
+            valorTransacao: valorTransacao,
+            dataTransacao: formattedDate, // Ajuste a data para o formato correto
+            modalidadeCodigo: 1,
+            descricao: descricao,
+            titulo: titulo,
+            formaPagamento: selectedValueFormaPagamento.toLowerCase(), // Certifique-se de enviar em minúsculas
+            usuarioCodigo: user.usuarioCodigo,
+            cvvCartao: "123456789"
+        })
+            .then(response => {
+                if (response.data.status) {
+                    Alert.alert('Transação feita!')
+                } else {
+                    console.log("Falha ao criar transação:", response.data.message);
+                }
+            })
+            .catch(err => {
+                Alert.alert('Ops.. Não foi possível realizar a transação', `Verifique os campos - ${err}`, [
+                    { text: 'Fechar', onPress: () => (console.log(`erro: ${err}`)) }
+                ]);
+                console.error("Ops! Ocorreu um erro: " + err);
+            });
+    }
+
+
+    // const tipoTransferencia = [
+    //     { label: "Lazer", value: "Lazer" },
+    //     { label: "Compras", value: "Compras" },
+    //     { label: "Saúde", value: "Saúde" },
+    //     { label: "Transporte", value: "Transporte" },
+    //     { label: "Alimentação", value: "Alimentação" },
+    //     { label: "Investimentos", value: "Investimentos" },
+    // ];
+
+    // const agenciaUtilizada = [
+    //     { label: "Nubank", value: "Nubank" },
+    //     { label: "Itaú", value: "Itaú" },
+    //     { label: "Bradesco", value: "Bradesco" },
+    // ]
 
     const formaPagamento = [
         { label: "Debito", value: "Debito" },
@@ -61,42 +155,52 @@ export default function Transferencia() {
                     </View>
 
                     <View style={{ marginBottom: 40, marginTop: 10, display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
-                        <Text style={{ fontWeight: "900", marginLeft: 25, fontSize: 40 }}>R$ 0,00</Text>
+                        <TextInput
+                            onChangeText={(text) => {
+                                // Remove caracteres não numéricos e substitui a vírgula por ponto
+                                const numericValue = parseFloat(text.replace(/[^0-9.,]/g, '').replace(',', '.'));
+                                // Atualiza o estado com o valor convertido ou com 0 se for NaN
+                                setValorTransacao(isNaN(numericValue) ? 0 : numericValue);
+                            }}
+                            value={valorTransacao.toString()} // Converte o valor para string para exibição
+                            style={{ fontWeight: "900", marginLeft: 25, fontSize: 40 }}
+                            placeholder='R$ 0,00'
+                        />
                         <Text style={{ fontWeight: "bold", marginTop: 20, }}>icon</Text>
                     </View>
 
                     <View style={{ paddingLeft: 25, paddingRight: 20, alignSelf: 'center', justifyContent: 'center', display: 'flex', width: '100%', }}>
-                        <Text style={{ fontSize: 17, fontWeight: "semibold", color:'#656565' }}>Transferindo para:</Text>
+                        <Text style={{ fontSize: 17, fontWeight: "semibold", color: '#656565' }}>Transferindo para:</Text>
                         <View style={{ marginBottom: 15, alignSelf: 'center', justifyContent: 'center', display: 'flex', width: '100%', borderRadius: 5, height: 40 }}>
                             <Picker
-                                selectedValue={selectedValueLocalTransferencia}
+                                selectedValue={selectedValueLocalTransferenciaModalidade}
                                 onValueChange={(itemValue) => setSelectedValueLocalTransferencia(itemValue)}>
 
-                                {tipoTransferencia.map((item, index) => (
-                                    <Picker.Item key={index} label={item.label} value={item.value} />
+                                {lstModalidadesDisponiveis.map((item, index) => (
+                                    <Picker.Item key={index} label={item.nomeModalidade} value={item.nomeModalidade} />
                                 ))}
                             </Picker>
                         </View>
                     </View>
 
                     <View style={{ paddingLeft: 25, paddingRight: 20, alignSelf: 'center', justifyContent: 'center', display: 'flex', width: '100%', }}>
-                        <Text style={{ fontSize: 17, fontWeight: "semibold", color:'#656565' }}>Agência utilizada:</Text>
+                        <Text style={{ fontSize: 17, fontWeight: "semibold", color: '#656565' }}>Agência utilizada:</Text>
                         <View style={{ marginBottom: 15, alignSelf: 'center', justifyContent: 'center', display: 'flex', width: '100%', borderRadius: 5, height: 40 }}>
                             <Picker
                                 selectedValue={selectedValueAgencia}
                                 onValueChange={(itemValue) => setSelectedValueAgencia(itemValue)}>
 
-                                <Picker.Item style={{fontWeight: '900'}} label={selectedValueAgencia} value="" />
+                                <Picker.Item style={{ fontWeight: '900' }} label={selectedValueAgencia} value="" />
 
-                                {agenciaUtilizada.map((item, index) => (
-                                    <Picker.Item style={{fontWeight: '900'}} key={index} label={item.label} value={item.value} />
+                                {lstAgenciasDisponiveis.map((item, index) => (
+                                    <Picker.Item style={{ fontWeight: '900' }} key={index} label={item.agencia} value={item.codigo} />
                                 ))}
                             </Picker>
                         </View>
                     </View>
 
                     <View style={{ paddingLeft: 25, paddingRight: 20, alignSelf: 'center', justifyContent: 'center', display: 'flex', width: '100%' }}>
-                        <Text style={{ fontSize: 17, fontWeight: "semibold", color:'#656565' }}>Forma de pagamento:</Text>
+                        <Text style={{ fontSize: 17, fontWeight: "semibold", color: '#656565' }}>Forma de pagamento:</Text>
                         <View style={{ marginBottom: 15, alignSelf: 'center', justifyContent: 'center', display: 'flex', width: '100%', borderRadius: 5, height: 40 }}>
                             <Picker
                                 selectedValue={selectedValueFormaPagamento}
@@ -113,22 +217,22 @@ export default function Transferencia() {
 
 
                     <View style={{ paddingLeft: 25, alignSelf: 'center', justifyContent: 'center', display: 'flex', width: '100%', }}>
-                        <Text style={{ fontSize: 17, fontWeight: "semibold", color:'#656565' }}>Data transferencia:</Text>
-                        <Text style={{ fontSize: 17, fontWeight: "900", marginBottom: 15, marginLeft: 15, marginTop:5 }}>Hoje</Text>
+                        <Text style={{ fontSize: 17, fontWeight: "semibold", color: '#656565' }}>Data transferencia:</Text>
+                        <Text style={{ fontSize: 17, fontWeight: "900", marginBottom: 15, marginLeft: 15, marginTop: 5 }}>Hoje</Text>
                     </View>
 
                     <View style={{ paddingLeft: 25, alignSelf: 'center', justifyContent: 'center', display: 'flex', width: '100%', }}>
-                        <Text style={{ marginBottom: 15, fontSize: 17, fontWeight: "semibold", color:'#656565' }}>Titulo transação:</Text>
-                        <TextInput style={{ marginBottom: 15, width: '90%', alignSelf: 'flex-start', borderRadius: 5, height: 40, paddingLeft: 10, borderWidth: 1, borderColor: '#716A9C', }} placeholder='Escreva aqui o titulo da transação...' />
+                        <Text style={{ marginBottom: 15, fontSize: 17, fontWeight: "semibold", color: '#656565' }}>Titulo transação:</Text>
+                        <TextInput onChangeText={setTitulo} value={titulo} style={{ marginBottom: 15, width: '90%', alignSelf: 'flex-start', borderRadius: 5, height: 40, paddingLeft: 10, borderWidth: 1, borderColor: '#716A9C', }} placeholder='Escreva aqui o titulo da transação...' />
                     </View>
 
-                    <Text style={{ marginLeft: 25, fontSize: 17, fontWeight: "semibold", color:'#656565' }}>Descrição:</Text>
-                    <View style={{ borderColor: '#716A9C',marginLeft: 25, alignSelf: 'flex-start', width: '85%', borderWidth: 1, borderRadius: 5, height: 250, marginTop: 15, display: 'flex', }}>
-                        <TextInput style={{ color: 'gray', margin: 10 }} multiline placeholder='Escreva aqui a descrição da transação...' />
+                    <Text style={{ marginLeft: 25, fontSize: 17, fontWeight: "semibold", color: '#656565' }}>Descrição:</Text>
+                    <View style={{ borderColor: '#716A9C', marginLeft: 25, alignSelf: 'flex-start', width: '85%', borderWidth: 1, borderRadius: 5, height: 250, marginTop: 15, display: 'flex', }}>
+                        <TextInput onChangeText={setDescricao} value={descricao} style={{ color: 'gray', margin: 10 }} multiline placeholder='Escreva aqui a descrição da transação...' />
                     </View>
 
                     <View style={{ marginTop: 40, justifyContent: 'center', display: 'flex', width: '100%', alignItems: 'center' }}>
-                        <TouchableOpacity style={{ display: "flex", alignItems: "center", justifyContent: "center", width: '50%', borderRadius: 8, height: 50, backgroundColor: '#7F79AB' }}>
+                        <TouchableOpacity onPress={realizarTransacao} style={{ display: "flex", alignItems: "center", justifyContent: "center", width: '50%', borderRadius: 8, height: 50, backgroundColor: '#7F79AB' }}>
                             <Text style={{ color: '#FFF', fontWeight: "bold" }}>Transferir agora</Text>
                         </TouchableOpacity>
                         <Text onPress={voltar} style={{ color: '#7F79AB', fontWeight: "bold", marginTop: 10 }}>Cancelar operação</Text>
