@@ -74,8 +74,8 @@ export default function Transferencia() {
             return;
         }
 
-        // Formatação da data no formato esperado
-        const formattedDate = new Date().toISOString().split('T')[0] + "T00:00:00";
+        const today = new Date(); // Substitua pelo valor da data desejada, se necessário
+        const formattedDate = today.toISOString().split('T')[0] + "T00:00:00";
 
         console.log(
             `contaCorrenteCodigo: ${selectedValueAgencia} ,
@@ -96,13 +96,14 @@ export default function Transferencia() {
             modalidadeCodigo: 1,
             descricao: descricao,
             titulo: titulo,
-            formaPagamento: selectedValueFormaPagamento.toLowerCase(), // Certifique-se de enviar em minúsculas
+            formaPagamento: selectedValueFormaPagamento, // Certifique-se de enviar em minúsculas
             usuarioCodigo: user.usuarioCodigo,
-            cvvCartao: "123456789"
+            cvvCartao: "123"
         })
             .then(response => {
                 if (response.data.status) {
                     Alert.alert('Transação feita!')
+                    voltarHome()
                 } else {
                     console.log("Falha ao criar transação:", response.data.message);
                 }
@@ -138,6 +139,10 @@ export default function Transferencia() {
 
     const voltar = () => {
         navigation.pop();
+    }
+
+    const voltarHome = () => {
+        navigation.popToTop();
     }
 
     return (

@@ -1,40 +1,57 @@
 import { StyleSheet, Text, View, ScrollView, TouchableOpacity, FlatList } from 'react-native'
 import { useNavigation } from "@react-navigation/native";
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { AuthStackParamList } from '../../Routes/auth.routes';
 import { AppStackParamList } from '../../Routes/app.routes';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import AntDesign from '@expo/vector-icons/AntDesign';
+import api from '../../services/api';
 
 type NavigationProp = NativeStackNavigationProp<AuthStackParamList>;
 type NavigationPropApp = NativeStackNavigationProp<AppStackParamList>;
 
+interface Modalidades {
+    codigo: number;
+    nomeModalidade: string;
+}
+
 export default function PageEscolherModalidade() {
     const navigation = useNavigation<NavigationProp>();
     const navigationApp = useNavigation<NavigationPropApp>();
+    const [modalidades, setModalidades] = useState<Modalidades[]>([]);
 
     const voltar = () => {
         navigation.pop();
     }
 
-    const data = [
-        { text: 'Lazer', navigationPage: 'Lazer' },
-        { text: 'Compras', navigationPage: 'Compras' },
-        { text: 'Saúde', navigationPage: 'Saúde' },
-        { text: 'Transporte', navigationPage: 'Transporte' },
-        { text: 'Alimentação', navigationPage: 'Alimentação' },
-        { text: 'Investimentos', navigationPage: 'Investimentos' },
-    ]
+    useEffect(() => {
+        const fetchSaldo = () => {
+            api.get('/Transacoes/BuscarModalidades')
+                .then(response => {
+                    if (response.data && response.data.length > 0) {
+                        setModalidades(response.data);
+                    }
+                })
+                .catch(err => console.error("ops! ocorreu um erro: " + err));
+        };
 
-    // const Transferencia = (page) => {
-    //     navigationApp.navigate('Transferencia', {
-    //         localTransferencia: page
-    //     });
-    // }
+        fetchSaldo(); 
+        const interval = setInterval(fetchSaldo, 5000); 
+        return () => clearInterval(interval);
+    }, []);
 
-    const Transferencia = (navigationPage: string) => {
+    const data = modalidades
+        .filter(e => e.nomeModalidade !== 'Outra...')
+        .map(e => ({
+            text: e.nomeModalidade,
+            navigationPage: e.nomeModalidade,
+            codigoTransferencia: e.codigo
+        }));
+
+    const Transferencia = (navigationPage: string, codigo: number) => {
         navigationApp.navigate('Transferencia', {
             localTransferencia: navigationPage,
+            codigoTransferencia: codigo
         });
     }
 
@@ -52,7 +69,7 @@ export default function PageEscolherModalidade() {
                     data={data}
                     style={{ display: 'flex', gap: 20 }}
                     renderItem={({ item }) => (
-                        <TouchableOpacity onPress={() => Transferencia(item.navigationPage)} style={{ marginLeft: 20, marginRight: 20, marginBottom: 10, marginTop: 10, display: "flex", alignItems: "center", justifyContent: "center", backgroundColor: '#D9D9D9', width: '90%', borderRadius: 5, height: 50, }}>
+                        <TouchableOpacity onPress={() => Transferencia(item.navigationPage, item.codigoTransferencia)} style={{ marginLeft: 20, marginRight: 20, marginBottom: 10, marginTop: 10, display: "flex", alignItems: "center", justifyContent: "center", backgroundColor: '#D9D9D9', width: '90%', borderRadius: 5, height: 50, }}>
                             <Text style={{ fontWeight: "bold" }}>{item.text}</Text>
                         </TouchableOpacity>
                     )}
@@ -65,7 +82,7 @@ export default function PageEscolherModalidade() {
 const styles = StyleSheet.create({
     scrollViewContainer: {
         justifyContent: 'flex-end',
-        backgroundColor: '#5D5C96', // Cor de fundo do ScrollView
+        backgroundColor: '#5D5C96', 
     },
     containerTwo: {
         flexGrow: 1,

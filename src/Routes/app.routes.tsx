@@ -33,6 +33,7 @@ export type AppStackParamList = {
     PrivacidadeSeguranca: undefined;
     Transferencia:{
         localTransferencia: string;
+        codigoTransferencia: number
     };
     EditarUsuario: undefined;
     AddCartao: {
