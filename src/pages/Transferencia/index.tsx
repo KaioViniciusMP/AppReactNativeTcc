@@ -19,6 +19,16 @@ interface Agencia {
     usuarioCodigo: number;
     saldo: number;
 }
+interface Cartao {
+    codigoCartao: number,
+    bandeiraCartao: string,
+    usuarioCodigo: number,
+    contaCorrenteCodigo: number,
+    cvv: string,
+    dataValidade: string,
+    formaPagamento: string,
+    limite: number
+}
 interface Modalidades {
     codigo: number;
     nomeModalidade: string;
@@ -32,8 +42,11 @@ export default function Transferencia() {
     const [valorTransacao, setValorTransacao] = useState(0);
     const [lstModalidadesDisponiveis, setLstModalidadesDisponiveis] = useState<Modalidades[]>([]);
     const [lstAgenciasDisponiveis, setLstAgenciasDisponiveis] = useState<Agencia[]>([]);
-    const [selectedValueAgencia, setSelectedValueAgencia] = useState("Escolha uma agencia");
-    const [selectedValueFormaPagamento, setSelectedValuePagamento] = useState("Escolha uma forma de pagamento");
+    const [lstCartoesDisponiveis, setLstCartoesDisponiveis] = useState<Cartao[]>([]);
+    
+    const [selectedValueAgencia, setSelectedValueAgencia] = useState("");
+    const [selectedValueFormaPagamento, setSelectedValuePagamento] = useState("");
+    const [selectedValueCartao, setSelectedValueCartao] = useState("");
     const navigation = useNavigation<NavigationProp>();
 
     const route = useRoute<TransferenciaRouteProp>();
@@ -43,10 +56,18 @@ export default function Transferencia() {
 
     useEffect(() => {
         const fetchSaldo = () => {
-            api.get('/ContaCorrente')
+            api.post(`/ContaCorrente/BuscarContasCorrentesExistentesPorUsuario/${user.usuarioCodigo}`)
                 .then(response => {
                     if (response.data && response.data.length > 0) {
                         setLstAgenciasDisponiveis(response.data);
+                    }
+                })
+                .catch(err => console.error("ops! ocorreu um erro: " + err));
+
+            api.post(`/Cartao/BuscarCartoesCadastrados`, { usuarioCodigo: user.usuarioCodigo })
+                .then(response => {
+                    if (response.data && response.data.length > 0) {
+                        setLstCartoesDisponiveis(response.data);
                     }
                 })
                 .catch(err => console.error("ops! ocorreu um erro: " + err));
@@ -77,29 +98,21 @@ export default function Transferencia() {
         const today = new Date(); // Substitua pelo valor da data desejada, se necessário
         const formattedDate = today.toISOString().split('T')[0] + "T00:00:00";
 
-        console.log(
-            `contaCorrenteCodigo: ${selectedValueAgencia} ,
-            valorTransacao: ${valorTransacao} ,
-            dataTransacao: ${formattedDate} ,
-            modalidadeCodigo: ${1} ,
-            descricao: ${descricao} ,
-            titulo: ${titulo} ,
-            formaPagamento: ${selectedValueFormaPagamento.toLowerCase()} ,
-            usuarioCodigo: ${user.usuarioCodigo} ,
-            cvvCartao: ${"123456789"}`
-        )
-
-        api.post('/Transacoes', {
+        const request = {
             contaCorrenteCodigo: selectedValueAgencia,
             valorTransacao: valorTransacao,
-            dataTransacao: formattedDate, // Ajuste a data para o formato correto
+            dataTransacao: new Date().toISOString(), // Ajuste a data para o formato correto
             modalidadeCodigo: 1,
             descricao: descricao,
             titulo: titulo,
             formaPagamento: selectedValueFormaPagamento, // Certifique-se de enviar em minúsculas
             usuarioCodigo: user.usuarioCodigo,
-            cvvCartao: "123"
-        })
+            cvvCartao: selectedValueCartao
+        }
+
+        console.log(request)
+
+        api.post('/Transacoes', request)
             .then(response => {
                 if (response.data.status) {
                     Alert.alert('Transação feita!')
@@ -133,8 +146,8 @@ export default function Transferencia() {
     // ]
 
     const formaPagamento = [
-        { label: "Debito", value: "Debito" },
-        { label: "Credito", value: "Credito" }
+        { label: "Debito", value: "debito" },
+        { label: "Credito", value: "credito" }
     ]
 
     const voltar = () => {
@@ -156,7 +169,7 @@ export default function Transferencia() {
                 <View style={styles.containerTwo}>
                     <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
                         <Text style={{ fontSize: 20, fontWeight: "900", marginBottom: 20, marginTop: 40, marginLeft: 25 }}>Saldo diponivel:</Text>
-                        <Text style={{ fontSize: 20, fontWeight: "900", marginBottom: 20, marginTop: 40, marginLeft: 25, marginRight: 25 }}>R$0,00</Text>
+                        <Text style={{ fontSize: 20, fontWeight: "900", marginBottom: 20, marginTop: 40, marginLeft: 25, marginRight: 25 }}>R$ {lstAgenciasDisponiveis[0]?.saldo}</Text>
                     </View>
 
                     <View style={{ marginBottom: 40, marginTop: 10, display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
@@ -195,7 +208,7 @@ export default function Transferencia() {
                                 selectedValue={selectedValueAgencia}
                                 onValueChange={(itemValue) => setSelectedValueAgencia(itemValue)}>
 
-                                <Picker.Item style={{ fontWeight: '900' }} label={selectedValueAgencia} value="" />
+                                <Picker.Item style={{ fontWeight: '900' }} label={"Escolha uma agencia"} value="" />
 
                                 {lstAgenciasDisponiveis.map((item, index) => (
                                     <Picker.Item style={{ fontWeight: '900' }} key={index} label={item.agencia} value={item.codigo} />
@@ -211,10 +224,26 @@ export default function Transferencia() {
                                 selectedValue={selectedValueFormaPagamento}
                                 onValueChange={(itemValue) => setSelectedValuePagamento(itemValue)}>
 
-                                <Picker.Item label={selectedValueFormaPagamento} value="" />
+                                <Picker.Item label={"Escolha uma forma de pagamento"} value="" />
 
                                 {formaPagamento.map((item, index) => (
                                     <Picker.Item key={index} label={item.label} value={item.value} />
+                                ))}
+                            </Picker>
+                        </View>
+                    </View>
+                    
+                    <View style={{ paddingLeft: 25, paddingRight: 20, alignSelf: 'center', justifyContent: 'center', display: 'flex', width: '100%' }}>
+                        <Text style={{ fontSize: 17, fontWeight: "semibold", color: '#656565' }}>Cartões disponiveis:</Text>
+                        <View style={{ marginBottom: 15, alignSelf: 'center', justifyContent: 'center', display: 'flex', width: '100%', borderRadius: 5, height: 40 }}>
+                            <Picker
+                                selectedValue={selectedValueCartao}
+                                onValueChange={(itemValue) => setSelectedValueCartao(itemValue)}>
+
+                                <Picker.Item label={"Selecione um cartão"} value="" />
+
+                                {lstCartoesDisponiveis.map((item, index) => (
+                                    <Picker.Item key={index} label={`cvv: ${item.cvv} - limite: ${item.limite}`} value={item.cvv} />
                                 ))}
                             </Picker>
                         </View>

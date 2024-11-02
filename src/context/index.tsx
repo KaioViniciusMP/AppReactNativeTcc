@@ -38,18 +38,27 @@ export function AuthProvider({ children }: AuthProviderProps) {
     const [loadingAuth, setLoadingAuth] = useState(false);
     const isAuthenticated = !!user.usuario;
 
+    const AlertErrorConnectionService = () =>
+        Alert.alert('Error', `Ocorreu algum erro ao tentar se conectar com o servidor!`, [
+            { text: 'Fechar' },
+        ]);
+
+    const AlertUnauthorized = () =>
+        Alert.alert('Error', `Usuario ou senha inválidos!`, [
+            { text: 'Fechar' },
+        ]);
+
+    const AlertErrorLogin = () =>
+        Alert.alert('Error', `Erro ao fazer login. Tente novamente mais tarde.`, [
+            { text: 'Fechar' },
+        ]);
+        
+    const AlertLoginSucess = () =>
+        Alert.alert('Succes', `Login realizado com sucesso!`, [
+            { text: 'Fechar' },
+        ]);
+
     async function signIn({ txtUsuario, txtSenha }: SignInProps) {
-        const AlertErrorConnectionService = () =>
-            Alert.alert('Error', `Ocorreu algum erro ao tentar se conectar com o servidor!`, [
-                { text: 'Fechar' },
-            ]);
-
-        const AlertUnauthorized = () =>
-            Alert.alert('Error', `Usuario ou senha inválidos!`, [
-                { text: 'Fechar' },
-            ]);
-
-
         setLoadingAuth(true);
 
         try {
@@ -60,6 +69,13 @@ export function AuthProvider({ children }: AuthProviderProps) {
             })
 
             const { usuarioCodigo, usuario, nome, token } = response.data
+
+            if(token == "" || token == null){
+                AlertErrorLogin()
+            }
+            else{
+                AlertLoginSucess()
+            }
 
             setUser({
                 usuarioCodigo,
