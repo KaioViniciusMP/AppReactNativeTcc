@@ -7,6 +7,7 @@ type AuthContextData = {
     user: UserProps;
     isAuthenticated: boolean;
     signIn: (credentials: SignInProps) => Promise<void>;
+    logout: () => void;
 }
 
 type UserProps = {
@@ -108,8 +109,12 @@ export function AuthProvider({ children }: AuthProviderProps) {
         }
     }
 
+    function logout() {
+        setUser({ usuarioCodigo: 0, usuario: '', nome: '', token: '' }); // Limpa o usuário para efetuar o logout
+    }
+
     return (
-        <AuthContext.Provider value={{ user, isAuthenticated, signIn }}>
+        <AuthContext.Provider value={{ user, isAuthenticated, signIn, logout }}>
             {children}
         </AuthContext.Provider>
     )

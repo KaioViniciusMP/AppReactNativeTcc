@@ -7,12 +7,13 @@ import FontAwesome6 from '@expo/vector-icons/FontAwesome6';
 import { Entypo } from '@expo/vector-icons'
 import MaterialCommunityIcons from '@expo/vector-icons/MaterialCommunityIcons';
 import api from "../../services/api";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useContext } from "react";
 import axios from "axios";
+import { AuthContext } from '../../context';
 
 
 export default function Home() {
-
+    const {  logout} = useContext(AuthContext);
     const navigation = useNavigation();
     const [saldoDisponivelContaCorrente, setSaldoDisponivelContaCorrente] = useState(0);
 
@@ -71,7 +72,6 @@ export default function Home() {
         return () => clearInterval(interval); // Limpa o intervalo quando o componente desmonta
     }, []);
 
-
     return (
         <ScrollView contentContainerStyle={styles.scrollViewContainer}>
             <View style={styles.container}>
@@ -112,7 +112,7 @@ export default function Home() {
                                 <Text style={{ color: 'white', textAlign: "center", fontSize: 14, fontWeight: 600 }}>Entrada</Text>
                             </TouchableOpacity>
 
-                            <TouchableOpacity onPress={ButtonAlert} style={{ width: '20%', display: 'flex', justifyContent: "center" }}>
+                            <TouchableOpacity onPress={logout} style={{ width: '20%', display: 'flex', justifyContent: "center" }}>
                                 <View style={{ backgroundColor: '#D9D9D9', height: 70, width: '100%', borderRadius: 20, display: "flex", alignItems: "center", justifyContent: "center" }}>
                                     <MaterialCommunityIcons name="exit-to-app" size={32} color="black" />
                                 </View>
