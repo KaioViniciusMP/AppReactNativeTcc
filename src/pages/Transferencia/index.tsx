@@ -243,7 +243,7 @@ export default function Transferencia() {
                                 <Picker.Item label={"Selecione um cartão"} value="" />
 
                                 {lstCartoesDisponiveis.map((item, index) => (
-                                    <Picker.Item key={index} label={`cvv: ${item.cvv} - limite: ${item.limite}`} value={item.cvv} />
+                                    <Picker.Item key={index} label={`cvv: ${item.cvv} - limite: ${item.limite} - tipo: ${item.formaPagamento}`} value={item.cvv} />
                                 ))}
                             </Picker>
                         </View>

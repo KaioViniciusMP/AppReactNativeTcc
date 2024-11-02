@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, ScrollView, TouchableOpacity, Alert, FlatList } from 'react-native'
+import { StyleSheet, Text, View, ScrollView, TouchableOpacity, Alert, FlatList, RefreshControl } from 'react-native'
 import { RouteProp, useNavigation } from "@react-navigation/native";
 import React, { useEffect, useState, useContext } from 'react';
 import { AuthStackParamList } from '../../Routes/auth.routes';
@@ -51,11 +51,12 @@ interface Transacoes {
     cvvCartao: string,
     isDeposito: boolean,
 }
-    
+
 
 export default function AddCartao() {
     const navigation = useNavigation<NavigationProp>();
     const navigationApp = useNavigation<NavigationAppProp>();
+    const [loading, setLoading] = useState(false);
 
     const route = useRoute<AddCartaoRouteProp>();
     const { codigoConta, saldoContaCorrenteAtual } = route.params;
@@ -73,35 +74,40 @@ export default function AddCartao() {
 
     const usuarioCodigo = user?.usuarioCodigo
 
-    
-const ButtonAlert = () =>{
-    navigationApp.navigate('PersonalizacaoCartaoNovo');
-    
-    // Alert.alert('Atenção', `Funcionalidade disponivel em breve.`, [
-    //     { text: 'OK', onPress: () => console.log('Deslogar') },
-    // ]);
 
-    // api.post(`/Cartao`, request)
-    //     .then(response => {
-    //         const { status, message, objInfo } = response.data; // Desestruturação da resposta
+    const ButtonAlert = () => {
+        navigationApp.navigate('PersonalizacaoCartaoNovo');
 
-    //         if (status) {
-    //             Alert.alert('Sucesso', message, [
-    //                 { text: 'Fechar', onPress: () => console.log('Cadastro bem-sucedido:', objInfo) }
-    //             ]);
-    //         } else {
-    //             Alert.alert('Erro de Cadastro', message);
-    //         }
-    //     })
-    //     .catch((err) => {
-    //         // Verifica se a resposta de erro contém dados
-    //         const message = err.response?.data?.message || 'Ops! Ocorreu um erro, tente novamente mais tarde.';
-    //         console.error(`Ops! Ocorreu um erro: ${err}`);
-    //         Alert.alert('Erro', message);
-    //     });
-}
+        // Alert.alert('Atenção', `Funcionalidade disponivel em breve.`, [
+        //     { text: 'OK', onPress: () => console.log('Deslogar') },
+        // ]);
+
+        // api.post(`/Cartao`, request)
+        //     .then(response => {
+        //         const { status, message, objInfo } = response.data; // Desestruturação da resposta
+
+        //         if (status) {
+        //             Alert.alert('Sucesso', message, [
+        //                 { text: 'Fechar', onPress: () => console.log('Cadastro bem-sucedido:', objInfo) }
+        //             ]);
+        //         } else {
+        //             Alert.alert('Erro de Cadastro', message);
+        //         }
+        //     })
+        //     .catch((err) => {
+        //         // Verifica se a resposta de erro contém dados
+        //         const message = err.response?.data?.message || 'Ops! Ocorreu um erro, tente novamente mais tarde.';
+        //         console.error(`Ops! Ocorreu um erro: ${err}`);
+        //         Alert.alert('Erro', message);
+        //     });
+    }
 
     useEffect(() => {
+        refreshPage()
+    }, []);
+
+    const refreshPage = () => {
+        setLoading(true);
         api.post('/Cartao/BuscarCartoesCadastrados',
             {
                 usuarioCodigo: usuarioCodigo
@@ -113,15 +119,17 @@ const ButtonAlert = () =>{
                     console.log(response.data);
                 }
             })
-            .catch(err => console.error("Ops! Ocorreu um erro:", err));
+            .catch(err => console.error("Ops! Ocorreu um erro:", err))
+            .finally(() => setLoading(false));
 
 
         api.get(`/Transacoes/${codigoConta}`)
             .then(response => {
                 setTransacoes(response.data)
             })
-            .catch(err => console.error("Ops! Ocorreu um erro:", err));
-    }, []);
+            .catch(err => console.error("Ops! Ocorreu um erro:", err))
+            .finally(() => setLoading(false));
+    }
 
     const voltar = () => {
         navigation.goBack();
@@ -132,7 +140,10 @@ const ButtonAlert = () =>{
     }
 
     return (
-        <ScrollView contentContainerStyle={styles.scrollViewContainer}>
+        <ScrollView contentContainerStyle={styles.scrollViewContainer}
+            refreshControl={
+                <RefreshControl refreshing={loading} onRefresh={refreshPage} />
+            }>
             <TouchableOpacity onPress={voltar} style={{ display: 'flex', flexDirection: 'row', marginLeft: 20, marginTop: 40, paddingBottom: 180 }}>
                 <AntDesign name="left" size={20} color="#fff" />
                 <Text style={{ color: '#fff', fontSize: 15, marginLeft: 5 }}>Voltar</Text>
