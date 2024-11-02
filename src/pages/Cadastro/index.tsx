@@ -1,13 +1,15 @@
 import { useNavigation } from "@react-navigation/native";
 import { useState } from "react";
-import { View, Text, TouchableOpacity, StyleSheet, TextInput } from "react-native";
+import { View, Text, TouchableOpacity, StyleSheet, TextInput, Alert } from "react-native";
 import { AuthStackParamList } from '../../Routes/auth.routes';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
+import api from "../../services/api";
 
 type NavigationProp = NativeStackNavigationProp<AuthStackParamList>;
 
 export default function Cadastro() {
     const [txtSenha, setSenha] = useState('');
+    const [txtNome, setNome] = useState('');
     const [txtUsuario, setUsuario] = useState('');
 
     const navigation = useNavigation<NavigationProp>();
@@ -15,6 +17,38 @@ export default function Cadastro() {
     const login = () => {
         navigation.navigate('Login');
     };
+
+
+    const cadastrar = () => {
+        const request = {
+            nome: txtNome,
+            usuario: txtUsuario,
+            senha: txtSenha,
+        }
+
+        api.post(`/Usuario`, request)
+            .then(response => {
+                const { status, message, objInfo } = response.data; // Desestruturação da resposta
+
+                if (status) {
+                    Alert.alert('Sucesso', message, [
+                        { text: 'Fechar', onPress: () => console.log('Cadastro bem-sucedido:', objInfo) }
+                    ]);
+
+                    login()
+                } else {
+                    Alert.alert('Erro de Cadastro', message);
+                }
+            })
+            .catch((err) => {
+                // Verifica se a resposta de erro contém dados
+                const message = err.response?.data?.message || 'Ops! Ocorreu um erro, tente novamente mais tarde.';
+                console.error(`Ops! Ocorreu um erro: ${err}`);
+                Alert.alert('Erro', message);
+            });
+    }
+
+
 
     return (
         <View style={styles.container}>
@@ -28,9 +62,9 @@ export default function Cadastro() {
                     <Text style={styles.Label}>Nome:</Text>
                     <TextInput
                         style={styles.input}
-                        placeholder="Digite aqui seu nome de usuario"
-                        value={txtUsuario}
-                        onChangeText={setUsuario}
+                        placeholder="Digite aqui seu nome"
+                        value={txtNome}
+                        onChangeText={setNome}
                     />
                 </View>
                 <View style={styles.containerInput}>
@@ -53,7 +87,7 @@ export default function Cadastro() {
                 </View>
 
                 <View style={styles.containerInput}>
-                    <TouchableOpacity onPress={login} style={styles.Button}>
+                    <TouchableOpacity onPress={cadastrar} style={styles.Button}>
                         <Text style={styles.LabelButton}>Cadastro</Text>
                     </TouchableOpacity>
                 </View>

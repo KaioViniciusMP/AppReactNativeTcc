@@ -1,17 +1,19 @@
 import { StyleSheet, Text, View, ScrollView, TouchableOpacity, FlatList, TextInput,Alert } from 'react-native'
 import { useNavigation } from "@react-navigation/native";
-import React, { useState } from 'react'
+import React, { useContext, useState } from 'react'
 import { AuthStackParamList } from '../../Routes/auth.routes';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import api from '../../services/api';
+import { AuthContext } from '../../context';
 
 type NavigationProp = NativeStackNavigationProp<AuthStackParamList>;
 
 export default function PageAdicionarContaCorrente() {
+    const { user } = useContext(AuthContext)
     const navigation = useNavigation<NavigationProp>();
     const [agencia, setAgencia] = useState('');
-    const [usuarioCodigo, setUsuarioCodigo] = useState('1');
+    const [usuarioCodigo, setUsuarioCodigo] = useState(user.usuarioCodigo.toString());
     const [saldo, setSaldo] = useState('');
 
     const AlertaContaCriada = () =>

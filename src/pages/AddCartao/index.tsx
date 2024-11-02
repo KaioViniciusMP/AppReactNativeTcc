@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View, ScrollView, TouchableOpacity, Alert, FlatList } from 'react-native'
 import { RouteProp, useNavigation } from "@react-navigation/native";
-import React, { useEffect, useState,useContext } from 'react';
+import React, { useEffect, useState, useContext } from 'react';
 import { AuthStackParamList } from '../../Routes/auth.routes';
 import { AppStackParamList } from '../../Routes/app.routes';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
@@ -29,7 +29,7 @@ type AddCartaoRouteProp = RouteProp<AppStackParamList, 'AddCartao'>
 //     limiteCartao: number
 // }
 
-interface Cartao{
+interface Cartao {
     codigo: number,
     contaCorrenteCodigo: number,
     formaPagamento: string,
@@ -38,7 +38,7 @@ interface Cartao{
     cvv: string,
     limite: number,
 }
-interface Transacoes{
+interface Transacoes {
     codigo: number,
     dataTransacao: Date,
     valorTransacao: number,
@@ -52,10 +52,31 @@ interface Transacoes{
     isDeposito: boolean,
 }
 
-const ButtonAlert = () =>
-    Alert.alert('Atenção', `Funcionalidade disponivel em breve.`, [
-        { text: 'OK', onPress: () => console.log('Deslogar') },
-    ]);
+const ButtonAlert = () =>{
+    // Alert.alert('Atenção', `Funcionalidade disponivel em breve.`, [
+    //     { text: 'OK', onPress: () => console.log('Deslogar') },
+    // ]);
+
+    // api.post(`/Cartao`, request)
+    //     .then(response => {
+    //         const { status, message, objInfo } = response.data; // Desestruturação da resposta
+
+    //         if (status) {
+    //             Alert.alert('Sucesso', message, [
+    //                 { text: 'Fechar', onPress: () => console.log('Cadastro bem-sucedido:', objInfo) }
+    //             ]);
+    //         } else {
+    //             Alert.alert('Erro de Cadastro', message);
+    //         }
+    //     })
+    //     .catch((err) => {
+    //         // Verifica se a resposta de erro contém dados
+    //         const message = err.response?.data?.message || 'Ops! Ocorreu um erro, tente novamente mais tarde.';
+    //         console.error(`Ops! Ocorreu um erro: ${err}`);
+    //         Alert.alert('Erro', message);
+    //     });
+}
+    
 
 export default function AddCartao() {
     const navigation = useNavigation<NavigationProp>();
@@ -67,36 +88,36 @@ export default function AddCartao() {
     const [cartoes, setCartoes] = useState<Cartao[]>([]);
     const [transacoes, setTransacoes] = useState<Transacoes[]>([]);
 
-    const coresAleatoriasCartoes = ['#313131', '#BA00B2', '#00BB07', '#B10000', '#F0B10D', '#FF9900', '#FF9900',`#6A0DAD`];
+    const coresAleatoriasCartoes = ['#313131', '#BA00B2', '#00BB07', '#B10000', '#F0B10D', '#FF9900', '#FF9900', `#6A0DAD`];
 
     const gerarCorAleatoria = () => {
         const indiceAleatorio = Math.floor(Math.random() * coresAleatoriasCartoes.length);
         return coresAleatoriasCartoes[indiceAleatorio];
     };
-    const {user} = useContext(AuthContext)
+    const { user } = useContext(AuthContext)
 
     const usuarioCodigo = user?.usuarioCodigo
 
     useEffect(() => {
-        api.post('/Cartao/BuscarCartoesCadastrados', 
+        api.post('/Cartao/BuscarCartoesCadastrados',
             {
                 usuarioCodigo: usuarioCodigo
             }
         )
-        .then(response => {
-            if (response.data && Array.isArray(response.data)) {
-                setCartoes(response.data);
-                console.log(response.data);
-            }
-        })
-        .catch(err => console.error("Ops! Ocorreu um erro:", err));
+            .then(response => {
+                if (response.data && Array.isArray(response.data)) {
+                    setCartoes(response.data);
+                    console.log(response.data);
+                }
+            })
+            .catch(err => console.error("Ops! Ocorreu um erro:", err));
 
 
         api.get(`/Transacoes/${codigoConta}`)
-        .then(response => {
-            setTransacoes(response.data)
-        })
-        .catch(err => console.error("Ops! Ocorreu um erro:", err));
+            .then(response => {
+                setTransacoes(response.data)
+            })
+            .catch(err => console.error("Ops! Ocorreu um erro:", err));
     }, []);
 
     const voltar = () => {
@@ -104,7 +125,7 @@ export default function AddCartao() {
     }
 
     const detalhesCompra = (codigoTransacaoFeita: number, usuarioCodigo: number) => {
-        navigationApp.navigate('DetalhesCompra', { codigoTransacaoFeita , usuarioCodigo});
+        navigationApp.navigate('DetalhesCompra', { codigoTransacaoFeita, usuarioCodigo });
     }
 
     return (
@@ -180,7 +201,7 @@ export default function AddCartao() {
                                     <View style={{ width: 60, height: 60, backgroundColor: "#D9D9D9", marginLeft: 20, borderRadius: 12 }} />
 
                                     <View style={{ display: 'flex', flexDirection: 'column' }}>
-                                        <Text style={{ fontWeight: 'bold', fontSize: 15, display: 'flex', marginLeft: 20, textTransform:'uppercase' }}>{item.titulo}</Text>
+                                        <Text style={{ fontWeight: 'bold', fontSize: 15, display: 'flex', marginLeft: 20, textTransform: 'uppercase' }}>{item.titulo}</Text>
                                         <Text style={{ fontWeight: 'bold', color: '#939393', fontSize: 12, marginLeft: 20, marginTop: 3 }}>inserir subtitulo no backend</Text>
                                     </View>
                                 </View>

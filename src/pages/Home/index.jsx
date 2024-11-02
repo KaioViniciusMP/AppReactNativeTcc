@@ -1,5 +1,5 @@
 import { useNavigation } from "@react-navigation/native";
-import { View, Text, TouchableOpacity, StyleSheet, ScrollView, FlatList, Alert } from "react-native";
+import { View, Text, TouchableOpacity, StyleSheet, ScrollView, FlatList, Alert,RefreshControl } from "react-native";
 import AntDesign from '@expo/vector-icons/AntDesign';
 import { Octicons } from '@expo/vector-icons';
 import { Feather } from '@expo/vector-icons';
@@ -13,8 +13,10 @@ import { AuthContext } from '../../context';
 
 
 export default function Home() {
-    const {  logout} = useContext(AuthContext);
+    const { user } = useContext(AuthContext)
+    const { logout } = useContext(AuthContext);
     const navigation = useNavigation();
+    const [loading, setLoading] = useState(false);
     const [saldoDisponivelContaCorrente, setSaldoDisponivelContaCorrente] = useState(0);
 
     const escolherModalidade = () => {
@@ -55,16 +57,19 @@ export default function Home() {
         ]);
 
 
+    const fetchSaldo = () => {
+        api.post(`/ContaCorrente/BuscarContasCorrentesExistentesPorUsuario/${user.usuarioCodigo}`)
+            .then(response => {
+                if (response.data && response.data.length > 0) {
+                    setSaldoDisponivelContaCorrente(response.data[0].saldo);
+                    console.log(response.data)
+                }
+            })
+            .catch(err => console.error("ops! ocorreu um erro: " + err));
+    };
+
     useEffect(() => {
-        const fetchSaldo = () => {
-            api.get('/ContaCorrente')
-                .then(response => {
-                    if (response.data && response.data.length > 0) {
-                        setSaldoDisponivelContaCorrente(response.data[0].saldo);
-                    }
-                })
-                .catch(err => console.error("ops! ocorreu um erro: " + err));
-        };
+        console.log(user.usuarioCodigo)
 
         fetchSaldo(); // Chamada inicial
         const interval = setInterval(fetchSaldo, 5000); // Chama a API a cada 5 segundos
@@ -72,8 +77,11 @@ export default function Home() {
         return () => clearInterval(interval); // Limpa o intervalo quando o componente desmonta
     }, []);
 
+
     return (
-        <ScrollView contentContainerStyle={styles.scrollViewContainer}>
+        <ScrollView contentContainerStyle={styles.scrollViewContainer} refreshControl={
+            <RefreshControl refreshing={loading} onRefresh={fetchSaldo} />
+        }>
             <View style={styles.container}>
                 <View style={{ display: 'flex', height: 170, flexDirection: "row", alignItems: "center", paddingLeft: 20, marginBottom: 20 }}>
                     <View style={{ width: 50, height: 50, backgroundColor: '#7F79AB', borderRadius: 50 }}></View>

@@ -1,10 +1,11 @@
 import { useNavigation } from "@react-navigation/native";
-import { StyleSheet, Text, View, ScrollView, TouchableOpacity, FlatList } from 'react-native'
-import React,{useState,useEffect} from 'react'
+import { StyleSheet, Text, View, ScrollView, TouchableOpacity, FlatList,RefreshControl  } from 'react-native'
+import React, { useState, useEffect, useContext } from 'react'
 import { AppStackParamList } from '../../Routes/app.routes';
 import { NativeStackNavigationProp } from '@react-navigation/native-stack';
 import AntDesign from '@expo/vector-icons/AntDesign';
 import api from "../../services/api";
+import { AuthContext } from '../../context';
 
 type NavigationProp = NativeStackNavigationProp<AppStackParamList>;
 
@@ -23,8 +24,10 @@ interface ContaCorrente {
 }
 
 export default function PageContasCorrentes() {
+    const { user } = useContext(AuthContext)
     const navigation = useNavigation<NavigationProp>();
     const [contasCorrentes, setContasCorrentes] = useState<ContaCorrente[]>([]);
+    const [loading, setLoading] = useState(false);
 
     const adicionarContaCorrente = () => {
         navigation.navigate('AdicionarContaCorrente');
@@ -34,8 +37,12 @@ export default function PageContasCorrentes() {
     }
 
     const acessarCartoes = (codigoConta: number, saldoContaCorrenteAtual: number) => {
-        navigation.navigate('AddCartao', { codigoConta, saldoContaCorrenteAtual,  });
+        navigation.navigate('AddCartao', { codigoConta, saldoContaCorrenteAtual, });
     };
+
+    useEffect(() => {
+        fetchContasCorrentes();
+    }, []);
 
     // const data: ContaCorrente[] = [
     //     { codigo: 1, Agencia: 'AGENCIA', Valor: 'R$ 200,00', CartoesVinculados: []},
@@ -45,23 +52,29 @@ export default function PageContasCorrentes() {
     //     { codigo: 5, Agencia: 'Santander', Valor: 'R$ 500,00', CartoesVinculados: []},
     // ];
 
-    useEffect(() => {
-        api.get('/ContaCorrente')
+    const fetchContasCorrentes = () => {
+        setLoading(true);
+        api.post(`/ContaCorrente/BuscarContasCorrentesExistentesPorUsuario/${user.usuarioCodigo}`)
             .then(response => {
                 if (response.data && Array.isArray(response.data)) {
                     setContasCorrentes(response.data);
+                    console.log(JSON.stringify(response.data));
                 }
             })
-            .catch(err => console.error("Ops! Ocorreu um erro:", err));
-    }, []);
+            .catch(err => console.error("Ops! Ocorreu um erro:", err))
+            .finally(() => setLoading(false)); // Finaliza o carregamento
+    };
 
-    
+
 
     return (
-        <ScrollView contentContainerStyle={styles.scrollViewContainer}>
+        <ScrollView contentContainerStyle={styles.scrollViewContainer}
+            refreshControl={
+                <RefreshControl refreshing={loading} onRefresh={fetchContasCorrentes} />
+            }>
             <TouchableOpacity onPress={voltar} style={{ display: 'flex', flexDirection: 'row', marginLeft: 20, marginTop: 40, marginBottom: 110 }}>
                 <AntDesign name="left" size={20} color="#fff" />
-                <Text style={{ color: '#fff', fontSize: 15, marginLeft:5 }}>Voltar</Text>
+                <Text style={{ color: '#fff', fontSize: 15, marginLeft: 5 }}>Voltar</Text>
             </TouchableOpacity>
 
             <View style={styles.containerTwo}>
@@ -71,7 +84,7 @@ export default function PageContasCorrentes() {
                     <Text style={{ marginLeft: 10, fontSize: 17, textAlign: 'center', backgroundColor: '#000', width: 25, height: 25, borderRadius: 20, color: '#fff' }}>+</Text>
                 </TouchableOpacity>
 
-                <View style={{ display: 'flex', flexDirection: 'row', justifyContent:'space-around', marginTop: 40, marginBottom: 20}}>
+                <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-around', marginTop: 40, marginBottom: 20 }}>
                     <Text style={{ fontWeight: 'bold' }}>CONTAS CORRENTES EXISTENTES</Text>
                     <Text style={{ fontWeight: 'bold' }}>icon</Text>
                 </View>
@@ -82,7 +95,7 @@ export default function PageContasCorrentes() {
                     renderItem={({ item }) => (
                         <TouchableOpacity onPress={() => acessarCartoes(item.codigo, item.saldo)} style={{ display: 'flex', justifyContent: "space-between", flexDirection: "row", padding: 10, borderBottomWidth: 1, borderBottomColor: '#ccc' }}>
                             <View style={{ display: 'flex', flexDirection: "row", alignItems: 'center' }}>
-                                <Text style={{ fontWeight: 'bold', fontSize: 15, display: 'flex', flexDirection: "column", marginLeft: 20, marginTop: 20, textTransform:"uppercase" }}>{item.agencia}</Text>
+                                <Text style={{ fontWeight: 'bold', fontSize: 15, display: 'flex', flexDirection: "column", marginLeft: 20, marginTop: 20, textTransform: "uppercase" }}>{item.agencia}</Text>
                             </View>
                             <Text style={{ fontWeight: 'bold', fontSize: 15, alignSelf: "flex-end", marginRight: 20 }}>R$ {item.saldo}</Text>
                         </TouchableOpacity>
