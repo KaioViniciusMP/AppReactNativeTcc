@@ -13,7 +13,7 @@ import { AuthContext } from '../../context';
 type NavigationProp = NativeStackNavigationProp<AuthStackParamList>;
 type TransferenciaRouteProp = RouteProp<AppStackParamList, 'Transferencia'>;
 
-interface Agencia {
+export interface Agencia {
     codigo: number;
     agencia: string;
     usuarioCodigo: number;

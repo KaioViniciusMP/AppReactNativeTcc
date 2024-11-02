@@ -51,8 +51,32 @@ interface Transacoes {
     cvvCartao: string,
     isDeposito: boolean,
 }
+    
 
+export default function AddCartao() {
+    const navigation = useNavigation<NavigationProp>();
+    const navigationApp = useNavigation<NavigationAppProp>();
+
+    const route = useRoute<AddCartaoRouteProp>();
+    const { codigoConta, saldoContaCorrenteAtual } = route.params;
+
+    const [cartoes, setCartoes] = useState<Cartao[]>([]);
+    const [transacoes, setTransacoes] = useState<Transacoes[]>([]);
+
+    const coresAleatoriasCartoes = ['#313131', '#BA00B2', '#00BB07', '#B10000', '#F0B10D', '#FF9900', '#FF9900', `#6A0DAD`];
+
+    const gerarCorAleatoria = () => {
+        const indiceAleatorio = Math.floor(Math.random() * coresAleatoriasCartoes.length);
+        return coresAleatoriasCartoes[indiceAleatorio];
+    };
+    const { user } = useContext(AuthContext)
+
+    const usuarioCodigo = user?.usuarioCodigo
+
+    
 const ButtonAlert = () =>{
+    navigationApp.navigate('PersonalizacaoCartaoNovo');
+    
     // Alert.alert('Atenção', `Funcionalidade disponivel em breve.`, [
     //     { text: 'OK', onPress: () => console.log('Deslogar') },
     // ]);
@@ -76,27 +100,6 @@ const ButtonAlert = () =>{
     //         Alert.alert('Erro', message);
     //     });
 }
-    
-
-export default function AddCartao() {
-    const navigation = useNavigation<NavigationProp>();
-    const navigationApp = useNavigation<NavigationAppProp>();
-
-    const route = useRoute<AddCartaoRouteProp>();
-    const { codigoConta, saldoContaCorrenteAtual } = route.params;
-
-    const [cartoes, setCartoes] = useState<Cartao[]>([]);
-    const [transacoes, setTransacoes] = useState<Transacoes[]>([]);
-
-    const coresAleatoriasCartoes = ['#313131', '#BA00B2', '#00BB07', '#B10000', '#F0B10D', '#FF9900', '#FF9900', `#6A0DAD`];
-
-    const gerarCorAleatoria = () => {
-        const indiceAleatorio = Math.floor(Math.random() * coresAleatoriasCartoes.length);
-        return coresAleatoriasCartoes[indiceAleatorio];
-    };
-    const { user } = useContext(AuthContext)
-
-    const usuarioCodigo = user?.usuarioCodigo
 
     useEffect(() => {
         api.post('/Cartao/BuscarCartoesCadastrados',

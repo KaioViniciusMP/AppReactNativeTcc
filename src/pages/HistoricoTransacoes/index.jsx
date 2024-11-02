@@ -30,6 +30,7 @@ export default function HistoricoTransacoes() {
             modalidadeCodigo: codigoModalidade
         })
             .then(response => {
+                console.log(response.data)
                 setHistorico(response.data)
             })
             .catch(err => console.error("ops! ocorreu um erro: " + err));
