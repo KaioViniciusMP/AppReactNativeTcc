@@ -1,5 +1,5 @@
 import { useNavigation } from "@react-navigation/native";
-import { View, Text, TouchableOpacity, StyleSheet, ScrollView, FlatList, Alert,RefreshControl } from "react-native";
+import { View, Text, TouchableOpacity, StyleSheet, ScrollView, FlatList, Alert, RefreshControl } from "react-native";
 import AntDesign from '@expo/vector-icons/AntDesign';
 import { Octicons } from '@expo/vector-icons';
 import { Feather } from '@expo/vector-icons';
@@ -61,8 +61,10 @@ export default function Home() {
         api.post(`/ContaCorrente/BuscarContasCorrentesExistentesPorUsuario/${user.usuarioCodigo}`)
             .then(response => {
                 if (response.data && response.data.length > 0) {
-                    setSaldoDisponivelContaCorrente(response.data[0].saldo);
-                    console.log(response.data)
+                    // Calcula a soma de todos os saldos no array de contas
+                    const saldoTotal = response.data.reduce((acc, conta) => acc + conta.saldo, 0);
+                    setSaldoDisponivelContaCorrente(saldoTotal);
+                    //console.log(response.data)
                 }
             })
             .catch(err => console.error("ops! ocorreu um erro: " + err));
@@ -85,7 +87,7 @@ export default function Home() {
             <View style={styles.container}>
                 <View style={{ display: 'flex', height: 170, flexDirection: "row", alignItems: "center", paddingLeft: 20, marginBottom: 20 }}>
                     <View style={{ width: 50, height: 50, backgroundColor: '#7F79AB', borderRadius: 50 }}></View>
-                    <Text style={{ marginLeft: 10, fontWeight: "bold", color: "white" }}>Ola Kaio</Text>
+                    <Text style={{ marginLeft: 10, fontWeight: "bold", color: "white" }}>Ola {user.usuario}</Text>
                 </View>
                 <View style={styles.containerTwo}>
                     <View>

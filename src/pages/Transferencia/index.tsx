@@ -43,6 +43,7 @@ export default function Transferencia() {
     const [lstModalidadesDisponiveis, setLstModalidadesDisponiveis] = useState<Modalidades[]>([]);
     const [lstAgenciasDisponiveis, setLstAgenciasDisponiveis] = useState<Agencia[]>([]);
     const [lstCartoesDisponiveis, setLstCartoesDisponiveis] = useState<Cartao[]>([]);
+    const [saldoDisponivelContaCorrente, setSaldoDisponivelContaCorrente] = useState(0);
     
     const [selectedValueAgencia, setSelectedValueAgencia] = useState("");
     const [selectedValueFormaPagamento, setSelectedValuePagamento] = useState("");
@@ -59,6 +60,9 @@ export default function Transferencia() {
             api.post(`/ContaCorrente/BuscarContasCorrentesExistentesPorUsuario/${user.usuarioCodigo}`)
                 .then(response => {
                     if (response.data && response.data.length > 0) {
+                        const saldoTotal = response.data.reduce((acc: any, conta: any) => acc + conta.saldo, 0);
+                        setSaldoDisponivelContaCorrente(saldoTotal);
+
                         setLstAgenciasDisponiveis(response.data);
                     }
                 })
@@ -169,7 +173,7 @@ export default function Transferencia() {
                 <View style={styles.containerTwo}>
                     <View style={{ display: 'flex', flexDirection: 'row', justifyContent: 'space-between' }}>
                         <Text style={{ fontSize: 20, fontWeight: "900", marginBottom: 20, marginTop: 40, marginLeft: 25 }}>Saldo diponivel:</Text>
-                        <Text style={{ fontSize: 20, fontWeight: "900", marginBottom: 20, marginTop: 40, marginLeft: 25, marginRight: 25 }}>R$ {lstAgenciasDisponiveis[0]?.saldo}</Text>
+                        <Text style={{ fontSize: 20, fontWeight: "900", marginBottom: 20, marginTop: 40, marginLeft: 25, marginRight: 25 }}>R$ {saldoDisponivelContaCorrente.toFixed(2)}</Text>
                     </View>
 
                     <View style={{ marginBottom: 40, marginTop: 10, display: 'flex', flexDirection: 'row', justifyContent: 'center', alignItems: 'center' }}>
